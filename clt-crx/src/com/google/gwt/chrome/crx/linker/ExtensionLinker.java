@@ -26,7 +26,6 @@ import com.google.gwt.core.ext.linker.ArtifactSet;
 import com.google.gwt.core.ext.linker.CompilationResult;
 import com.google.gwt.core.ext.linker.LinkerOrder;
 import com.google.gwt.core.ext.linker.LinkerOrder.Order;
-import com.google.gwt.dev.shell.remoteui.RemoteMessageProto.Message.Request.ViewerRequest.AddLog.LogType;
 import com.google.json.serialization.JsonArray;
 import com.google.json.serialization.JsonObject;
 import com.google.json.serialization.JsonValue;
@@ -304,7 +303,6 @@ public class ExtensionLinker extends AbstractLinker {
       logger.log(TreeLogger.ERROR, "Unexpected error.", e);
       throw new UnableToCompleteException();
     }
-    logger.log(logger.ERROR, writer.toString());
     return writer.toString();
   }
 }
