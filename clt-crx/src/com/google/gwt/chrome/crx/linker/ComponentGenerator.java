@@ -190,7 +190,7 @@ public class ComponentGenerator extends Generator {
 
   private static String emitPageActionCode(TreeLogger logger,
       GeneratorContext context, JClassType userType, String pageActionId,
-      String name, List<String> icons, List<String> iconPaths) {
+      String name, List<String> icons, List<String> iconPaths, String popup) {
     final String subclassName = userType.getSimpleSourceName().replace('.', '_')
         + "_generated";
     final String packageName = userType.getPackage().getName();
@@ -208,6 +208,11 @@ public class ComponentGenerator extends Generator {
       sw.println("public String getName() {");
       sw.println("  return \"" + name + "\";");
       sw.println("}");
+      if (null != popup) {
+    	  sw.println("public String getPopup() {");
+          sw.println("  return \"" + popup + "\";");
+          sw.println("}");
+      }
 
       emitIcons(icons, iconPaths, sw);
 
@@ -322,10 +327,16 @@ public class ComponentGenerator extends Generator {
           + typeName + ")");
       throw new UnableToCompleteException();
     }
-    context.commitArtifact(logger, new PageActionArtifact(spec.pageActionId(),
-        spec.name(), iconFileNames.toArray(new String[0])));
+    if ("".equals(spec.popup())) {
+    	context.commitArtifact(logger, new PageActionArtifact(spec.pageActionId(),
+    	        spec.name(), iconFileNames.toArray(new String[0])));
+	} else {
+		context.commitArtifact(logger, new PageActionArtifact(spec.pageActionId(),
+    	        spec.name(), iconFileNames.toArray(new String[0]), spec.popup()));
+	}
+    
     return emitPageActionCode(logger, context, userType, spec.pageActionId(),
-        spec.name(), iconMethodNames, iconFileNames);
+        spec.name(), iconMethodNames, iconFileNames, spec.popup());
   }
 
   private static void processPlugin(TreeLogger logger,

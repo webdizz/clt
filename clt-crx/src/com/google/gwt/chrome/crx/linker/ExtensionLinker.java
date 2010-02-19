@@ -97,6 +97,9 @@ public class ExtensionLinker extends AbstractLinker {
       final JsonObject pageActionObject = JsonObject.create();
       pageActionObject.put("id", pageAction.getId());
       pageActionObject.put("name", pageAction.getName());
+      if (null != pageAction.getPopup()) {
+    	  pageActionObject.put("popup", pageAction.getPopup());
+      }
       final JsonArray iconsArray = JsonArray.create();
       String[] icons = pageAction.getIcons();
       for (String icon : icons) {

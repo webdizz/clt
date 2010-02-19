@@ -18,46 +18,61 @@ package com.google.gwt.chrome.crx.linker;
 import com.google.gwt.core.ext.linker.Artifact;
 
 class PageActionArtifact extends Artifact<PageActionArtifact> {
-  private static final long serialVersionUID = 4771215346642678631L;
+	private static final long serialVersionUID = 4771215346642678631L;
 
-  private final String[] icons;
-  private final String id;
-  private final String name;
+	private final String[] icons;
+	private final String id;
+	private final String name;
+	private final String popup;
 
-  public PageActionArtifact(String id, String name, String[] icons) {
-    super(ExtensionLinker.class);
-    this.id = id;
-    this.name = name;
-    this.icons = icons;
-  }
+	public PageActionArtifact(String id, String name, String[] icons) {
+		super(ExtensionLinker.class);
+		this.id = id;
+		this.name = name;
+		this.icons = icons;
+		this.popup = null;
+	}
 
-  public String[] getIcons() {
-    return icons;
-  }
+	public PageActionArtifact(String id, String name, String[] icons,
+			String popup) {
+		super(ExtensionLinker.class);
+		this.id = id;
+		this.name = name;
+		this.icons = icons;
+		this.popup = popup;
+	}
 
-  public String getId() {
-    return id;
-  }
+	public String[] getIcons() {
+		return icons;
+	}
 
-  public String getName() {
-    return name;
-  }
+	public String getId() {
+		return id;
+	}
 
-  @Override
-  public int hashCode() {
-    return icons.hashCode();
-  }
+	public String getName() {
+		return name;
+	}
 
-  @Override
-  protected int compareToComparableArtifact(PageActionArtifact o) {
-    assert o != null;
-    
-    // Ordering doesn't really have meaning for us.
-    return 0;
-  }
+	public String getPopup() {
+		return popup;
+	}
 
-  @Override
-  protected Class<PageActionArtifact> getComparableArtifactType() {
-    return PageActionArtifact.class;
-  }
+	@Override
+	public int hashCode() {
+		return icons.hashCode();
+	}
+
+	@Override
+	protected int compareToComparableArtifact(PageActionArtifact o) {
+		assert o != null;
+
+		// Ordering doesn't really have meaning for us.
+		return 0;
+	}
+
+	@Override
+	protected Class<PageActionArtifact> getComparableArtifactType() {
+		return PageActionArtifact.class;
+	}
 }

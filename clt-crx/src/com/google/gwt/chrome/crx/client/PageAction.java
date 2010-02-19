@@ -15,15 +15,13 @@
  */
 package com.google.gwt.chrome.crx.client;
 
-import com.google.gwt.chrome.crx.client.events.BrowserActionEvent;
-import com.google.gwt.chrome.crx.client.events.PageActionEvent;
-import com.google.gwt.chrome.crx.client.events.PageActionEvent.Listener;
-
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+
+import com.google.gwt.chrome.crx.client.events.PageActionEvent.Listener;
 
 /**
  * A PageAction which inserts buttons into the omnibox.
@@ -48,6 +46,8 @@ public abstract class PageAction implements Component {
 		String name();
 
 		String pageActionId();
+
+		String popup() default "";
 	}
 
 	protected PageAction() {
