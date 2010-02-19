@@ -12,7 +12,7 @@ import com.google.gwt.chrome.crx.client.PageAction.ManifestInfo;
  * @author Izzet_Mustafayev
  * 
  */
-@ManifestInfo(name = "Select Word Page Action", pageActionId = "selectWordPageAction")
+@ManifestInfo(name = "Select Word Page Action", pageActionId = "selectWordPageAction", popup="monitor.html")
 public abstract class SelectWordPageAction extends PageAction {
 
 	/*
@@ -37,5 +37,8 @@ public abstract class SelectWordPageAction extends PageAction {
 
 	@Source("mt-icon-active.png")
 	public abstract Icon mtIconActive();
-	
+
+	@Source("mt-icon-disabled.png")
+	public abstract Icon mtIconDisabled();
+
 }

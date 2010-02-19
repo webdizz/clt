@@ -29,7 +29,7 @@ public class Monitor implements EntryPoint {
 		label.addMouseUpHandler(new MouseUpHandler() {
 
 			public void onMouseUp(MouseUpEvent event) {
-				Window.alert(SelectionHelper.getSelectedText());
+				Window.alert(SelectionHelper.getSelectedText()+"srtrh");
 			}
 
 		});
