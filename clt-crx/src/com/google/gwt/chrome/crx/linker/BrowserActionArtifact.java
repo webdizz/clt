@@ -18,45 +18,46 @@ package com.google.gwt.chrome.crx.linker;
 import com.google.gwt.core.ext.linker.Artifact;
 
 class BrowserActionArtifact extends Artifact<BrowserActionArtifact> {
-  private static final long serialVersionUID = -544245597242157263L;
-  private final String[] icons;
-  private final String name;
-  private final String defaultIcon;
+	private static final long serialVersionUID = -544245597242157263L;
+	private final String[] icons;
+	private final String name;
+	
+	private final String defaultIcon;
 
-  public BrowserActionArtifact(String name, String[] icons, String defaultIcon) {
-    super(ExtensionLinker.class);
-    this.name = name;
-    this.icons = icons;
-    this.defaultIcon = defaultIcon;
-  }
+	public BrowserActionArtifact(String name, String[] icons, String defaultIcon) {
+		super(ExtensionLinker.class);
+		this.name = name;
+		this.icons = icons;
+		this.defaultIcon = defaultIcon;
+	}
 
-  public String getDefaultIcon() {
-    return this.defaultIcon;
-  }
-  
-  public String[] getIcons() {
-    return icons;
-  }
+	public String getDefaultIcon() {
+		return this.defaultIcon;
+	}
 
-  public String getName() {
-    return name;
-  }
+	public String[] getIcons() {
+		return icons;
+	}
 
-  @Override
-  public int hashCode() {
-    return icons.hashCode();
-  }
+	public String getName() {
+		return name;
+	}
 
-  @Override
-  protected int compareToComparableArtifact(BrowserActionArtifact o) {
-    assert o != null;
-    
-    // Ordering doesn't really have meaning for us.
-    return 0;
-  }
+	@Override
+	public int hashCode() {
+		return icons.hashCode();
+	}
 
-  @Override
-  protected Class<BrowserActionArtifact> getComparableArtifactType() {
-    return BrowserActionArtifact.class;
-  }
+	@Override
+	protected int compareToComparableArtifact(BrowserActionArtifact o) {
+		assert o != null;
+
+		// Ordering doesn't really have meaning for us.
+		return 0;
+	}
+
+	@Override
+	protected Class<BrowserActionArtifact> getComparableArtifactType() {
+		return BrowserActionArtifact.class;
+	}
 }
