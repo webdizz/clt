@@ -7,6 +7,8 @@
 	<inherits name='com.google.gwt.resources.Resources' />
 	<inherits name='com.google.gwt.uibinder.UiBinder' />
 	<inherits name='com.google.gwt.chrome.crx.Extension' />
+	<inherits name='com.google.gwt.language.Language' />
+	<inherits name='com.mvp4g.Mvp4gModule'/>
 
 	<define-property name="clt.show_logging_ui" values="please, nope" />
 	<define-property name="clt.set_debug_mode" values="please, nope" />

@@ -35,244 +35,288 @@ import com.google.gwt.core.client.JsArray;
  * src/chrome/common/extensions/api/extension_api.json
  */
 public class Tabs extends JavaScriptObject {
-  /**
-   * Callback that returns a single Tab as an argument.
-   */
-  public interface OnTabCallback {
-    void onTab(Tab tab);
-  }
+	/**
+	 * Callback that returns a single Tab as an argument.
+	 */
+	public interface OnTabCallback {
+		void onTab(Tab tab);
+	}
 
-  /**
-   * Callback for events that return an array of tabs in the first argument.
-   */
-  public interface OnTabsCallback {
-    void onTabs(JsArray<Tab> tabs);
-  }
+	/**
+	 * Callback for events that return an array of tabs in the first argument.
+	 */
+	public interface OnTabsCallback {
+		void onTabs(JsArray<Tab> tabs);
+	}
 
-  /**
-   * Callback that returns no arguments. Used to notify when Tabs.update()
-   * completes.
-   */
-  public interface OnUpdateCallback {
-    void onUpdate();
-  }
+	/**
+	 * Callback that returns no arguments. Used to notify when Tabs.update()
+	 * completes.
+	 */
+	public interface OnUpdateCallback {
+		void onUpdate();
+	}
 
-  /**
-   * Represents a tab in the browser.
-   */
-  public static class Tab extends JavaScriptObject {
-    protected Tab() {
-    }
+	public interface OnDetectLanguageCallback {
+		void onDetect(String languageCode);
+	}
 
-    public final native String getFavIconUrl() /*-{
-      return this.favIconUrl;
-    }-*/;
+	/**
+	 * Represents a tab in the browser.
+	 */
+	public static class Tab extends JavaScriptObject {
+		protected Tab() {
+		}
 
-    public final native int getId() /*-{
-      return this.id;
-    }-*/;
+		public final native String getFavIconUrl() /*-{
+			return this.favIconUrl;
+		}-*/;
 
-    public final native int getIndex() /*-{
-      return this.index;
-    }-*/;
+		public final native int getId() /*-{
+			return this.id;
+		}-*/;
 
-    public final native String getStatus() /*-{
-      return this.status;
-    }-*/;
+		public final native int getIndex() /*-{
+			return this.index;
+		}-*/;
 
-    public final native String getTitle() /*-{
-      return this.title;
-    }-*/;
+		public final native String getStatus() /*-{
+			return this.status;
+		}-*/;
 
-    public final native String getUrl() /*-{
-      return this.url;
-    }-*/;
+		public final native String getTitle() /*-{
+			return this.title;
+		}-*/;
 
-    public final native int getWindowId() /*-{
-      return this.windowId;
-    }-*/;
+		public final native String getUrl() /*-{
+			return this.url;
+		}-*/;
 
-    public final native boolean isSelected() /*-{
-      return this.selected;
-    }-*/;
-  }
+		public final native int getWindowId() /*-{
+			return this.windowId;
+		}-*/;
 
-  /**
-   * An overload of
-   * {@link Tabs#create(String, int, int, boolean, OnTabCallback)} that only
-   * takes a url.
-   * 
-   * @param url the starting url of the tab you want to open
-   */
-  public static native void create(String url) /*-{
-    chrome.tabs.create({'url':url});
-  }-*/;
+		public final native boolean isSelected() /*-{
+			return this.selected;
+		}-*/;
+	}
 
-  /**
-   * An overload of
-   * {@link Tabs#create(String, int, int, boolean, OnTabCallback)} that omits
-   * the optional callback.
-   * 
-   * @param url the starting url of the tab you want to open
-   * @param windowId the id of the window that will own the tab
-   * @param index the index in the order list of tabs you would like to insert
-   *          the tab
-   * @param selected whether or not the tab will be selected (have focus)
-   */
-  public static native void create(String url, int windowId, int index,
-      boolean selected) /*-{
-    chrome.tabs.create({
-      'url':url,
-      'windowId':windowId,
-      'index':index,
-      'selected':selected
-    });
-  }-*/;
+	/**
+	 * An overload of
+	 * {@link Tabs#create(String, int, int, boolean, OnTabCallback)} takes no
+	 * parameters.
+	 * 
+	 */
+	public static native void create() /*-{
+		chrome.tabs.create();
+	}-*/;
 
-  /**
-   * Creates a new tab in the specified window and calls you back with the new
-   * Tab's information.
-   * 
-   * @param url the starting url of the tab you want to open
-   * @param windowId the id of the window that will own the tab
-   * @param index the index in the order list of tabs you would like to insert
-   *          the tab
-   * @param selected whether or not the tab will be selected (have focus)
-   * @param callback a callback that gets called when the tab has been created
-   */
-  public static native void create(String url, int windowId, int index,
-      boolean selected, OnTabCallback callback) /*-{
-    chrome.tabs.create({
-      'url':url,
-      'windowId':windowId,
-      'index':index,
-      'selected':selected
-    }, function(tab) {
-      callback.
-      @com.google.gwt.chrome.crx.client.Tabs.OnTabCallback::onTab(Lcom/google/gwt/chrome/crx/client/Tabs$Tab;)
-      (tab);
-    });
-  }-*/;
+	/**
+	 * An overload of
+	 * {@link Tabs#create(String, int, int, boolean, OnTabCallback)} that only
+	 * takes a url.
+	 * 
+	 * @param url
+	 *            the starting url of the tab you want to open
+	 */
+	public static native void create(String url) /*-{
+		chrome.tabs.create({'url':url});
+	}-*/;
 
-  /**
-   * An overload of
-   * {@link Tabs#create(String, int, int, boolean, OnTabCallback)} that only
-   * takes a url and a callback.
-   * 
-   * @param url the starting url of the tab you want to open
-   * @param callback a callback that gets called when the tab has been created
-   */
-  public static native void create(String url, OnTabCallback callback) /*-{
-    chrome.tabs.create({'url':url}, function(tab) {
-      callback.
-      @com.google.gwt.chrome.crx.client.Tabs.OnTabCallback::onTab(Lcom/google/gwt/chrome/crx/client/Tabs$Tab;)
-      (tab);
-    });
-  }-*/;
+	/**
+	 * An overload of
+	 * {@link Tabs#create(String, int, int, boolean, OnTabCallback)} that omits
+	 * the optional callback.
+	 * 
+	 * @param url
+	 *            the starting url of the tab you want to open
+	 * @param windowId
+	 *            the id of the window that will own the tab
+	 * @param index
+	 *            the index in the order list of tabs you would like to insert
+	 *            the tab
+	 * @param selected
+	 *            whether or not the tab will be selected (have focus)
+	 */
+	public static native void create(String url, int windowId, int index,
+			boolean selected) /*-{
+		chrome.tabs.create({
+		  'url':url,
+		  'windowId':windowId,
+		  'index':index,
+		  'selected':selected
+		});
+	}-*/;
 
-  public static native void get(int tabId, OnTabCallback callback) /*-{
-    chrome.tabs.get(tabId, function(tab) {
-      callback.
-      @com.google.gwt.chrome.crx.client.Tabs.OnTabCallback::onTab(Lcom/google/gwt/chrome/crx/client/Tabs$Tab;)
-      (tab);
-    });
-  }-*/;
+	/**
+	 * Creates a new tab in the specified window and calls you back with the new
+	 * Tab's information.
+	 * 
+	 * @param url
+	 *            the starting url of the tab you want to open
+	 * @param windowId
+	 *            the id of the window that will own the tab
+	 * @param index
+	 *            the index in the order list of tabs you would like to insert
+	 *            the tab
+	 * @param selected
+	 *            whether or not the tab will be selected (have focus)
+	 * @param callback
+	 *            a callback that gets called when the tab has been created
+	 */
+	public static native void create(String url, int windowId, int index,
+			boolean selected, OnTabCallback callback) /*-{
+		chrome.tabs.create({
+		  'url':url,
+		  'windowId':windowId,
+		  'index':index,
+		  'selected':selected
+		}, function(tab) {
+		  callback.
+		  @com.google.gwt.chrome.crx.client.Tabs.OnTabCallback::onTab(Lcom/google/gwt/chrome/crx/client/Tabs$Tab;)
+		  (tab);
+		});
+	}-*/;
 
-  /**
-   * Retrieve all tabs in the specified window.
-   * 
-   * @param windowId window to query.
-   * @param callback returns the tabs asynchronously through this callback.
-   */
-  public static native void getAllInWindow(int windowId, OnTabsCallback callback) /*-{
-    chrome.tabs.getAllInWindow(id, function(tabs) {
-      callback.
-      @com.google.gwt.chrome.crx.client.Tabs.OnTabsCallback::onTabs(Lcom/google/gwt/core/client/JsArray;)
-      (tabs);
-    });
-  }-*/;
+	/**
+	 * An overload of
+	 * {@link Tabs#create(String, int, int, boolean, OnTabCallback)} that only
+	 * takes a url and a callback.
+	 * 
+	 * @param url
+	 *            the starting url of the tab you want to open
+	 * @param callback
+	 *            a callback that gets called when the tab has been created
+	 */
+	public static native void create(String url, OnTabCallback callback) /*-{
+		chrome.tabs.create({'url':url}, function(tab) {
+		  callback.
+		  @com.google.gwt.chrome.crx.client.Tabs.OnTabCallback::onTab(Lcom/google/gwt/chrome/crx/client/Tabs$Tab;)
+		  (tab);
+		});
+	}-*/;
 
-  /**
-   * Retrieve all tabs in the current window context.
-   * 
-   * @param callback returns the tabs asynchronously through this callback.
-   */
-  public static native void getAllInWindow(OnTabsCallback callback) /*-{
-    chrome.tabs.getAllInWindow(undefine, function(tabs) {
-      callback.
-      @com.google.gwt.chrome.crx.client.Tabs.OnTabsCallback::onTabs(Lcom/google/gwt/core/client/JsArray;)
-      (tabs);
-    });
-  }-*/;
+	public static native void get(int tabId, OnTabCallback callback) /*-{
+		chrome.tabs.get(tabId, function(tab) {
+		  callback.
+		  @com.google.gwt.chrome.crx.client.Tabs.OnTabCallback::onTab(Lcom/google/gwt/chrome/crx/client/Tabs$Tab;)
+		  (tab);
+		});
+	}-*/;
 
-  public static native TabEvent getOnCreatedEvent() /*-{
-    return chrome.tabs.onCreated;
-  }-*/;
+	/**
+	 * Retrieve all tabs in the specified window.
+	 * 
+	 * @param windowId
+	 *            window to query.
+	 * @param callback
+	 *            returns the tabs asynchronously through this callback.
+	 */
+	public static native void getAllInWindow(int windowId,
+			OnTabsCallback callback) /*-{
+		chrome.tabs.getAllInWindow(id, function(tabs) {
+		  callback.
+		  @com.google.gwt.chrome.crx.client.Tabs.OnTabsCallback::onTabs(Lcom/google/gwt/core/client/JsArray;)
+		  (tabs);
+		});
+	}-*/;
 
-  public static native TabSelectionChangedEvent getOnSelectionChangedEvent() /*-{
-    return chrome.tabs.onSelectionChanged;
-  }-*/;
+	/**
+	 * Retrieve all tabs in the current window context.
+	 * 
+	 * @param callback
+	 *            returns the tabs asynchronously through this callback.
+	 */
+	public static native void getAllInWindow(OnTabsCallback callback) /*-{
+		chrome.tabs.getAllInWindow(undefine, function(tabs) {
+		  callback.
+		  @com.google.gwt.chrome.crx.client.Tabs.OnTabsCallback::onTabs(Lcom/google/gwt/core/client/JsArray;)
+		  (tabs);
+		});
+	}-*/;
 
-  public static native TabAttachedEvent getOnTabAttachedEvent() /*-{
-    return chrome.tabs.onAttached;
-  }-*/;
+	public static native TabEvent getOnCreatedEvent() /*-{
+		return chrome.tabs.onCreated;
+	}-*/;
 
-  public static native TabDetachedEvent getOnTabDetachedEvent() /*-{
-    return chrome.tabs.onDetached;
-  }-*/;
+	public static native TabSelectionChangedEvent getOnSelectionChangedEvent() /*-{
+		return chrome.tabs.onSelectionChanged;
+	}-*/;
 
-  public static native TabRemovedEvent getOnTabRemovedEvent() /*-{
-    return chrome.tabs.onRemoved();
-  }-*/;
+	public static native TabAttachedEvent getOnTabAttachedEvent() /*-{
+		return chrome.tabs.onAttached;
+	}-*/;
 
-  public static native TabUpdatedEvent getOnUpdatedEvent() /*-{
-    return chrome.tabs.onUpdated;
-  }-*/;
+	public static native TabDetachedEvent getOnTabDetachedEvent() /*-{
+		return chrome.tabs.onDetached;
+	}-*/;
 
-  /**
-   * Retrieve the currently selected tab in the specified window.
-   * 
-   * @param windowId window to query for selected tab.
-   * @param callback returns the selected tab asynchronously through this
-   *          callback.
-   */
-  public static native void getSelected(int windowId, OnTabCallback callback) /*-{
-    chrome.tabs.getSelected(windowId, function(tab) {
-      callback.
-      @com.google.gwt.chrome.crx.client.Tabs.OnTabCallback::onTab(Lcom/google/gwt/chrome/crx/client/Tabs$Tab;)
-      (tab);
-    });
-  }-*/;
+	public static native TabRemovedEvent getOnTabRemovedEvent() /*-{
+		return chrome.tabs.onRemoved();
+	}-*/;
 
-  /**
-   * Retrieve the currently selected tab in the current window context.
-   * 
-   * @param callback returns the selected tab asynchronously through this
-   *          callback.
-   */
-  public static native void getSelected(OnTabCallback callback) /*-{
-    chrome.tabs.getSelected(undefined, function(tab) {
-      callback.
-      @com.google.gwt.chrome.crx.client.Tabs.OnTabCallback::onTab(Lcom/google/gwt/chrome/crx/client/Tabs$Tab;)
-      (tab);
-    });
-  }-*/;
+	public static native TabUpdatedEvent getOnUpdatedEvent() /*-{
+		return chrome.tabs.onUpdated;
+	}-*/;
 
-  public static native void move(int tabId, int index, int windowId) /*-{
-    chrome.tabs.move(tabId, {'index': index, 'windowId': windowId});
-  }-*/;
+	/**
+	 * Retrieve the currently selected tab in the specified window.
+	 * 
+	 * @param windowId
+	 *            window to query for selected tab.
+	 * @param callback
+	 *            returns the selected tab asynchronously through this callback.
+	 */
+	public static native void getSelected(int windowId, OnTabCallback callback) /*-{
+		chrome.tabs.getSelected(windowId, function(tab) {
+		  callback.
+		  @com.google.gwt.chrome.crx.client.Tabs.OnTabCallback::onTab(Lcom/google/gwt/chrome/crx/client/Tabs$Tab;)
+		  (tab);
+		});
+	}-*/;
 
-  public static native void remove(int tabId) /*-{
-    chrome.tabs.remove(tabId);
-  }-*/;
+	/**
+	 * Retrieve the currently selected tab in the current window context.
+	 * 
+	 * @param callback
+	 *            returns the selected tab asynchronously through this callback.
+	 */
+	public static native void getSelected(OnTabCallback callback) /*-{
+		chrome.tabs.getSelected(undefined, function(tab) {
+		  callback.
+		  @com.google.gwt.chrome.crx.client.Tabs.OnTabCallback::onTab(Lcom/google/gwt/chrome/crx/client/Tabs$Tab;)
+		  (tab);
+		});
+	}-*/;
 
-  public static native void update(int tabId, String url, boolean selected,
-      OnUpdateCallback callback) /*-{
-    chrome.tabs.update(tabId, {'url':url, 'selected':selected}, function(tab) {
-      callback.@com.google.gwt.chrome.crx.client.Tabs.OnUpdateCallback::onUpdate()();
-    });
-  }-*/;
+	public static native void move(int tabId, int index, int windowId) /*-{
+		chrome.tabs.move(tabId, {'index': index, 'windowId': windowId});
+	}-*/;
 
-  protected Tabs() {
-  }
+	public static native void remove(int tabId) /*-{
+		chrome.tabs.remove(tabId);
+	}-*/;
+
+	public static native void update(int tabId, String url, boolean selected,
+			OnUpdateCallback callback) /*-{
+		chrome.tabs.update(tabId, {'url':url, 'selected':selected}, function(tab) {
+		  callback.@com.google.gwt.chrome.crx.client.Tabs.OnUpdateCallback::onUpdate()();
+		});
+	}-*/;
+
+	/**
+	 * Detects the primary language of the content in the current selected tab.
+	 * 
+	 * @param callback
+	 *            The callback parameter that will be called after language
+	 *            detection
+	 */
+	public static native void detectLanguage(OnDetectLanguageCallback callback) /*-{
+		chrome.tabs.detectLanguage(null, function(language) {
+		  callback.@com.google.gwt.chrome.crx.client.Tabs.OnDetectLanguageCallback::onDetect(Ljava/lang/String;)(language);
+		});
+	}-*/;
+
+	protected Tabs() {
+	}
 }
