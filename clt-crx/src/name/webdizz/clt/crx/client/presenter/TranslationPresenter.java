@@ -3,8 +3,9 @@
  */
 package name.webdizz.clt.crx.client.presenter;
 
-import name.webdizz.clt.crx.client.Alert;
+import name.webdizz.clt.crx.client.ExtConfiguration;
 import name.webdizz.clt.crx.client.ExtEventBus;
+import name.webdizz.clt.crx.client.event.message.PrepareTranslatedTextDisplayMessage;
 import name.webdizz.clt.crx.client.event.message.ShowTranslatedTextMessage;
 import name.webdizz.clt.crx.client.event.message.TranslateTextMessage;
 import name.webdizz.clt.crx.client.view.TranslationView;
@@ -15,6 +16,7 @@ import com.google.gwt.language.client.translation.Language;
 import com.google.gwt.language.client.translation.Translation;
 import com.google.gwt.language.client.translation.TranslationCallback;
 import com.google.gwt.language.client.translation.TranslationResult;
+import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
@@ -27,6 +29,17 @@ public class TranslationPresenter extends
 		BasePresenter<TranslationPresenter.ITranslationView, ExtEventBus> {
 
 	public interface ITranslationView {
+		void setTranslatedText(String text);
+
+		String widgetAsString();
+
+		Widget asWidget();
+	}
+
+	private ExtConfiguration configuration;
+
+	public TranslationPresenter() {
+		configuration = new ExtConfiguration();
 	}
 
 	/**
@@ -36,7 +49,7 @@ public class TranslationPresenter extends
 	 *            the message to translate
 	 */
 	public void onTranslateText(final TranslateTextMessage message) {
-		detectLanguage(message);
+		detectSrcLanguage(message);
 	}
 
 	/**
@@ -46,17 +59,17 @@ public class TranslationPresenter extends
 	 * @param message
 	 *            the translated message to display
 	 */
-	public void onShowTranslatedText(final ShowTranslatedTextMessage message) {
-		Alert.info("Translated text is: " + message.getTranslation());
+	public void onTranslatedText(
+			final PrepareTranslatedTextDisplayMessage message) {
+		view.setTranslatedText(message.getTranslation());
+		eventBus.showTranslatedText(view.asWidget());
 	}
 
-	private void detectLanguage(final TranslateTextMessage message) {
+	private void detectSrcLanguage(final TranslateTextMessage message) {
 		Translation.detect(message.getText(), new LangDetCallback() {
-
 			protected void onCallback(LangDetResult result) {
 				translateText(message, result);
 			}
-
 		});
 	}
 
@@ -67,11 +80,9 @@ public class TranslationPresenter extends
 			final String dest = resolveDestLanguage();
 			final String from = message.getText();
 			Translation.translate(from, src, dest, new TranslationCallback() {
-
 				protected void onCallback(TranslationResult result) {
 					handleTranslationResult(src, dest, from, result);
 				}
-
 			});
 		}
 		if (null != result.getError()) {
@@ -82,20 +93,22 @@ public class TranslationPresenter extends
 	private void handleTranslationResult(final String src, final String dest,
 			final String from, TranslationResult result) {
 		String translation = result.getTranslatedText();
-		ShowTranslatedTextMessage transTextMsg;
-		transTextMsg = ShowTranslatedTextMessage.create(from, translation, src,
-				dest);
-		eventBus.showTranslatedText(transTextMsg);
+		PrepareTranslatedTextDisplayMessage transTextMsg;
+		transTextMsg = PrepareTranslatedTextDisplayMessage.create(from,
+				translation, src, dest);
+		eventBus.handleTranslatedText(transTextMsg);
 	}
 
 	/**
 	 * Resolves destination language from the Browser or user's preferences.
-	 * TODO: should have this logic a bit later
 	 * 
 	 * @return language code
 	 */
 	private String resolveDestLanguage() {
-		return Language.RUSSIAN.getLangCode();
+		String lang = configuration.getDestLanguage();
+		if (null == lang || "".equals(lang)) {
+			lang = Language.RUSSIAN.getLangCode();
+		}
+		return lang;
 	}
-
 }

@@ -14,6 +14,14 @@ public class SelectTextMessage extends Message {
 		return this.text;
 	}-*/;
 
+	public final native String getOffsetX() /*-{
+		return this.offsetX;
+	}-*/;
+
+	public final native String getOffsetY() /*-{
+		return this.offsetY;
+	}-*/;
+
 	public final native String[] getKeys() /*-{
 		return this.keys;
 	}-*/;

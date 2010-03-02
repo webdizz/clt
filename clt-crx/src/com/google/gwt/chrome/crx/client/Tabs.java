@@ -21,6 +21,7 @@ import com.google.gwt.chrome.crx.client.events.TabEvent;
 import com.google.gwt.chrome.crx.client.events.TabRemovedEvent;
 import com.google.gwt.chrome.crx.client.events.TabSelectionChangedEvent;
 import com.google.gwt.chrome.crx.client.events.TabUpdatedEvent;
+import com.google.gwt.chrome.crx.client.events.MessageEvent.Message;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 
@@ -311,10 +312,35 @@ public class Tabs extends JavaScriptObject {
 	 *            The callback parameter that will be called after language
 	 *            detection
 	 */
-	public static native void detectLanguage(OnDetectLanguageCallback callback) /*-{
+	public static final native void detectLanguage(
+			OnDetectLanguageCallback callback) /*-{
 		chrome.tabs.detectLanguage(null, function(language) {
 		  callback.@com.google.gwt.chrome.crx.client.Tabs.OnDetectLanguageCallback::onDetect(Ljava/lang/String;)(language);
 		});
+	}-*/;
+
+	/**
+	 * Connects to the content script(s) in the current selected tab. The <a
+	 * href=
+	 * "http://code.google.com/chrome/extensions/extension.html#event-onConnect"
+	 * >chrome.extension.onConnect</a> event is fired in each content script
+	 * running in the specified tab for the current extension. For more details,
+	 * see <a href=
+	 * "http://code.google.com/chrome/extensions/content_scripts.html#messaging"
+	 * >Content Script Messaging</a>.
+	 * 
+	 * @return {@link Port}
+	 */
+	public static final native Port connect()/*-{
+		return chrome.tabs.connect(-1);
+	}-*/;
+
+	public static final native Port connect(int tabId)/*-{
+		return chrome.tabs.connect(tabId);
+	}-*/;
+
+	public static final native void sendRequest(int tabId, Message message)/*-{
+		chrome.tabs.sendRequest(tabId, message);
 	}-*/;
 
 	protected Tabs() {

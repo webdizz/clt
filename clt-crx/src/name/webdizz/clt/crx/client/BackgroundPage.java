@@ -27,8 +27,10 @@ public abstract class BackgroundPage extends Extension {
 	@Override
 	public void onBackgroundPageLoad() {
 
+		GWT.create(JsonProvider.class);
 		GWT.create(LanguageApiProvider.class);
 		GWT.create(ExtensionInitializer.class);
+
 		// init MVP
 		Mvp4gModule module = GWT.create(Mvp4gModule.class);
 		module.createAndStartModule();
