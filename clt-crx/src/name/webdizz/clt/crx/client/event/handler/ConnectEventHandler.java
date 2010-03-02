@@ -4,6 +4,7 @@
 package name.webdizz.clt.crx.client.event.handler;
 
 import name.webdizz.clt.crx.client.ExtEventBus;
+import name.webdizz.clt.crx.client.PortFactory;
 
 import com.google.gwt.chrome.crx.client.Chrome;
 import com.google.gwt.chrome.crx.client.Console;
@@ -22,6 +23,8 @@ public final class ConnectEventHandler implements
 	}
 
 	public void onConnect(final Port port) {
+		// store reference to port for further usage
+		PortFactory.createPort(port);
 		CONSOLE.log("Enter into onConnect handler");
 		port.getOnMessageEvent().addListener(new MessageEventHandler(eventBus));
 	}

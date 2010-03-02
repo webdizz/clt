@@ -52,7 +52,7 @@ public class Chrome extends JavaScriptObject {
 		return -1;
 	}
 
-	public final native View getBackgroundPage() /*-{
+	public final native BackgroundPage getBackgroundPage() /*-{
 		return this.getBackgroundPage();
 	}-*/;
 

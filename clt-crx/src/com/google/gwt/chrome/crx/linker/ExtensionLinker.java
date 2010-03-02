@@ -15,6 +15,11 @@
  */
 package com.google.gwt.chrome.crx.linker;
 
+import java.io.IOException;
+import java.io.StringWriter;
+import java.util.Set;
+import java.util.SortedSet;
+
 import com.google.gwt.chrome.crx.client.Extension;
 import com.google.gwt.chrome.crx.linker.ExtensionArtifact.IconInfo;
 import com.google.gwt.core.ext.LinkerContext;
@@ -30,13 +35,6 @@ import com.google.json.serialization.JsonArray;
 import com.google.json.serialization.JsonObject;
 import com.google.json.serialization.JsonValue;
 
-import java.io.IOException;
-import java.io.StringWriter;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 /**
  * Linker for chrome Extensions.
  */
@@ -50,28 +48,6 @@ public class ExtensionLinker extends AbstractLinker {
 			newSet.add(artifact);
 		}
 		return newSet;
-	}
-
-	private static void checkForDisallowedJs(String js, String patternString,
-			int allowedOccurences, TreeLogger logger)
-			throws UnableToCompleteException {
-		Pattern pattern = Pattern.compile(patternString);
-		Matcher matcher = pattern.matcher(js);
-		int count = 0;
-		while (matcher.find()) {
-			count++;
-		}
-		if (count > allowedOccurences) {
-			logger
-					.log(
-							TreeLogger.ERROR,
-							"You may have a reference to "
-									+ patternString
-									+ ". This is not allowed when using the ExtensionLinker! (Got "
-									+ count + " references, expected "
-									+ allowedOccurences + ")");
-			throw new UnableToCompleteException();
-		}
 	}
 
 	private static JsonValue createContentScriptsArray(
@@ -89,6 +65,7 @@ public class ExtensionLinker extends AbstractLinker {
 			path.add(contentScript.getPath());
 			entry.put("js", path);
 			entry.put("run_at", contentScript.getRunAt());
+			entry.put("all_frames", true);
 			array.add(entry);
 		}
 		return array;
@@ -169,13 +146,6 @@ public class ExtensionLinker extends AbstractLinker {
 			throws UnableToCompleteException {
 		// Thou shalt not reference $doc or $wnd !!!
 		String compiledJs = js.getJavaScript()[0];
-
-		// Work around for GWT 2.0, there are 2 harmless $wnd references that
-		// creep
-		// in
-		checkForDisallowedJs(compiledJs, "\\$wnd", 2, logger);
-		checkForDisallowedJs(compiledJs, "\\$doc", 0, logger);
-
 		final StringBuffer buffer = new StringBuffer();
 		buffer.append("<html>");
 		buffer.append("<head>");
@@ -194,10 +164,11 @@ public class ExtensionLinker extends AbstractLinker {
 				}
 			}
 		}
-		compiledJs = compiledJs.replaceAll("\\$wnd.google", "google");
+
 		buffer.append("</head>");
 		buffer.append("<body>");
-		buffer.append("<script>var $stats;\n" + compiledJs
+		buffer.append("<script>var $stats;\n"
+				+ "var $wnd = window;\nvar $doc = $wnd.document;" + compiledJs
 				+ "gwtOnLoad();\n</script>");
 		buffer.append("</body>");
 		buffer.append("</html>");

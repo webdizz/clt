@@ -14,24 +14,16 @@ public class ShowTranslatedTextMessage extends Message {
 	protected ShowTranslatedTextMessage() {
 	}
 
-	public final native String getDestLang() /*-{
-		return this.dest;
+	public final native String getWidget() /*-{
+		return this.widget;
 	}-*/;
 
-	public final native String getSrcLang() /*-{
-		return this.src;
-	}-*/;
-
-	public final native String getTextFrom() /*-{
-		return this.textFrom;
-	}-*/;
-
-	public final native String getTranslation() /*-{
-		return this.translation;
+	public final native SelectTextMessage getMessage() /*-{
+		return this.widget;
 	}-*/;
 
 	public static final native ShowTranslatedTextMessage create(
-			String textFrom, String translation, String srcLang, String destLang)/*-{
-		return {textFrom: textFrom, translation: translation, src: srcLang, dest: destLang, type:'ShowTranslatedTextMessage'};
+			SelectTextMessage message, String widget)/*-{
+		return {widget: widget, message: message, type:'ShowTranslatedTextMessage'};
 	}-*/;
 }
