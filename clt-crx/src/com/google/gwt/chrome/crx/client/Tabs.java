@@ -335,12 +335,54 @@ public class Tabs extends JavaScriptObject {
 		return chrome.tabs.connect(-1);
 	}-*/;
 
+	/**
+	 * Connects to the content script(s) in the given tab. The <a href=
+	 * "http://code.google.com/chrome/extensions/extension.html#event-onConnect"
+	 * >chrome.extension.onConnect</a> event is fired in each content script
+	 * running in the specified tab for the current extension. For more details,
+	 * see <a href=
+	 * "http://code.google.com/chrome/extensions/content_scripts.html#messaging"
+	 * >Content Script Messaging</a>.
+	 * 
+	 * @param tabId
+	 *            the tab id to connect to
+	 * @return {@link Port}
+	 */
 	public static final native Port connect(int tabId)/*-{
 		return chrome.tabs.connect(tabId);
 	}-*/;
 
 	public static final native void sendRequest(int tabId, Message message)/*-{
 		chrome.tabs.sendRequest(tabId, message);
+	}-*/;
+
+	public final static class ExecutionDetails extends JavaScriptObject {
+		protected ExecutionDetails() {
+		}
+
+		public static final native ExecutionDetails forFile(String file,
+				boolean allFrames)/*-{
+			return {file: file, allFrames: allFrames};
+		}-*/;
+
+		public static final native ExecutionDetails forCode(String jsCode,
+				boolean allFrames)/*-{
+			return {code: jsCode, allFrames: allFrames};
+		}-*/;
+	}
+
+	/**
+	 * @param tabId
+	 *            The id of tab which run the script, default to selected tab of
+	 *            current window.
+	 * @param details
+	 *            The {@link ExecutionDetails} of the script to run. Either the
+	 *            code or file property must be set, but both may not be set at
+	 *            the same time.
+	 */
+	public static final native void executeScript(int tabId,
+			ExecutionDetails details)/*-{
+		chrome.tabs.executeScript(tabId, details, function(){alert('script was executed'+details.file);});
 	}-*/;
 
 	protected Tabs() {
