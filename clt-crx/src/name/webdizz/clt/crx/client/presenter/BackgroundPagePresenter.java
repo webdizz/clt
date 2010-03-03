@@ -53,12 +53,18 @@ public class BackgroundPagePresenter extends
 
 	public void onStart() {
 		// detect language
-		Tabs.detectLanguage(new OnDetectLanguageCallback() {
-			public void onDetect(String languageCode) {
-				Alert.info("Detected lang: " + languageCode);
-				configuration.setDestLanguage(languageCode);
-			}
-		});
+		detectLanguage();
+	}
+
+	private void detectLanguage() {
+		if ("".equals(configuration.getDestLanguage())) {
+			Tabs.detectLanguage(new OnDetectLanguageCallback() {
+				public void onDetect(String languageCode) {
+					Alert.info("Detected lang: " + languageCode);
+					configuration.setDestLanguage(languageCode);
+				}
+			});
+		}
 	}
 
 	public void onSelectText(SelectTextMessage message) {
