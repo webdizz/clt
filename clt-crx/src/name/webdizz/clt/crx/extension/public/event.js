@@ -30,7 +30,7 @@
 	
 	document.body.addEventListener('mousedown', function(evt) {
 		var wrapper = document.getElementById('-chrome-clt-ext-dialog-wrapper-container');
-		wrapper.setAttribute('style', 'display: none;');
+		wrapper.style.display = 'none';
 		wrapper.innerHTML = '';
 	}, false);
 	
@@ -40,8 +40,6 @@
 			case 'ShowTranslatedTextMessage':
 				wrapper.style.display = '';
 				wrapper.innerHTML = jsonParse(m.widget);
-				wrapper.style.width = 100 + 'px';
-				wrapper.style.height = 100 + 'px';
 				wrapper.style['border-color'] = 'red';
 				performPositioning(wrapper, m.message);
 			break;
@@ -50,13 +48,13 @@
 	
 	var performPositioning = function(elem, message){
 		var offset = 120;
-		alert(message.offsetY +'-'+document.body.scrollTop+' '+elem.offsetHeight);
+		//alert(message.offsetY +'-'+document.body.scrollTop+' '+elem.offsetHeight);
 		if(message.offsetY - document.body.scrollTop >= elem.offsetHeight) {
-			var height = (message.offsetY - elem.offsetHeight) + 'px';
-			alert(height);
-			//elem.style.top = height;
+			var height = (message.offsetY - 40) + 'px';
+			elem.style.top = height;
 		} else {
-			elem.style.top = (message.offsetY + 200 + offset) + 'px';
+			var height = (message.offsetY + 200 ) + 'px';
+			elem.style.top = height;
 		}
 		elem.style.left = message.offsetX + 40 + 'px';
 	};
@@ -79,7 +77,7 @@ if(!document.getElementById('-chrome-clt-ext-dialog-wrapper-container')) {
             'padding: 0 !important;' +
             'margin: 0 !important;' +
             'position: absolute !important;' +
-            'top: 0; offsetHeight: 0;' +
+            'top: 0;' +
             'left: 0;' +
             'overflow: visible !important;' +
             'z-index: 999999 !important;' +

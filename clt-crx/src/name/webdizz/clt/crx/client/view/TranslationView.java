@@ -7,10 +7,10 @@ import name.webdizz.clt.crx.client.presenter.TranslationPresenter.ITranslationVi
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsonUtils;
+import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -26,7 +26,7 @@ public class TranslationView extends Composite implements ITranslationView {
 	}
 
 	@UiField
-	Label translatedText;
+	SpanElement translatedText;
 
 	public TranslationView() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -34,8 +34,8 @@ public class TranslationView extends Composite implements ITranslationView {
 		// Can access @UiField after calling createAndBindUi
 	}
 
-	public void setTranslatedText(String text) {
-		translatedText.setText(text);
+	public void setTranslatedText(final String text) {
+		translatedText.setInnerText(text);
 	}
 
 	public Widget asWidget() {
