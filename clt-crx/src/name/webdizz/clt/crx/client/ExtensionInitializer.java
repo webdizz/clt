@@ -13,8 +13,9 @@ import com.google.gwt.chrome.crx.client.ContentScript.ManifestInfo;
  * @author Izzet_Mustafayev
  * 
  */
-@ManifestInfo(path = "event.js", whiteList = { "http://*/*", "https://*/*",
-		"file:///*" }, runAt = ContentScript.DOCUMENT_END)
+@ManifestInfo(path = ExtensionInitializer.JS_FILE, whiteList = { "http://*/*",
+		"https://*/*", "file:///*" }, runAt = ContentScript.DOCUMENT_END)
 public class ExtensionInitializer extends ContentScript {
 
+	public static final String JS_FILE = "event.js";
 }

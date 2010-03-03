@@ -1,6 +1,6 @@
 (function(){
 	var port = chrome.extension.connect();
-	
+	alert("from script "+port.portId_);
 	/**
 	*  Register mouse up event handler 
 	*/

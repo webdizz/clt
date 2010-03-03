@@ -3,6 +3,7 @@
  */
 package name.webdizz.clt.crx.client.event.handler;
 
+import name.webdizz.clt.crx.client.Alert;
 import name.webdizz.clt.crx.client.ExtEventBus;
 import name.webdizz.clt.crx.client.PortFactory;
 
@@ -23,8 +24,9 @@ public final class ConnectEventHandler implements
 	}
 
 	public void onConnect(final Port port) {
+		Alert.info("Attempt to connect.");
 		// store reference to port for further usage
-		PortFactory.createPort(port);
+		PortFactory.storePort(port);
 		CONSOLE.log("Enter into onConnect handler");
 		port.getOnMessageEvent().addListener(new MessageEventHandler(eventBus));
 	}
