@@ -15,7 +15,6 @@
  */
 package com.google.gwt.chrome.crx.client;
 
-import com.google.gwt.chrome.crx.client.Tabs.Tab;
 import com.google.gwt.chrome.crx.client.events.MessageEvent;
 import com.google.gwt.core.client.JavaScriptObject;
 
@@ -29,22 +28,22 @@ import com.google.gwt.core.client.JavaScriptObject;
  */
 public class Port extends JavaScriptObject {
 
-  protected Port() {
-  }
+	protected Port() {
+	}
 
-  public final native String getName() /*-{
-    return this.name;
-  }-*/;
+	public final native String getName() /*-{
+		return this.name;
+	}-*/;
 
-  public final native MessageEvent getOnMessageEvent() /*-{
-    return this.onMessage;
-  }-*/;
+	public final native MessageEvent getOnMessageEvent() /*-{
+		return this.onMessage;
+	}-*/;
 
-  public final native Tab getTab() /*-{
-    return this.tab;
-  }-*/;
-  
-  public final native void postMessage(JavaScriptObject msg) /*-{
-    this.postMessage(msg);
-  }-*/;
+	public final native int getId() /*-{
+		return this.portId_;
+	}-*/;
+
+	public final native void postMessage(JavaScriptObject msg) /*-{
+		this.postMessage(msg);
+	}-*/;
 }
