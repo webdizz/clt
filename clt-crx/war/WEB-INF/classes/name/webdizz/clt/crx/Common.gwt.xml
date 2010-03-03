@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 2.0.0//EN" "http://google-web-toolkit.googlecode.com/svn/tags/2.0.0/distro-source/core/src/gwt-module.dtd">
+<module>
+	<inherits name='com.google.gwt.dom.DOM' />
+	<inherits name='com.google.gwt.core.Core' />
+	<inherits name='com.google.gwt.animation.Animation' />
+	<inherits name='com.google.gwt.resources.Resources' />
+	<inherits name='com.google.gwt.uibinder.UiBinder' />
+	<inherits name='com.google.gwt.chrome.crx.Extension' />
+	<inherits name='com.google.gwt.language.Language' />
+	<inherits name='com.mvp4g.Mvp4gModule'/>
+
+	<define-property name="clt.show_logging_ui" values="please, nope" />
+	<define-property name="clt.set_debug_mode" values="please, nope" />
+
+	<property-provider name="clt.show_logging_ui"><![CDATA[
+    // TODO (knorton): Please provide something.
+    return 'please';
+  ]]></property-provider>
+
+	<!-- TARGETING WEBKIT ONLY -->
+	<set-property name='user.agent' value='safari' />
+
+</module>
