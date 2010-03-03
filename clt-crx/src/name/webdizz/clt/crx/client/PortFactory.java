@@ -20,10 +20,8 @@ public class PortFactory {
 	private PortFactory() {
 	}
 
-	public static void createPort(Port port) {
-		if (null == PortFactory.port) {
-			PortFactory.port = port;
-		}
+	public static void storePort(Port newPort) {
+		port = newPort;
 	}
 
 	public static Port instance() {

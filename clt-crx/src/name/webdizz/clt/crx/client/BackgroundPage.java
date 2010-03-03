@@ -5,6 +5,9 @@ import name.webdizz.clt.crx.client.event.handler.ConnectEventHandler;
 import com.google.gwt.chrome.crx.client.Chrome;
 import com.google.gwt.chrome.crx.client.Console;
 import com.google.gwt.chrome.crx.client.Extension;
+import com.google.gwt.chrome.crx.client.Tabs;
+import com.google.gwt.chrome.crx.client.Tabs.ExecutionDetails;
+import com.google.gwt.chrome.crx.client.events.TabSelectionChangedEvent.Data;
 import com.google.gwt.core.client.GWT;
 import com.mvp4g.client.Mvp4gModule;
 
@@ -17,6 +20,14 @@ import com.mvp4g.client.Mvp4gModule;
 		"resources/icon16.png", "resources/icon32.png", "resources/icon48.png",
 		"resources/icon128.png" })
 public abstract class BackgroundPage extends Extension {
+
+	private final class ChangeTabListener
+			implements
+			com.google.gwt.chrome.crx.client.events.TabSelectionChangedEvent.Listener {
+		public void onTabSelectionChanged(int tabId, Data changedProps) {
+			executeScript(tabId);
+		}
+	}
 
 	static Console CONSOLE = Chrome.getExtension().getBackgroundPage()
 			.getConsole();
@@ -35,9 +46,18 @@ public abstract class BackgroundPage extends Extension {
 		Mvp4gModule module = GWT.create(Mvp4gModule.class);
 		module.createAndStartModule();
 
-		CONSOLE.log("Enter into BackgroundPage.onBackgroundPageLoad.");
+		Tabs.getOnSelectionChangedEvent().addListener(new ChangeTabListener());
+
 		Chrome.getExtension().getOnConnectEvent().addListener(
 				new ConnectEventHandler((ExtEventBus) module.getEventBus()));
+	}
+
+	/**
+	 * @param tabId
+	 */
+	private void executeScript(int tabId) {
+		Tabs.executeScript(tabId, ExecutionDetails.forFile(
+				ExtensionInitializer.JS_FILE, true));
 	}
 
 }
