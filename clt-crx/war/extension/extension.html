@@ -1,0 +1,2554 @@
+<html><head><script type="text/javascript" src="http://google.com/jsapi"></script><script type="text/javascript">google.load("language", "1");</script></head><body><script>var $stats;
+var $wnd = window;
+var $doc = $wnd.document;var _;
+function nullMethod(){
+}
+
+function Object_0(){
+}
+
+_ = Object_0.prototype = {};
+_.equals$ = function equals(other){
+  return this === other;
+}
+;
+_.hashCode$ = function hashCode_0(){
+  return this.$H || (this.$H = ++sNextHashId);
+}
+;
+_.typeMarker$ = nullMethod;
+_.typeId$ = 1;
+function hashCode__devirtual$(this$static){
+  return this$static.typeMarker$ == nullMethod || this$static.typeId$ == 2?this$static.hashCode$():this$static.$H || (this$static.$H = ++sNextHashId);
+}
+
+function Extension(){
+}
+
+_ = Extension.prototype = new Object_0;
+_.typeId$ = 0;
+function $getItem(key){
+  var value;
+  try {
+    value = window.localStorage.getItem(key);
+  }
+   catch (e) {
+    value = 'null';
+  }
+  return value;
+}
+
+function detectLanguage(callback){
+  chrome.tabs.detectLanguage(null, function(language){
+    callback.onDetect(language);
+  }
+  );
+}
+
+function $addListenerImpl(this$static, listener){
+  var handle = function(port){
+    $onConnect(listener, port);
+  }
+  ;
+  this$static.addListener(handle);
+  return handle;
+}
+
+function $Event$ListenerHandle(this$static){
+  return this$static;
+}
+
+function Event$ListenerHandle(){
+}
+
+_ = Event$ListenerHandle.prototype = new Object_0;
+_.typeId$ = 0;
+function $addListenerImpl_0(this$static, listener){
+  var handle = function(data){
+    listener.onMessage_0(data);
+  }
+  ;
+  this$static.addListener(handle);
+  return handle;
+}
+
+function $setStackTrace(stackTrace){
+  var c, copy, i;
+  copy = initDim(_3Ljava_lang_StackTraceElement_2_classLit, 56, 14, stackTrace.length, 0);
+  for (i = 0 , c = stackTrace.length; i < c; ++i) {
+    if (!stackTrace[i]) {
+      throw $NullPointerException(new NullPointerException);
+    }
+    copy[i] = stackTrace[i];
+  }
+}
+
+function Throwable(){
+}
+
+_ = Throwable.prototype = new Object_0;
+_.typeId$ = 3;
+function $Exception(this$static){
+  $fillInStackTrace();
+  return this$static;
+}
+
+function Exception(){
+}
+
+_ = Exception.prototype = new Throwable;
+_.typeId$ = 4;
+function $RuntimeException(this$static){
+  $fillInStackTrace();
+  return this$static;
+}
+
+function RuntimeException(){
+}
+
+_ = RuntimeException.prototype = new Exception;
+_.typeId$ = 5;
+function $JavaScriptException(this$static, e){
+  $fillInStackTrace();
+  this$static.e = e;
+  $createStackTrace(new StackTraceCreator$CollectorChrome, this$static);
+  return this$static;
+}
+
+function JavaScriptException(){
+}
+
+_ = JavaScriptException.prototype = new RuntimeException;
+_.typeId$ = 6;
+_.e = null;
+function $push_0(this$static, value){
+  this$static[this$static.length] = value;
+}
+
+function $clinit_25(){
+  var out;
+  $clinit_25 = nullMethod;
+  escapeTable = (out = ['\\u0000', '\\u0001', '\\u0002', '\\u0003', '\\u0004', '\\u0005', '\\u0006', '\\u0007', '\\b', '\\t', '\\n', '\\u000B', '\\f', '\\r', '\\u000E', '\\u000F', '\\u0010', '\\u0011', '\\u0012', '\\u0013', '\\u0014', '\\u0015', '\\u0016', '\\u0017', '\\u0018', '\\u0019', '\\u001A', '\\u001B', '\\u001C', '\\u001D', '\\u001E', '\\u001F'] , out[34] = '\\"' , out[92] = '\\\\' , out[8232] = '\\u2028' , out[8233] = '\\u2029' , out);
+}
+
+function escapeValue(toEscape){
+  $clinit_25();
+  var s = toEscape.replace(/[\x00-\x1F\u2028\u2029"\\]/g, function(x){
+    var lookedUp;
+    return lookedUp = escapeTable[x.charCodeAt(0)] , lookedUp == null?x:lookedUp;
+  }
+  );
+  return '"' + s + '"';
+}
+
+var escapeTable;
+function Scheduler(){
+}
+
+_ = Scheduler.prototype = new Object_0;
+_.typeId$ = 0;
+function enter(){
+  if (entryDepth++ == 0) {
+    $flushEntryCommands(($clinit_29() , INSTANCE));
+    return true;
+  }
+  return false;
+}
+
+function entry_0(jsFunction){
+  return function(){
+    try {
+      return entry0(jsFunction, this, arguments);
+    }
+     catch (e) {
+      throw e;
+    }
+  }
+  ;
+}
+
+function entry0(jsFunction, thisObj, arguments_0){
+  var initialEntry;
+  initialEntry = enter();
+  try {
+    return jsFunction.apply(thisObj, arguments_0);
+  }
+   finally {
+    initialEntry && $flushFinallyCommands(($clinit_29() , INSTANCE));
+    --entryDepth;
+  }
+}
+
+var entryDepth = 0, sNextHashId = 0;
+function $clinit_29(){
+  $clinit_29 = nullMethod;
+  INSTANCE = ($clinit_29() , new SchedulerImpl);
+}
+
+function $flushEntryCommands(this$static){
+  var oldQueue, rescheduled;
+  if (this$static.entryCommands) {
+    rescheduled = null;
+    do {
+      oldQueue = this$static.entryCommands;
+      this$static.entryCommands = null;
+      rescheduled = runScheduledTasks(oldQueue, rescheduled);
+    }
+     while (this$static.entryCommands);
+    this$static.entryCommands = rescheduled;
+  }
+}
+
+function $flushFinallyCommands(this$static){
+  var oldQueue, rescheduled;
+  if (this$static.finallyCommands) {
+    rescheduled = null;
+    do {
+      oldQueue = this$static.finallyCommands;
+      this$static.finallyCommands = null;
+      rescheduled = runScheduledTasks(oldQueue, rescheduled);
+    }
+     while (this$static.finallyCommands);
+    this$static.finallyCommands = rescheduled;
+  }
+}
+
+function $scheduleFinally(this$static, cmd){
+  this$static.finallyCommands = push(this$static.finallyCommands, [cmd, false]);
+}
+
+function push(queue, task){
+  !queue && (queue = []);
+  queue[queue.length] = task;
+  return queue;
+}
+
+function runScheduledTasks(tasks, rescheduled){
+  var $e0, i, j, t;
+  for (i = 0 , j = tasks.length; i < j; ++i) {
+    t = tasks[i];
+    try {
+      t[1]?t[0].nullMethod() && (rescheduled = push(rescheduled, t)):($clinit_42() , needsInjection) && flush();
+    }
+     catch ($e0) {
+      $e0 = caught_0($e0);
+      if (!instanceOf($e0, 2))
+        throw $e0;
+    }
+  }
+  return rescheduled;
+}
+
+function SchedulerImpl(){
+}
+
+_ = SchedulerImpl.prototype = new Scheduler;
+_.typeId$ = 0;
+_.entryCommands = null;
+_.finallyCommands = null;
+var INSTANCE;
+function extractNameFromToString(fnToString){
+  var index, start, toReturn;
+  toReturn = '';
+  fnToString = $trim(fnToString);
+  index = fnToString.indexOf('(');
+  if (index != -1) {
+    start = fnToString.indexOf('function') == 0?8:0;
+    toReturn = $trim(fnToString.substr(start, index - start));
+  }
+  return toReturn.length > 0?toReturn:'anonymous';
+}
+
+function splice(arr, length_0){
+  arr.length >= length_0 && arr.splice(0, length_0);
+  return arr;
+}
+
+function $createStackTrace(this$static, e){
+  var i, j, stack, stackTrace;
+  stack = $inferFrom_0(this$static, instanceOfJso(e.e)?dynamicCastJso(e.e):null);
+  stackTrace = initDim(_3Ljava_lang_StackTraceElement_2_classLit, 56, 14, stack.length, 0);
+  for (i = 0 , j = stackTrace.length; i < j; ++i) {
+    stackTrace[i] = $StackTraceElement(new StackTraceElement, stack[i]);
+  }
+  $setStackTrace(stackTrace);
+}
+
+function $fillInStackTrace(){
+  var i, j, stack, stackTrace;
+  stack = $collect_0(new StackTraceCreator$CollectorChrome);
+  stackTrace = initDim(_3Ljava_lang_StackTraceElement_2_classLit, 56, 14, stack.length, 0);
+  for (i = 0 , j = stackTrace.length; i < j; ++i) {
+    stackTrace[i] = $StackTraceElement(new StackTraceElement, stack[i]);
+  }
+  $setStackTrace(stackTrace);
+}
+
+function $makeException(){
+  try {
+    null.a();
+  }
+   catch (e) {
+    return e;
+  }
+}
+
+function StackTraceCreator$Collector(){
+}
+
+_ = StackTraceCreator$Collector.prototype = new Object_0;
+_.collect = function collect(){
+  var seen = {};
+  var toReturn = [];
+  var callee = arguments.callee.caller.caller;
+  while (callee) {
+    var name_0 = this.extractName(callee.toString());
+    toReturn.push(name_0);
+    var keyName = ':' + name_0;
+    var withThisName = seen[keyName];
+    if (withThisName) {
+      var i, j;
+      for (i = 0 , j = withThisName.length; i < j; i++) {
+        if (withThisName[i] === callee) {
+          return toReturn;
+        }
+      }
+    }
+    (withThisName || (seen[keyName] = [])).push(callee);
+    callee = callee.caller;
+  }
+  return toReturn;
+}
+;
+_.extractName = function extractName(fnToString){
+  return extractNameFromToString(fnToString);
+}
+;
+_.inferFrom = function inferFrom(e){
+  return [];
+}
+;
+_.typeId$ = 0;
+function $inferFrom(this$static, e){
+  var i, j, stack;
+  stack = e && e.stack?e.stack.split('\n'):[];
+  for (i = 0 , j = stack.length; i < j; ++i) {
+    stack[i] = this$static.extractName(stack[i]);
+  }
+  return stack;
+}
+
+function StackTraceCreator$CollectorMoz(){
+}
+
+_ = StackTraceCreator$CollectorMoz.prototype = new StackTraceCreator$Collector;
+_.collect = function collect_0(){
+  return splice(this.inferFrom($makeException()), this.toSplice());
+}
+;
+_.inferFrom = function inferFrom_0(e){
+  return $inferFrom(this, e);
+}
+;
+_.toSplice = function toSplice(){
+  return 2;
+}
+;
+_.typeId$ = 0;
+function $collect_0(this$static){
+  var res;
+  res = splice($inferFrom_0(this$static, $makeException()), 3);
+  res.length == 0 && (res = splice((new StackTraceCreator$Collector).collect(), 1));
+  return res;
+}
+
+function $inferFrom_0(this$static, e){
+  var stack;
+  stack = $inferFrom(this$static, e);
+  return stack.length == 0?(new StackTraceCreator$Collector).inferFrom(e):(stack.length >= 1 && stack.splice(0, 1) , stack);
+}
+
+function StackTraceCreator$CollectorChrome(){
+}
+
+_ = StackTraceCreator$CollectorChrome.prototype = new StackTraceCreator$CollectorMoz;
+_.collect = function collect_1(){
+  return $collect_0(this);
+}
+;
+_.extractName = function extractName_0(fnToString){
+  var index, toReturn;
+  if (fnToString.length == 0) {
+    return 'anonymous';
+  }
+  toReturn = $trim(fnToString);
+  toReturn.indexOf('at ') == 0 && (toReturn = toReturn.substr(3, toReturn.length - 3));
+  index = toReturn.indexOf('[');
+  index == -1 && (index = toReturn.indexOf('('));
+  if (index == -1) {
+    return 'anonymous';
+  }
+   else {
+    toReturn = $trim(toReturn.substr(0, index - 0));
+  }
+  index = toReturn.indexOf(String.fromCharCode(46));
+  index != -1 && (toReturn = toReturn.substr(index + 1, toReturn.length - (index + 1)));
+  return toReturn.length > 0?toReturn:'anonymous';
+}
+;
+_.inferFrom = function inferFrom_1(e){
+  return $inferFrom_0(this, e);
+}
+;
+_.toSplice = function toSplice_0(){
+  return 3;
+}
+;
+_.typeId$ = 0;
+function $clinit_35(){
+  $clinit_35 = nullMethod;
+  $clinit_37();
+  new DOMImplSafari;
+}
+
+function $getNextSiblingElement(elem){
+  var sib = elem.nextSibling;
+  while (sib && sib.nodeType != 1)
+    sib = sib.nextSibling;
+  return sib;
+}
+
+function DOMImpl(){
+}
+
+_ = DOMImpl.prototype = new Object_0;
+_.typeId$ = 0;
+function $clinit_36(){
+  $clinit_36 = nullMethod;
+  $clinit_35();
+}
+
+function DOMImplStandard(){
+}
+
+_ = DOMImplStandard.prototype = new DOMImpl;
+_.typeId$ = 0;
+function $clinit_37(){
+  $clinit_37 = nullMethod;
+  $clinit_36();
+}
+
+function $isOrHasChild(parent_0, child){
+  while (child) {
+    if (parent_0 == child) {
+      return true;
+    }
+    child = child.parentNode;
+    child && child.nodeType != 1 && (child = null);
+  }
+  return false;
+}
+
+function DOMImplSafari(){
+}
+
+_ = DOMImplSafari.prototype = new DOMImplStandard;
+_.typeId$ = 0;
+function $createUniqueId(this$static){
+  !this$static.gwt_uid && (this$static.gwt_uid = 1);
+  return 'gwt-uid-' + this$static.gwt_uid++;
+}
+
+function $clinit_42(){
+  $clinit_42 = nullMethod;
+  toInject = [];
+  toInjectAtEnd = [];
+  toInjectAtStart = [];
+  flusher = new StyleInjector$1;
+}
+
+function flush(){
+  $clinit_42();
+  var css, maybeReturn, toReturn;
+  toReturn = null;
+  if (toInjectAtStart.length != 0) {
+    css = toInjectAtStart.join('');
+    maybeReturn = $injectStyleSheetAtStart(($clinit_44() , IMPL), css);
+    !toInjectAtStart && (toReturn = maybeReturn);
+    toInjectAtStart.length = 0;
+  }
+  if (toInject.length != 0) {
+    css = toInject.join('');
+    maybeReturn = $injectStyleSheet(($clinit_44() , IMPL), css);
+    !toInject && (toReturn = maybeReturn);
+    toInject.length = 0;
+  }
+  if (toInjectAtEnd.length != 0) {
+    css = toInjectAtEnd.join('');
+    maybeReturn = $injectStyleSheet(($clinit_44() , IMPL), css);
+    !toInjectAtEnd && (toReturn = maybeReturn);
+    toInjectAtEnd.length = 0;
+  }
+  needsInjection = false;
+  return toReturn;
+}
+
+function schedule(){
+  $clinit_42();
+  if (!needsInjection) {
+    needsInjection = true;
+    $scheduleFinally(($clinit_29() , INSTANCE), flusher);
+  }
+}
+
+var flusher, needsInjection = false, toInject, toInjectAtEnd, toInjectAtStart;
+function StyleInjector$1(){
+}
+
+_ = StyleInjector$1.prototype = new Object_0;
+_.typeId$ = 0;
+function $clinit_44(){
+  $clinit_44 = nullMethod;
+  IMPL = ($clinit_44() , new StyleInjector$StyleInjectorImpl);
+}
+
+function $createElement_0(contents){
+  var style;
+  style = ($clinit_35() , $doc).createElement('style');
+  style['language'] = 'text/css';
+  style.textContent = contents || '';
+  return style;
+}
+
+function $getHead(this$static){
+  var elt;
+  if (!this$static.head) {
+    elt = $doc.getElementsByTagName('head')[0];
+    this$static.head = elt;
+  }
+  return this$static.head;
+}
+
+function $injectStyleSheet(this$static, contents){
+  var style;
+  style = $createElement_0(contents);
+  $getHead(this$static).appendChild(style);
+  return style;
+}
+
+function $injectStyleSheetAtStart(this$static, contents){
+  var style;
+  style = $createElement_0(contents);
+  $getHead(this$static).insertBefore(style, this$static.head.firstChild);
+  return style;
+}
+
+function StyleInjector$StyleInjectorImpl(){
+}
+
+_ = StyleInjector$StyleInjectorImpl.prototype = new Object_0;
+_.typeId$ = 0;
+_.head = null;
+var IMPL;
+function UmbrellaException(){
+}
+
+_ = UmbrellaException.prototype = new RuntimeException;
+_.typeId$ = 7;
+function createFrom(array, length_0){
+  var a, result;
+  a = array;
+  result = createFromSeed(0, length_0);
+  initValues(a.arrayClass$, a.typeId$, a.queryId$, result);
+  return result;
+}
+
+function createFromSeed(seedType, length_0){
+  var array = new Array(length_0);
+  if (seedType > 0) {
+    var value = [null, 0, false, [0, 0]][seedType];
+    for (var i = 0; i < length_0; ++i) {
+      array[i] = value;
+    }
+  }
+  return array;
+}
+
+function initDim(arrayClass, typeId, queryId, length_0, seedType){
+  var result;
+  result = createFromSeed(seedType, length_0);
+  $clinit_49();
+  wrapArray(result, expandoNames_0, expandoValues_0);
+  result.arrayClass$ = arrayClass;
+  result.typeId$ = typeId;
+  result.queryId$ = queryId;
+  return result;
+}
+
+function initValues(arrayClass, typeId, queryId, array){
+  $clinit_49();
+  wrapArray(array, expandoNames_0, expandoValues_0);
+  array.arrayClass$ = arrayClass;
+  array.typeId$ = typeId;
+  array.queryId$ = queryId;
+  return array;
+}
+
+function setCheck(array, index, value){
+  if (value != null) {
+    if (array.queryId$ > 0 && !canCastUnsafe(value.typeId$, array.queryId$)) {
+      throw $ArrayStoreException(new ArrayStoreException);
+    }
+    if (array.queryId$ < 0 && (value.typeMarker$ == nullMethod || value.typeId$ == 2)) {
+      throw $ArrayStoreException(new ArrayStoreException);
+    }
+  }
+  return array[index] = value;
+}
+
+function Array_0(){
+}
+
+_ = Array_0.prototype = new Object_0;
+_.typeId$ = 0;
+_.arrayClass$ = null;
+_.length = 0;
+_.queryId$ = 0;
+function $clinit_49(){
+  $clinit_49 = nullMethod;
+  expandoNames_0 = [];
+  expandoValues_0 = [];
+  initExpandos(new Array_0, expandoNames_0, expandoValues_0);
+}
+
+function initExpandos(protoType, expandoNames, expandoValues){
+  var i = 0, value;
+  for (var name_0 in protoType) {
+    if (value = protoType[name_0]) {
+      expandoNames[i] = name_0;
+      expandoValues[i] = value;
+      ++i;
+    }
+  }
+}
+
+function wrapArray(array, expandoNames, expandoValues){
+  $clinit_49();
+  for (var i = 0, c = expandoNames.length; i < c; ++i) {
+    array[expandoNames[i]] = expandoValues[i];
+  }
+}
+
+var expandoNames_0, expandoValues_0;
+function canCast(srcId, dstId){
+  return srcId && !!typeIdArray[srcId][dstId];
+}
+
+function canCastUnsafe(srcId, dstId){
+  return srcId && typeIdArray[srcId][dstId];
+}
+
+function dynamicCast(src, dstId){
+  if (src != null && !canCastUnsafe(src.typeId$, dstId)) {
+    throw $ClassCastException(new ClassCastException);
+  }
+  return src;
+}
+
+function dynamicCastJso(src){
+  if (src != null && (src.typeMarker$ == nullMethod || src.typeId$ == 2)) {
+    throw $ClassCastException(new ClassCastException);
+  }
+  return src;
+}
+
+function instanceOf(src, dstId){
+  return src != null && canCast(src.typeId$, dstId);
+}
+
+function instanceOfJso(src){
+  return src != null && src.typeMarker$ != nullMethod && src.typeId$ != 2;
+}
+
+var typeIdArray = [{}, {}, {1:1, 10:1, 11:1, 12:1}, {3:1, 10:1}, {3:1, 10:1}, {2:1, 3:1, 10:1}, {2:1, 3:1, 10:1}, {2:1, 3:1, 10:1}, {10:1, 12:1, 13:1}, {7:1, 10:1, 12:1, 13:1}, {8:1}, {4:1, 6:1, 8:1, 9:1}, {4:1, 6:1, 8:1, 9:1}, {4:1, 6:1, 8:1, 9:1}, {2:1, 3:1, 10:1}, {4:1, 6:1, 8:1, 9:1}, {4:1, 6:1, 8:1, 9:1}, {2:1, 3:1, 10:1}, {2:1, 3:1, 10:1}, {3:1, 10:1}, {3:1, 10:1}, {2:1, 3:1, 10:1}, {2:1, 3:1, 10:1}, {2:1, 3:1, 10:1}, {2:1, 3:1, 10:1}, {10:1, 14:1}, {11:1}, {2:1, 3:1, 10:1}, {19:1}, {19:1}, {20:1}, {20:1}, {17:1}, {17:1}, {17:1}, {18:1}, {20:1}, {10:1, 18:1}, {10:1, 19:1}, {10:1, 20:1}, {17:1}, {2:1, 3:1, 10:1}, {10:1, 12:1, 13:1, 15:1}, {4:1, 6:1, 8:1, 9:1, 21:1, 22:1}, {10:1}, {10:1}, {10:1}, {10:1}, {10:1}, {10:1}, {10:1, 16:1}, {10:1}, {10:1}, {10:1}, {10:1}, {10:1}, {10:1}, {10:1}, {5:1, 10:1}, {10:1}, {10:1}];
+function init(){
+  !!$stats && $stats({moduleName:$moduleName, sessionId:$sessionId, subSystem:'startup', evtGroup:'moduleStartup', millis:(new Date).getTime(), type:'onModuleLoadStart', className:'name.webdizz.clt.crx.client.BackgroundPage'});
+  $onBackgroundPageLoad(($clinit_138() , $clinit_137() , new BackgroundPage_generated));
+}
+
+function caught_0(e){
+  if (e != null && canCast(e.typeId$, 3)) {
+    return e;
+  }
+  return $JavaScriptException(new JavaScriptException, e);
+}
+
+function LangDetCallback(){
+}
+
+_ = LangDetCallback.prototype = new Object_0;
+_.onCallbackWrapper = function onCallbackWrapper(result){
+  $translateText_0(this.this$0, this.val$message, result);
+}
+;
+_.typeId$ = 0;
+function Enum(){
+}
+
+_ = Enum.prototype = new Object_0;
+_.equals$ = function equals_1(other){
+  return this === other;
+}
+;
+_.hashCode$ = function hashCode_2(){
+  return this.$H || (this.$H = ++sNextHashId);
+}
+;
+_.typeId$ = 8;
+_.name_0 = null;
+function $clinit_59(){
+  $clinit_59 = nullMethod;
+  $Language(new Language, 'AFRIKAANS', 'af');
+  $Language(new Language, 'ALBANIAN', 'sq');
+  $Language(new Language, 'AMHARIC', 'am');
+  $Language(new Language, 'ARABIC', 'ar');
+  $Language(new Language, 'ARMENIAN', 'hy');
+  $Language(new Language, 'AZERBAIJANI', 'az');
+  $Language(new Language, 'BASQUE', 'eu');
+  $Language(new Language, 'BELARUSIAN', 'be');
+  $Language(new Language, 'BENGALI', 'bn');
+  $Language(new Language, 'BIHARI', 'bh');
+  $Language(new Language, 'BULGARIAN', 'bg');
+  $Language(new Language, 'BURMESE', 'my');
+  $Language(new Language, 'CATALAN', 'ca');
+  $Language(new Language, 'CHEROKEE', 'chr');
+  $Language(new Language, 'CHINESE', 'zh');
+  $Language(new Language, 'CHINESE_SIMPLIFIED', 'zh-CN');
+  $Language(new Language, 'CHINESE_TRADITIONAL', 'zh-TW');
+  $Language(new Language, 'CROATIAN', 'hr');
+  $Language(new Language, 'CZECH', 'cs');
+  $Language(new Language, 'DANISH', 'da');
+  $Language(new Language, 'DHIVEHI', 'dv');
+  $Language(new Language, 'DUTCH', 'nl');
+  $Language(new Language, 'ENGLISH', 'en');
+  $Language(new Language, 'ESPERANTO', 'eo');
+  $Language(new Language, 'ESTONIAN', 'et');
+  $Language(new Language, 'FILIPINO', 'tl');
+  $Language(new Language, 'FINNISH', 'fi');
+  $Language(new Language, 'FRENCH', 'fr');
+  $Language(new Language, 'GALICIAN', 'gl');
+  $Language(new Language, 'GEORGIAN', 'ka');
+  $Language(new Language, 'GERMAN', 'de');
+  $Language(new Language, 'GREEK', 'el');
+  $Language(new Language, 'GUARANI', 'gn');
+  $Language(new Language, 'GUJARATI', 'gu');
+  $Language(new Language, 'HEBREW', 'iw');
+  $Language(new Language, 'HINDI', 'hi');
+  $Language(new Language, 'HUNGARIAN', 'hu');
+  $Language(new Language, 'ICELANDIC', 'is');
+  $Language(new Language, 'INDONESIAN', 'id');
+  $Language(new Language, 'INUKTITUT', 'iu');
+  $Language(new Language, 'ITALIAN', 'it');
+  $Language(new Language, 'JAPANESE', 'ja');
+  $Language(new Language, 'KANNADA', 'kn');
+  $Language(new Language, 'KAZAKH', 'kk');
+  $Language(new Language, 'KHMER', 'km');
+  $Language(new Language, 'KOREAN', 'ko');
+  $Language(new Language, 'KURDISH', 'ku');
+  $Language(new Language, 'KYRGYZ', 'ky');
+  $Language(new Language, 'LAOTHIAN', 'lo');
+  $Language(new Language, 'LATVIAN', 'lv');
+  $Language(new Language, 'LITHUANIAN', 'lt');
+  $Language(new Language, 'MACEDONIAN', 'mk');
+  $Language(new Language, 'MALAY', 'ms');
+  $Language(new Language, 'MALAYALAM', 'ml');
+  $Language(new Language, 'MALTESE', 'mt');
+  $Language(new Language, 'MARATHI', 'mr');
+  $Language(new Language, 'MONGOLIAN', 'mn');
+  $Language(new Language, 'NEPALI', 'ne');
+  $Language(new Language, 'NORWEGIAN', 'no');
+  $Language(new Language, 'ORIYA', 'or');
+  $Language(new Language, 'PASHTO', 'ps');
+  $Language(new Language, 'PERSIAN', 'fa');
+  $Language(new Language, 'POLISH', 'pl');
+  $Language(new Language, 'PORTUGUESE', 'pt-PT');
+  $Language(new Language, 'PUNJABI', 'pa');
+  $Language(new Language, 'ROMANIAN', 'ro');
+  RUSSIAN = $Language(new Language, 'RUSSIAN', 'ru');
+  $Language(new Language, 'SANSKRIT', 'sa');
+  $Language(new Language, 'SERBIAN', 'sr');
+  $Language(new Language, 'SINDHI', 'sd');
+  $Language(new Language, 'SINHALESE', 'si');
+  $Language(new Language, 'SLOVAK', 'sk');
+  $Language(new Language, 'SLOVENIAN', 'sl');
+  $Language(new Language, 'SPANISH', 'es');
+  $Language(new Language, 'SWAHILI', 'sw');
+  $Language(new Language, 'SWEDISH', 'sv');
+  $Language(new Language, 'TAJIK', 'tg');
+  $Language(new Language, 'TAMIL', 'ta');
+  $Language(new Language, 'TAGALOG', 'tl');
+  $Language(new Language, 'TELUGU', 'te');
+  $Language(new Language, 'THAI', 'th');
+  $Language(new Language, 'TIBETAN', 'bo');
+  $Language(new Language, 'TURKISH', 'tr');
+  $Language(new Language, 'UKRAINIAN', 'uk');
+  $Language(new Language, 'URDU', 'ur');
+  $Language(new Language, 'UZBEK', 'uz');
+  $Language(new Language, 'UIGHUR', 'ug');
+  $Language(new Language, 'VIETNAMESE', 'vi');
+  $Language(new Language, 'UNKNOWN', '');
+}
+
+function $Language(this$static, enum$name, langCode){
+  $clinit_59();
+  this$static.name_0 = enum$name;
+  this$static.langCode = langCode;
+  return this$static;
+}
+
+function Language(){
+}
+
+_ = Language.prototype = new Enum;
+_.typeId$ = 9;
+_.langCode = null;
+var RUSSIAN;
+function detect(text, callback){
+  $wnd.google.language.detect(text, function(result){
+    callback.onCallbackWrapper(result);
+  }
+  );
+}
+
+function translate(text, src, dest, callback){
+  $wnd.google.language.translate(text, src, dest, function(result){
+    callback.onCallbackWrapper_0(result);
+  }
+  );
+}
+
+function TranslationCallback(){
+}
+
+_ = TranslationCallback.prototype = new Object_0;
+_.onCallbackWrapper_0 = function onCallbackWrapper_0(result){
+  $handleTranslationResult(this.this$0, this.val$src, this.val$dest, this.val$from, result);
+}
+;
+_.typeId$ = 0;
+function attachToDom(element){
+  var origParent, origSibling, parent_0;
+  ensureHiddenDiv();
+  origParent = (parent_0 = ($clinit_35() , element).parentNode , (!parent_0 || parent_0.nodeType != 1) && (parent_0 = null) , parent_0);
+  origSibling = $getNextSiblingElement(element);
+  hiddenDiv.appendChild(element);
+  return $UiBinderUtil$TempAttachment(new UiBinderUtil$TempAttachment, origParent, origSibling, element);
+}
+
+function ensureHiddenDiv(){
+  if (!hiddenDiv) {
+    hiddenDiv = ($clinit_35() , $doc).createElement('div');
+    hiddenDiv.style.display = 'none';
+    ($clinit_84() , $doc.body).appendChild(hiddenDiv);
+  }
+}
+
+function orphan(node){
+  node.parentNode.removeChild(node);
+}
+
+var hiddenDiv = null;
+function $UiBinderUtil$TempAttachment(this$static, origParent, origSibling, element){
+  this$static.origParent = origParent;
+  this$static.origSibling = origSibling;
+  this$static.element = element;
+  return this$static;
+}
+
+function UiBinderUtil$TempAttachment(){
+}
+
+_ = UiBinderUtil$TempAttachment.prototype = new Object_0;
+_.typeId$ = 0;
+_.element = null;
+_.origParent = null;
+_.origSibling = null;
+function dispatchEvent_0(evt, elem, listener){
+  var prevCurrentEvent;
+  prevCurrentEvent = currentEvent;
+  currentEvent = evt;
+  elem == sCaptureElem && $eventGetTypeInt(($clinit_35() , evt).type) == 8192 && (sCaptureElem = null);
+  listener.onBrowserEvent(evt);
+  currentEvent = prevCurrentEvent;
+}
+
+function sinkEvents(elem, eventBits){
+  $maybeInitializeEventSystem();
+  $sinkEventsImpl(elem, eventBits);
+}
+
+var currentEvent = null, sCaptureElem = null;
+function $eventGetTypeInt(eventType){
+  switch (eventType) {
+    case 'blur':
+      return 4096;
+    case 'change':
+      return 1024;
+    case 'click':
+      return 1;
+    case 'dblclick':
+      return 2;
+    case 'focus':
+      return 2048;
+    case 'keydown':
+      return 128;
+    case 'keypress':
+      return 256;
+    case 'keyup':
+      return 512;
+    case 'load':
+      return 32768;
+    case 'losecapture':
+      return 8192;
+    case 'mousedown':
+      return 4;
+    case 'mousemove':
+      return 64;
+    case 'mouseout':
+      return 32;
+    case 'mouseover':
+      return 16;
+    case 'mouseup':
+      return 8;
+    case 'scroll':
+      return 16384;
+    case 'error':
+      return 65536;
+    case 'mousewheel':
+      return 131072;
+    case 'DOMMouseScroll':
+      return 131072;
+    case 'contextmenu':
+      return 262144;
+    case 'paste':
+      return 524288;
+  }
+}
+
+function $maybeInitializeEventSystem(){
+  if (!eventSystemIsInitialized) {
+    $initEventSystem();
+    eventSystemIsInitialized = true;
+  }
+}
+
+function isMyListener(object){
+  return !(object != null && object.typeMarker$ != nullMethod && object.typeId$ != 2) && object != null && canCast(object.typeId$, 4);
+}
+
+var eventSystemIsInitialized = false;
+function $initEventSystem(){
+  dispatchCapturedMouseEvent = $entry(function(evt){
+    if (dispatchCapturedEvent(evt)) {
+      var cap = captureElem;
+      if (cap && cap.__listener) {
+        if (isMyListener(cap.__listener)) {
+          dispatchEvent_0(evt, cap, cap.__listener);
+          evt.stopPropagation();
+        }
+      }
+    }
+  }
+  );
+  dispatchCapturedEvent = $entry(function(evt){
+    return true;
+  }
+  );
+  dispatchUnhandledEvent = $entry(function(evt){
+    this.__gwtLastUnhandledEvent = evt.type;
+    dispatchEvent_1.call(this, evt);
+  }
+  );
+  dispatchEvent_1 = $entry(function(evt){
+    var listener, curElem = this;
+    while (curElem && !(listener = curElem.__listener)) {
+      curElem = curElem.parentNode;
+    }
+    curElem && curElem.nodeType != 1 && (curElem = null);
+    listener && isMyListener(listener) && dispatchEvent_0(evt, curElem, listener);
+  }
+  );
+  $wnd.addEventListener('click', dispatchCapturedMouseEvent, true);
+  $wnd.addEventListener('dblclick', dispatchCapturedMouseEvent, true);
+  $wnd.addEventListener('mousedown', dispatchCapturedMouseEvent, true);
+  $wnd.addEventListener('mouseup', dispatchCapturedMouseEvent, true);
+  $wnd.addEventListener('mousemove', dispatchCapturedMouseEvent, true);
+  $wnd.addEventListener('mouseover', dispatchCapturedMouseEvent, true);
+  $wnd.addEventListener('mouseout', dispatchCapturedMouseEvent, true);
+  $wnd.addEventListener('mousewheel', dispatchCapturedMouseEvent, true);
+  $wnd.addEventListener('keydown', dispatchCapturedEvent, true);
+  $wnd.addEventListener('keyup', dispatchCapturedEvent, true);
+  $wnd.addEventListener('keypress', dispatchCapturedEvent, true);
+}
+
+function $sinkEventsImpl(elem, bits){
+  var chMask = (elem.__eventBits || 0) ^ bits;
+  elem.__eventBits = bits;
+  if (!chMask)
+    return;
+  chMask & 1 && (elem.onclick = bits & 1?dispatchEvent_1:null);
+  chMask & 2 && (elem.ondblclick = bits & 2?dispatchEvent_1:null);
+  chMask & 4 && (elem.onmousedown = bits & 4?dispatchEvent_1:null);
+  chMask & 8 && (elem.onmouseup = bits & 8?dispatchEvent_1:null);
+  chMask & 16 && (elem.onmouseover = bits & 16?dispatchEvent_1:null);
+  chMask & 32 && (elem.onmouseout = bits & 32?dispatchEvent_1:null);
+  chMask & 64 && (elem.onmousemove = bits & 64?dispatchEvent_1:null);
+  chMask & 128 && (elem.onkeydown = bits & 128?dispatchEvent_1:null);
+  chMask & 256 && (elem.onkeypress = bits & 256?dispatchEvent_1:null);
+  chMask & 512 && (elem.onkeyup = bits & 512?dispatchEvent_1:null);
+  chMask & 1024 && (elem.onchange = bits & 1024?dispatchEvent_1:null);
+  chMask & 2048 && (elem.onfocus = bits & 2048?dispatchEvent_1:null);
+  chMask & 4096 && (elem.onblur = bits & 4096?dispatchEvent_1:null);
+  chMask & 8192 && (elem.onlosecapture = bits & 8192?dispatchEvent_1:null);
+  chMask & 16384 && (elem.onscroll = bits & 16384?dispatchEvent_1:null);
+  chMask & 32768 && (elem.onload = bits & 32768?dispatchUnhandledEvent:null);
+  chMask & 65536 && (elem.onerror = bits & 65536?dispatchEvent_1:null);
+  chMask & 131072 && (elem.onmousewheel = bits & 131072?dispatchEvent_1:null);
+  chMask & 262144 && (elem.oncontextmenu = bits & 262144?dispatchEvent_1:null);
+  chMask & 524288 && (elem.onpaste = bits & 524288?dispatchEvent_1:null);
+}
+
+var captureElem = null, dispatchCapturedEvent = null, dispatchCapturedMouseEvent = null, dispatchEvent_1 = null, dispatchUnhandledEvent = null;
+function $setElement(this$static, elem){
+  this$static.element = elem;
+}
+
+function $toString_0(this$static){
+  if (!this$static.element) {
+    return '(null handle)';
+  }
+  return ($clinit_35() , this$static.element).outerHTML;
+}
+
+function UIObject(){
+}
+
+_ = UIObject.prototype = new Object_0;
+_.typeId$ = 10;
+_.element = null;
+function $onAttach(this$static){
+  var bitsToAdd;
+  if (this$static.isAttached()) {
+    throw $IllegalStateException(new IllegalStateException, "Should only call onAttach when the widget is detached from the browser's document");
+  }
+  this$static.attached = true;
+  this$static.element.__listener = this$static;
+  bitsToAdd = this$static.eventsToSink;
+  this$static.eventsToSink = -1;
+  bitsToAdd > 0 && (this$static.eventsToSink == -1?sinkEvents(this$static.element, bitsToAdd | (this$static.element.__eventBits || 0)):(this$static.eventsToSink |= bitsToAdd));
+  this$static.doAttachChildren();
+  this$static.onLoad();
+}
+
+function $onBrowserEvent(this$static, event_0){
+  var related;
+  switch ($eventGetTypeInt(($clinit_35() , event_0).type)) {
+    case 16:
+    case 32:
+      related = event_0.relatedTarget;
+      if (!!related && $isOrHasChild(this$static.element, related)) {
+        return;
+      }
+
+  }
+}
+
+function $onDetach(this$static){
+  if (!this$static.isAttached()) {
+    throw $IllegalStateException(new IllegalStateException, "Should only call onDetach when the widget is attached to the browser's document");
+  }
+  try {
+    this$static.onUnload();
+  }
+   finally {
+    try {
+      this$static.doDetachChildren();
+    }
+     finally {
+      this$static.element.__listener = null;
+      this$static.attached = false;
+    }
+  }
+}
+
+function $removeFromParent(this$static){
+  if (!this$static.parent_0) {
+    ($clinit_84() , $containsKey(widgetsToDetach.map, this$static)) && detachNow(this$static);
+  }
+   else if (this$static.parent_0) {
+    throw $IllegalStateException(new IllegalStateException, "This widget's parent does not implement HasWidgets");
+  }
+}
+
+function $setParent(this$static, parent_0){
+  var oldParent;
+  oldParent = this$static.parent_0;
+  if (!parent_0) {
+    try {
+      !!oldParent && $isAttached_0(oldParent) && $onDetach(this$static);
+    }
+     finally {
+      this$static.parent_0 = null;
+    }
+  }
+   else {
+    if (oldParent) {
+      throw $IllegalStateException(new IllegalStateException, 'Cannot set a new parent without first clearing the old parent');
+    }
+    this$static.parent_0 = parent_0;
+    $isAttached_0(parent_0) && $onAttach(this$static);
+  }
+}
+
+function $sinkEvents(this$static, eventBitsToAdd){
+  this$static.eventsToSink == -1?sinkEvents(this$static.element, eventBitsToAdd | (this$static.element.__eventBits || 0)):(this$static.eventsToSink |= eventBitsToAdd);
+}
+
+function Widget(){
+}
+
+_ = Widget.prototype = new UIObject;
+_.doAttachChildren = function doAttachChildren(){
+}
+;
+_.doDetachChildren = function doDetachChildren(){
+}
+;
+_.isAttached = function isAttached(){
+  return this.attached;
+}
+;
+_.onAttach = function onAttach(){
+  $onAttach(this);
+}
+;
+_.onBrowserEvent = function onBrowserEvent(event_0){
+  $onBrowserEvent(this, event_0);
+}
+;
+_.onDetach = function onDetach(){
+  $onDetach(this);
+}
+;
+_.onLoad = function onLoad(){
+}
+;
+_.onUnload = function onUnload(){
+}
+;
+_.typeId$ = 11;
+_.attached = false;
+_.eventsToSink = 0;
+_.parent_0 = null;
+function Panel(){
+}
+
+_ = Panel.prototype = new Widget;
+_.doAttachChildren = function doAttachChildren_0(){
+  tryCommand(this, ($clinit_76() , attachCommand));
+}
+;
+_.doDetachChildren = function doDetachChildren_0(){
+  tryCommand(this, ($clinit_76() , detachCommand));
+}
+;
+_.onLoad = function onLoad_0(){
+}
+;
+_.onUnload = function onUnload_0(){
+}
+;
+_.typeId$ = 12;
+function ComplexPanel(){
+}
+
+_ = ComplexPanel.prototype = new Panel;
+_.typeId$ = 13;
+function $clinit_76(){
+  $clinit_76 = nullMethod;
+  attachCommand = new AttachDetachException$1;
+  detachCommand = new AttachDetachException$2;
+}
+
+function $AttachDetachException(this$static, causes){
+  $clinit_76();
+  $Exception(this$static, causes.map.size == 0?null:dynamicCast(causes.toArray(initDim(_3Ljava_lang_Throwable_2_classLit, 58, 3, 0, 0)), 5)[0]);
+  return this$static;
+}
+
+function tryCommand(hasWidgets, c){
+  var old;
+  $clinit_76();
+  var $e0, caught, e, w, w$iterator;
+  caught = null;
+  for (w$iterator = $WidgetCollection$WidgetIterator(new WidgetCollection$WidgetIterator, hasWidgets.children); w$iterator.index < w$iterator.this$0.size - 1;) {
+    w = $next(w$iterator);
+    try {
+      c.execute(w);
+    }
+     catch ($e0) {
+      $e0 = caught_0($e0);
+      if (instanceOf($e0, 3)) {
+        e = $e0;
+        !caught && (caught = $HashSet(new HashSet));
+        old = $put(caught.map, e, caught);
+      }
+       else 
+        throw $e0;
+    }
+  }
+  if (caught) {
+    throw $AttachDetachException(new AttachDetachException, caught);
+  }
+}
+
+function AttachDetachException(){
+}
+
+_ = AttachDetachException.prototype = new UmbrellaException;
+_.typeId$ = 14;
+var attachCommand, detachCommand;
+function AttachDetachException$1(){
+}
+
+_ = AttachDetachException$1.prototype = new Object_0;
+_.execute = function execute(w){
+  w.onAttach();
+}
+;
+_.typeId$ = 0;
+function AttachDetachException$2(){
+}
+
+_ = AttachDetachException$2.prototype = new Object_0;
+_.execute = function execute_0(w){
+  w.onDetach();
+}
+;
+_.typeId$ = 0;
+function $initWidget(this$static, widget){
+  if (this$static.widget) {
+    throw $IllegalStateException(new IllegalStateException, 'Composite.initWidget() may only be called once.');
+  }
+  $removeFromParent(widget);
+  $setElement(this$static, widget.element);
+  this$static.widget = widget;
+  $setParent(widget, this$static);
+}
+
+function $isAttached_0(this$static){
+  if (this$static.widget) {
+    return this$static.widget.attached;
+  }
+  return false;
+}
+
+function Composite(){
+}
+
+_ = Composite.prototype = new Widget;
+_.isAttached = function isAttached_0(){
+  return $isAttached_0(this);
+}
+;
+_.onAttach = function onAttach_0(){
+  if (this.eventsToSink != -1) {
+    $sinkEvents(this.widget, this.eventsToSink);
+    this.eventsToSink = -1;
+  }
+  $onAttach(this.widget);
+  this.element.__listener = this;
+}
+;
+_.onBrowserEvent = function onBrowserEvent_0(event_0){
+  $onBrowserEvent(this, event_0);
+  $onBrowserEvent(this.widget, event_0);
+}
+;
+_.onDetach = function onDetach_0(){
+  $onDetach(this.widget);
+}
+;
+_.typeId$ = 15;
+_.widget = null;
+function $HTMLPanel(this$static, html){
+  this$static.children = $WidgetCollection(new WidgetCollection);
+  this$static.element = ($clinit_35() , $doc).createElement('div');
+  this$static.element.innerHTML = html || '';
+  return this$static;
+}
+
+function HTMLPanel(){
+}
+
+_ = HTMLPanel.prototype = new ComplexPanel;
+_.typeId$ = 16;
+function $clinit_84(){
+  $clinit_84 = nullMethod;
+  $clearImpl(new HashMap);
+  widgetsToDetach = $HashSet(new HashSet);
+}
+
+function detachNow(widget){
+  $clinit_84();
+  try {
+    $onDetach(widget);
+  }
+   finally {
+    $remove(widgetsToDetach.map, widget) != null;
+  }
+}
+
+var widgetsToDetach;
+function $WidgetCollection(this$static){
+  this$static.array = initDim(_3Lcom_google_gwt_user_client_ui_Widget_2_classLit, 49, 9, 4, 0);
+  return this$static;
+}
+
+function WidgetCollection(){
+}
+
+_ = WidgetCollection.prototype = new Object_0;
+_.typeId$ = 0;
+_.array = null;
+_.size = 0;
+function $WidgetCollection$WidgetIterator(this$static, this$0){
+  this$static.this$0 = this$0;
+  return this$static;
+}
+
+function $next(this$static){
+  if (this$static.index >= this$static.this$0.size) {
+    throw $NoSuchElementException(new NoSuchElementException);
+  }
+  return this$static.this$0.array[++this$static.index];
+}
+
+function WidgetCollection$WidgetIterator(){
+}
+
+_ = WidgetCollection$WidgetIterator.prototype = new Object_0;
+_.hasNext = function hasNext(){
+  return this.index < this.this$0.size - 1;
+}
+;
+_.next = function next_0(){
+  return $next(this);
+}
+;
+_.typeId$ = 0;
+_.index = -1;
+_.this$0 = null;
+function Mvp4gModuleImpl(){
+}
+
+_ = Mvp4gModuleImpl.prototype = new Object_0;
+_.typeId$ = 0;
+_.eventBus = null;
+function BaseEventBus(){
+}
+
+_ = BaseEventBus.prototype = new Object_0;
+_.typeId$ = 0;
+function Mvp4gModuleImpl$AbstractEventBus(){
+}
+
+_ = Mvp4gModuleImpl$AbstractEventBus.prototype = new BaseEventBus;
+_.typeId$ = 0;
+function $Mvp4gModuleImpl$2(this$static, val$name_webdizz_clt_crx_client_presenter_TranslationPresenter, val$name_webdizz_clt_crx_client_presenter_BackgroundPagePresenter){
+  this$static.val$name_webdizz_clt_crx_client_presenter_TranslationPresenter = val$name_webdizz_clt_crx_client_presenter_TranslationPresenter;
+  this$static.val$name_webdizz_clt_crx_client_presenter_BackgroundPagePresenter = val$name_webdizz_clt_crx_client_presenter_BackgroundPagePresenter;
+  return this$static;
+}
+
+function $handleTranslatedText(this$static, form){
+  $bindIfNeeded(this$static.val$name_webdizz_clt_crx_client_presenter_TranslationPresenter);
+  $onTranslatedText(this$static.val$name_webdizz_clt_crx_client_presenter_TranslationPresenter, form);
+}
+
+function $selectText(this$static, form){
+  $bindIfNeeded(this$static.val$name_webdizz_clt_crx_client_presenter_BackgroundPagePresenter);
+  $onSelectText(this$static.val$name_webdizz_clt_crx_client_presenter_BackgroundPagePresenter, form);
+}
+
+function $showTranslatedText(this$static, form){
+  $bindIfNeeded(this$static.val$name_webdizz_clt_crx_client_presenter_BackgroundPagePresenter);
+  $onShowTranslatedText(this$static.val$name_webdizz_clt_crx_client_presenter_BackgroundPagePresenter, form);
+}
+
+function $start(this$static){
+  $bindIfNeeded(this$static.val$name_webdizz_clt_crx_client_presenter_BackgroundPagePresenter);
+  detectLanguage($BackgroundPagePresenter$1(new BackgroundPagePresenter$1, this$static.val$name_webdizz_clt_crx_client_presenter_BackgroundPagePresenter));
+}
+
+function $translateText(this$static, form){
+  $bindIfNeeded(this$static.val$name_webdizz_clt_crx_client_presenter_TranslationPresenter);
+  $detectSrcLanguage(this$static.val$name_webdizz_clt_crx_client_presenter_TranslationPresenter, form);
+}
+
+function Mvp4gModuleImpl$2(){
+}
+
+_ = Mvp4gModuleImpl$2.prototype = new Mvp4gModuleImpl$AbstractEventBus;
+_.typeId$ = 0;
+_.val$name_webdizz_clt_crx_client_presenter_BackgroundPagePresenter = null;
+_.val$name_webdizz_clt_crx_client_presenter_TranslationPresenter = null;
+function $bindIfNeeded(this$static){
+  this$static.binded || (this$static.binded = true);
+}
+
+function BasePresenter(){
+}
+
+_ = BasePresenter.prototype = new Object_0;
+_.typeId$ = 0;
+_.binded = false;
+_.eventBus = null;
+_.view = null;
+function $ArrayStoreException(this$static){
+  $fillInStackTrace();
+  return this$static;
+}
+
+function ArrayStoreException(){
+}
+
+_ = ArrayStoreException.prototype = new RuntimeException;
+_.typeId$ = 18;
+function Class(){
+}
+
+_ = Class.prototype = new Object_0;
+_.typeId$ = 0;
+function $ClassCastException(this$static){
+  $fillInStackTrace();
+  return this$static;
+}
+
+function ClassCastException(){
+}
+
+_ = ClassCastException.prototype = new RuntimeException;
+_.typeId$ = 21;
+function $IllegalStateException(this$static, s){
+  $fillInStackTrace();
+  return this$static;
+}
+
+function IllegalStateException(){
+}
+
+_ = IllegalStateException.prototype = new RuntimeException;
+_.typeId$ = 22;
+function $IndexOutOfBoundsException(this$static, message){
+  $fillInStackTrace();
+  return this$static;
+}
+
+function IndexOutOfBoundsException(){
+}
+
+_ = IndexOutOfBoundsException.prototype = new RuntimeException;
+_.typeId$ = 23;
+function $NullPointerException(this$static){
+  $fillInStackTrace();
+  return this$static;
+}
+
+function NullPointerException(){
+}
+
+_ = NullPointerException.prototype = new RuntimeException;
+_.typeId$ = 24;
+function $StackTraceElement(this$static, methodName){
+  return this$static;
+}
+
+function StackTraceElement(){
+}
+
+_ = StackTraceElement.prototype = new Object_0;
+_.typeId$ = 25;
+function $equals_1(this$static, other){
+  if (!(other != null && canCast(other.typeId$, 1))) {
+    return false;
+  }
+  return String(this$static) == other;
+}
+
+function $trim(this$static){
+  if (this$static.length == 0 || this$static[0] > ' ' && this$static[this$static.length - 1] > ' ') {
+    return this$static;
+  }
+  var r1 = this$static.replace(/^(\s*)/, '');
+  var r2 = r1.replace(/\s*$/, '');
+  return r2;
+}
+
+_ = String.prototype;
+_.equals$ = function equals_2(other){
+  return $equals_1(this, other);
+}
+;
+_.hashCode$ = function hashCode_3(){
+  return getHashCode_0(this);
+}
+;
+_.typeId$ = 2;
+function $clinit_108(){
+  $clinit_108 = nullMethod;
+  back_0 = {};
+  front = {};
+}
+
+function compute(str){
+  var hashCode, i, n, nBatch;
+  hashCode = 0;
+  n = str.length;
+  nBatch = n - 4;
+  i = 0;
+  while (i < nBatch) {
+    hashCode = str.charCodeAt(i + 3) + 31 * (str.charCodeAt(i + 2) + 31 * (str.charCodeAt(i + 1) + 31 * (str.charCodeAt(i) + 31 * hashCode))) | 0;
+    i += 4;
+  }
+  while (i < n) {
+    hashCode = hashCode * 31 + str.charCodeAt(i++);
+  }
+  return hashCode | 0;
+}
+
+function getHashCode_0(str){
+  $clinit_108();
+  var key = ':' + str;
+  var result = front[key];
+  if (result != null) {
+    return result;
+  }
+  result = back_0[key];
+  result == null && (result = compute(str));
+  increment();
+  return front[key] = result;
+}
+
+function increment(){
+  if (count_0 == 256) {
+    back_0 = front;
+    front = {};
+    count_0 = 0;
+  }
+  ++count_0;
+}
+
+var back_0, count_0 = 0, front;
+function $UnsupportedOperationException(this$static){
+  $fillInStackTrace();
+  return this$static;
+}
+
+function UnsupportedOperationException(){
+}
+
+_ = UnsupportedOperationException.prototype = new RuntimeException;
+_.typeId$ = 27;
+function $advanceToFind(iter, o){
+  var t;
+  while (iter.hasNext()) {
+    t = iter.next();
+    if (o == null?t == null:o.typeMarker$ == nullMethod || o.typeId$ == 2?o.equals$(t):o === t) {
+      return iter;
+    }
+  }
+  return null;
+}
+
+function AbstractCollection(){
+}
+
+_ = AbstractCollection.prototype = new Object_0;
+_.add = function add(o){
+  throw $UnsupportedOperationException(new UnsupportedOperationException);
+}
+;
+_.contains = function contains(o){
+  var iter;
+  iter = $advanceToFind(this.iterator(), o);
+  return !!iter;
+}
+;
+_.toArray = function toArray(a){
+  var i, it, result, size;
+  size = this.size_0();
+  a.length < size && (a = createFrom(a, size));
+  result = a;
+  it = this.iterator();
+  for (i = 0; i < size; ++i) {
+    setCheck(result, i, it.next());
+  }
+  a.length > size && setCheck(a, size, null);
+  return a;
+}
+;
+_.typeId$ = 0;
+function $keySet(this$static){
+  var entrySet;
+  entrySet = $AbstractHashMap$EntrySet(new AbstractHashMap$EntrySet, this$static);
+  return $AbstractMap$1(new AbstractMap$1, this$static, entrySet);
+}
+
+function AbstractMap(){
+}
+
+_ = AbstractMap.prototype = new Object_0;
+_.equals$ = function equals_3(obj){
+  var entry, entry$iterator, otherKey, otherMap, otherValue;
+  if (obj === this) {
+    return true;
+  }
+  if (!(obj != null && canCast(obj.typeId$, 19))) {
+    return false;
+  }
+  otherMap = dynamicCast(obj, 19);
+  if (this.size != otherMap.size) {
+    return false;
+  }
+  for (entry$iterator = $AbstractHashMap$EntrySetIterator(new AbstractHashMap$EntrySetIterator, $AbstractHashMap$EntrySet(new AbstractHashMap$EntrySet, otherMap).this$0); $hasNext_1(entry$iterator.iter);) {
+    entry = dynamicCast($next_2(entry$iterator.iter), 17);
+    otherKey = entry.getKey();
+    otherValue = entry.getValue();
+    if (!(otherKey == null?this.nullSlotLive:otherKey != null && canCast(otherKey.typeId$, 1)?':' + dynamicCast(otherKey, 1) in this.stringMap:$hasHashValue(this, otherKey, ~~hashCode__devirtual$(otherKey)))) {
+      return false;
+    }
+    if (!equalsWithNullCheck(otherValue, otherKey == null?this.nullSlot:otherKey != null && canCast(otherKey.typeId$, 1)?this.stringMap[':' + dynamicCast(otherKey, 1)]:$getHashValue(this, otherKey, ~~hashCode__devirtual$(otherKey)))) {
+      return false;
+    }
+  }
+  return true;
+}
+;
+_.hashCode$ = function hashCode_4(){
+  var entry, entry$iterator, hashCode;
+  hashCode = 0;
+  for (entry$iterator = $AbstractHashMap$EntrySetIterator(new AbstractHashMap$EntrySetIterator, $AbstractHashMap$EntrySet(new AbstractHashMap$EntrySet, this).this$0); $hasNext_1(entry$iterator.iter);) {
+    entry = dynamicCast($next_2(entry$iterator.iter), 17);
+    hashCode += entry.hashCode$();
+    hashCode = ~~hashCode;
+  }
+  return hashCode;
+}
+;
+_.typeId$ = 28;
+function $addAllHashEntries(this$static, dest){
+  var hashCodeMap = this$static.hashCodeMap;
+  for (var hashCode in hashCodeMap) {
+    if (hashCode == parseInt(hashCode)) {
+      var array = hashCodeMap[hashCode];
+      for (var i = 0, c = array.length; i < c; ++i) {
+        dest.add(array[i]);
+      }
+    }
+  }
+}
+
+function $addAllStringEntries(this$static, dest){
+  var stringMap = this$static.stringMap;
+  for (var key in stringMap) {
+    if (key.charCodeAt(0) == 58) {
+      var entry = new_$(this$static, key.substring(1));
+      dest.add(entry);
+    }
+  }
+}
+
+function $clearImpl(this$static){
+  this$static.hashCodeMap = [];
+  this$static.stringMap = {};
+  this$static.nullSlotLive = false;
+  this$static.nullSlot = null;
+  this$static.size = 0;
+}
+
+function $containsKey(this$static, key){
+  return key == null?this$static.nullSlotLive:key != null && canCast(key.typeId$, 1)?$hasStringValue(this$static, dynamicCast(key, 1)):$hasHashValue(this$static, key, ~~hashCode__devirtual$(key));
+}
+
+function $get_1(this$static, key){
+  return key == null?this$static.nullSlot:key != null && canCast(key.typeId$, 1)?this$static.stringMap[':' + dynamicCast(key, 1)]:$getHashValue(this$static, key, ~~hashCode__devirtual$(key));
+}
+
+function $getHashValue(this$static, key, hashCode){
+  var array = this$static.hashCodeMap[hashCode];
+  if (array) {
+    for (var i = 0, c = array.length; i < c; ++i) {
+      var entry = array[i];
+      var entryKey = entry.getKey();
+      if (this$static.equalsBridge(key, entryKey)) {
+        return entry.getValue();
+      }
+    }
+  }
+  return null;
+}
+
+function $hasHashValue(this$static, key, hashCode){
+  var array = this$static.hashCodeMap[hashCode];
+  if (array) {
+    for (var i = 0, c = array.length; i < c; ++i) {
+      var entry = array[i];
+      var entryKey = entry.getKey();
+      if (this$static.equalsBridge(key, entryKey)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+function $hasStringValue(this$static, key){
+  return ':' + key in this$static.stringMap;
+}
+
+function $put(this$static, key, value){
+  return key == null?$putNullSlot(this$static, value):key != null && canCast(key.typeId$, 1)?$putStringValue(this$static, dynamicCast(key, 1), value):$putHashValue(this$static, key, value, ~~hashCode__devirtual$(key));
+}
+
+function $putHashValue(this$static, key, value, hashCode){
+  var array = this$static.hashCodeMap[hashCode];
+  if (array) {
+    for (var i = 0, c = array.length; i < c; ++i) {
+      var entry = array[i];
+      var entryKey = entry.getKey();
+      if (this$static.equalsBridge(key, entryKey)) {
+        var previous = entry.getValue();
+        entry.setValue(value);
+        return previous;
+      }
+    }
+  }
+   else {
+    array = this$static.hashCodeMap[hashCode] = [];
+  }
+  var entry = $MapEntryImpl(new MapEntryImpl, key, value);
+  array.push(entry);
+  ++this$static.size;
+  return null;
+}
+
+function $putNullSlot(this$static, value){
+  var result;
+  result = this$static.nullSlot;
+  this$static.nullSlot = value;
+  if (!this$static.nullSlotLive) {
+    this$static.nullSlotLive = true;
+    ++this$static.size;
+  }
+  return result;
+}
+
+function $putStringValue(this$static, key, value){
+  var result, stringMap = this$static.stringMap;
+  key = ':' + key;
+  key in stringMap?(result = stringMap[key]):++this$static.size;
+  stringMap[key] = value;
+  return result;
+}
+
+function $remove(this$static, key){
+  return !key?$removeNullSlot(this$static):$removeHashValue(this$static, key, ~~(key.$H || (key.$H = ++sNextHashId)));
+}
+
+function $removeHashValue(this$static, key, hashCode){
+  var array = this$static.hashCodeMap[hashCode];
+  if (array) {
+    for (var i = 0, c = array.length; i < c; ++i) {
+      var entry = array[i];
+      var entryKey = entry.getKey();
+      if (this$static.equalsBridge(key, entryKey)) {
+        array.length == 1?delete this$static.hashCodeMap[hashCode]:array.splice(i, 1);
+        --this$static.size;
+        return entry.getValue();
+      }
+    }
+  }
+  return null;
+}
+
+function $removeNullSlot(this$static){
+  var result;
+  result = this$static.nullSlot;
+  this$static.nullSlot = null;
+  if (this$static.nullSlotLive) {
+    this$static.nullSlotLive = false;
+    --this$static.size;
+  }
+  return result;
+}
+
+function AbstractHashMap(){
+}
+
+_ = AbstractHashMap.prototype = new AbstractMap;
+_.equalsBridge = function equalsBridge(value1, value2){
+  return (value1 == null?null:value1) === (value2 == null?null:value2) || value1 != null && (value1.typeMarker$ == nullMethod || value1.typeId$ == 2?value1.equals$(value2):value1 === value2);
+}
+;
+_.typeId$ = 29;
+_.hashCodeMap = null;
+_.nullSlot = null;
+_.nullSlotLive = false;
+_.size = 0;
+_.stringMap = null;
+function AbstractSet(){
+}
+
+_ = AbstractSet.prototype = new AbstractCollection;
+_.equals$ = function equals_4(o){
+  var iter, other, otherItem;
+  if (o === this) {
+    return true;
+  }
+  if (!(o != null && canCast(o.typeId$, 20))) {
+    return false;
+  }
+  other = dynamicCast(o, 20);
+  if (other.size_0() != this.size_0()) {
+    return false;
+  }
+  for (iter = other.iterator(); iter.hasNext();) {
+    otherItem = iter.next();
+    if (!this.contains(otherItem)) {
+      return false;
+    }
+  }
+  return true;
+}
+;
+_.hashCode$ = function hashCode_5(){
+  var hashCode, iter, next;
+  hashCode = 0;
+  for (iter = this.iterator(); iter.hasNext();) {
+    next = iter.next();
+    if (next != null) {
+      hashCode += hashCode__devirtual$(next);
+      hashCode = ~~hashCode;
+    }
+  }
+  return hashCode;
+}
+;
+_.typeId$ = 30;
+function $AbstractHashMap$EntrySet(this$static, this$0){
+  this$static.this$0 = this$0;
+  return this$static;
+}
+
+function $contains(this$static, o){
+  var entry, key, value;
+  if (o != null && canCast(o.typeId$, 17)) {
+    entry = dynamicCast(o, 17);
+    key = entry.getKey();
+    if ($containsKey(this$static.this$0, key)) {
+      value = $get_1(this$static.this$0, key);
+      return $equals_2(entry.getValue(), value);
+    }
+  }
+  return false;
+}
+
+function AbstractHashMap$EntrySet(){
+}
+
+_ = AbstractHashMap$EntrySet.prototype = new AbstractSet;
+_.contains = function contains_0(o){
+  return $contains(this, o);
+}
+;
+_.iterator = function iterator(){
+  return $AbstractHashMap$EntrySetIterator(new AbstractHashMap$EntrySetIterator, this.this$0);
+}
+;
+_.size_0 = function size_0(){
+  return this.this$0.size;
+}
+;
+_.typeId$ = 31;
+_.this$0 = null;
+function $AbstractHashMap$EntrySetIterator(this$static, this$0){
+  var list;
+  this$static.this$0 = this$0;
+  list = $ArrayList(new ArrayList);
+  this$static.this$0.nullSlotLive && $add(list, $AbstractHashMap$MapEntryNull(new AbstractHashMap$MapEntryNull, this$static.this$0));
+  $addAllStringEntries(this$static.this$0, list);
+  $addAllHashEntries(this$static.this$0, list);
+  this$static.iter = $AbstractList$IteratorImpl(new AbstractList$IteratorImpl, list);
+  return this$static;
+}
+
+function AbstractHashMap$EntrySetIterator(){
+}
+
+_ = AbstractHashMap$EntrySetIterator.prototype = new Object_0;
+_.hasNext = function hasNext_0(){
+  return $hasNext_1(this.iter);
+}
+;
+_.next = function next_1(){
+  return dynamicCast($next_2(this.iter), 17);
+}
+;
+_.typeId$ = 0;
+_.iter = null;
+_.this$0 = null;
+function AbstractMapEntry(){
+}
+
+_ = AbstractMapEntry.prototype = new Object_0;
+_.equals$ = function equals_5(other){
+  var entry;
+  if (other != null && canCast(other.typeId$, 17)) {
+    entry = dynamicCast(other, 17);
+    if (equalsWithNullCheck(this.getKey(), entry.getKey()) && equalsWithNullCheck(this.getValue(), entry.getValue())) {
+      return true;
+    }
+  }
+  return false;
+}
+;
+_.hashCode$ = function hashCode_6(){
+  var keyHash, valueHash;
+  keyHash = 0;
+  valueHash = 0;
+  this.getKey() != null && (keyHash = hashCode__devirtual$(this.getKey()));
+  this.getValue() != null && (valueHash = hashCode__devirtual$(this.getValue()));
+  return keyHash ^ valueHash;
+}
+;
+_.typeId$ = 32;
+function $AbstractHashMap$MapEntryNull(this$static, this$0){
+  this$static.this$0 = this$0;
+  return this$static;
+}
+
+function AbstractHashMap$MapEntryNull(){
+}
+
+_ = AbstractHashMap$MapEntryNull.prototype = new AbstractMapEntry;
+_.getKey = function getKey(){
+  return null;
+}
+;
+_.getValue = function getValue(){
+  return this.this$0.nullSlot;
+}
+;
+_.setValue = function setValue(object){
+  return $putNullSlot(this.this$0, object);
+}
+;
+_.typeId$ = 33;
+_.this$0 = null;
+function $AbstractHashMap$MapEntryString(this$static, key, this$0){
+  this$static.this$0 = this$0;
+  this$static.key = key;
+  return this$static;
+}
+
+function new_$(this$outer, key){
+  return $AbstractHashMap$MapEntryString(new AbstractHashMap$MapEntryString, key, this$outer);
+}
+
+function AbstractHashMap$MapEntryString(){
+}
+
+_ = AbstractHashMap$MapEntryString.prototype = new AbstractMapEntry;
+_.getKey = function getKey_0(){
+  return this.key;
+}
+;
+_.getValue = function getValue_0(){
+  return this.this$0.stringMap[':' + this.key];
+}
+;
+_.setValue = function setValue_0(object){
+  return $putStringValue(this.this$0, this.key, object);
+}
+;
+_.typeId$ = 34;
+_.key = null;
+_.this$0 = null;
+function checkIndex(index, size){
+  (index < 0 || index >= size) && indexOutOfBounds(index, size);
+}
+
+function indexOutOfBounds(index, size){
+  throw $IndexOutOfBoundsException(new IndexOutOfBoundsException, 'Index: ' + index + ', Size: ' + size);
+}
+
+function AbstractList(){
+}
+
+_ = AbstractList.prototype = new AbstractCollection;
+_.add = function add_0(obj){
+  $add_0(this, this.size_0(), obj);
+  return true;
+}
+;
+_.equals$ = function equals_6(o){
+  var elem, elemOther, iter, iterOther, other;
+  if (o === this) {
+    return true;
+  }
+  if (!(o != null && canCast(o.typeId$, 18))) {
+    return false;
+  }
+  other = dynamicCast(o, 18);
+  if (this.size_0() != other.size) {
+    return false;
+  }
+  iter = $AbstractList$IteratorImpl(new AbstractList$IteratorImpl, this);
+  iterOther = $AbstractList$IteratorImpl(new AbstractList$IteratorImpl, other);
+  while (iter.i < iter.this$0.size) {
+    elem = $next_2(iter);
+    elemOther = $next_2(iterOther);
+    if (!(elem == null?elemOther == null:elem.typeMarker$ == nullMethod || elem.typeId$ == 2?elem.equals$(elemOther):elem === elemOther)) {
+      return false;
+    }
+  }
+  return true;
+}
+;
+_.hashCode$ = function hashCode_7(){
+  var iter, k, obj;
+  k = 1;
+  iter = $AbstractList$IteratorImpl(new AbstractList$IteratorImpl, this);
+  while (iter.i < iter.this$0.size) {
+    obj = $next_2(iter);
+    k = 31 * k + (obj == null?0:hashCode__devirtual$(obj));
+    k = ~~k;
+  }
+  return k;
+}
+;
+_.iterator = function iterator_0(){
+  return $AbstractList$IteratorImpl(new AbstractList$IteratorImpl, this);
+}
+;
+_.typeId$ = 35;
+function $AbstractList$IteratorImpl(this$static, this$0){
+  this$static.this$0 = this$0;
+  return this$static;
+}
+
+function $hasNext_1(this$static){
+  return this$static.i < this$static.this$0.size;
+}
+
+function $next_2(this$static){
+  if (this$static.i >= this$static.this$0.size) {
+    throw $NoSuchElementException(new NoSuchElementException);
+  }
+  return $get_2(this$static.this$0, this$static.i++);
+}
+
+function AbstractList$IteratorImpl(){
+}
+
+_ = AbstractList$IteratorImpl.prototype = new Object_0;
+_.hasNext = function hasNext_1(){
+  return this.i < this.this$0.size;
+}
+;
+_.next = function next_2(){
+  return $next_2(this);
+}
+;
+_.typeId$ = 0;
+_.i = 0;
+_.this$0 = null;
+function $AbstractMap$1(this$static, this$0, val$entrySet){
+  this$static.this$0 = this$0;
+  this$static.val$entrySet = val$entrySet;
+  return this$static;
+}
+
+function AbstractMap$1(){
+}
+
+_ = AbstractMap$1.prototype = new AbstractSet;
+_.contains = function contains_1(key){
+  return $containsKey(this.this$0, key);
+}
+;
+_.iterator = function iterator_1(){
+  var outerIter;
+  return outerIter = $AbstractHashMap$EntrySetIterator(new AbstractHashMap$EntrySetIterator, this.val$entrySet.this$0) , $AbstractMap$1$1(new AbstractMap$1$1, outerIter);
+}
+;
+_.size_0 = function size_1(){
+  return this.val$entrySet.this$0.size;
+}
+;
+_.typeId$ = 36;
+_.this$0 = null;
+_.val$entrySet = null;
+function $AbstractMap$1$1(this$static, val$outerIter){
+  this$static.val$outerIter = val$outerIter;
+  return this$static;
+}
+
+function AbstractMap$1$1(){
+}
+
+_ = AbstractMap$1$1.prototype = new Object_0;
+_.hasNext = function hasNext_2(){
+  return $hasNext_1(this.val$outerIter.iter);
+}
+;
+_.next = function next_3(){
+  var entry;
+  entry = dynamicCast($next_2(this.val$outerIter.iter), 17);
+  return entry.getKey();
+}
+;
+_.typeId$ = 0;
+_.val$outerIter = null;
+function $ArrayList(this$static){
+  this$static.array = initDim(_3Ljava_lang_Object_2_classLit, 55, 0, 0, 0);
+  return this$static;
+}
+
+function $add(this$static, o){
+  setCheck(this$static.array, this$static.size++, o);
+  return true;
+}
+
+function $add_0(this$static, index, o){
+  (index < 0 || index > this$static.size) && indexOutOfBounds(index, this$static.size);
+  this$static.array.splice(index, 0, o);
+  ++this$static.size;
+}
+
+function $get_2(this$static, index){
+  checkIndex(index, this$static.size);
+  return this$static.array[index];
+}
+
+function $indexOf_0(this$static, o, index){
+  for (; index < this$static.size; ++index) {
+    if (equalsWithNullCheck(o, this$static.array[index])) {
+      return index;
+    }
+  }
+  return -1;
+}
+
+function ArrayList(){
+}
+
+_ = ArrayList.prototype = new AbstractList;
+_.add = function add_1(o){
+  return setCheck(this.array, this.size++, o) , true;
+}
+;
+_.contains = function contains_2(o){
+  return $indexOf_0(this, o, 0) != -1;
+}
+;
+_.size_0 = function size_2(){
+  return this.size;
+}
+;
+_.toArray = function toArray_0(out){
+  var i, a, result;
+  out.length < this.size && (out = (a = out , result = createFromSeed(0, this.size) , initValues(a.arrayClass$, a.typeId$, a.queryId$, result) , result));
+  for (i = 0; i < this.size; ++i) {
+    setCheck(out, i, this.array[i]);
+  }
+  out.length > this.size && setCheck(out, this.size, null);
+  return out;
+}
+;
+_.typeId$ = 37;
+_.size = 0;
+function $HashMap(this$static){
+  $clearImpl(this$static);
+  return this$static;
+}
+
+function $equals_2(value1, value2){
+  return (value1 == null?null:value1) === (value2 == null?null:value2) || value1 != null && (value1.typeMarker$ == nullMethod || value1.typeId$ == 2?value1.equals$(value2):value1 === value2);
+}
+
+function HashMap(){
+}
+
+_ = HashMap.prototype = new AbstractHashMap;
+_.typeId$ = 38;
+function $HashSet(this$static){
+  this$static.map = $HashMap(new HashMap);
+  return this$static;
+}
+
+function HashSet(){
+}
+
+_ = HashSet.prototype = new AbstractSet;
+_.add = function add_2(o){
+  var old;
+  return old = $put(this.map, o, this) , old == null;
+}
+;
+_.contains = function contains_3(o){
+  return $containsKey(this.map, o);
+}
+;
+_.iterator = function iterator_2(){
+  var outerIter;
+  return outerIter = $AbstractHashMap$EntrySetIterator(new AbstractHashMap$EntrySetIterator, $keySet(this.map).val$entrySet.this$0) , $AbstractMap$1$1(new AbstractMap$1$1, outerIter);
+}
+;
+_.size_0 = function size_3(){
+  return this.map.size;
+}
+;
+_.typeId$ = 39;
+_.map = null;
+function $MapEntryImpl(this$static, key, value){
+  this$static.key = key;
+  this$static.value = value;
+  return this$static;
+}
+
+function MapEntryImpl(){
+}
+
+_ = MapEntryImpl.prototype = new AbstractMapEntry;
+_.getKey = function getKey_1(){
+  return this.key;
+}
+;
+_.getValue = function getValue_1(){
+  return this.value;
+}
+;
+_.setValue = function setValue_1(value){
+  var old;
+  old = this.value;
+  this.value = value;
+  return old;
+}
+;
+_.typeId$ = 40;
+_.key = null;
+_.value = null;
+function $NoSuchElementException(this$static){
+  $fillInStackTrace();
+  return this$static;
+}
+
+function NoSuchElementException(){
+}
+
+_ = NoSuchElementException.prototype = new RuntimeException;
+_.typeId$ = 41;
+function equalsWithNullCheck(a, b){
+  return (a == null?null:a) === (b == null?null:b) || a != null && (a.typeMarker$ == nullMethod || a.typeId$ == 2?a.equals$(b):a === b);
+}
+
+function $clinit_137(){
+  $clinit_137 = nullMethod;
+  CONSOLE = chrome.extension.getBackgroundPage().console;
+}
+
+function $onBackgroundPageLoad(){
+  var module, name_webdizz_clt_crx_client_presenter_BackgroundPagePresenter, name_webdizz_clt_crx_client_presenter_BackgroundPagePresenterView, name_webdizz_clt_crx_client_presenter_TranslationPresenter, name_webdizz_clt_crx_client_presenter_TranslationPresenterView;
+  module = new Mvp4gModuleImpl;
+  name_webdizz_clt_crx_client_presenter_BackgroundPagePresenterView = new BackgroundPageView;
+  name_webdizz_clt_crx_client_presenter_TranslationPresenterView = $TranslationView(new TranslationView);
+  name_webdizz_clt_crx_client_presenter_TranslationPresenter = ($clinit_139() , new TranslationPresenter);
+  name_webdizz_clt_crx_client_presenter_TranslationPresenter.view = name_webdizz_clt_crx_client_presenter_TranslationPresenterView;
+  name_webdizz_clt_crx_client_presenter_BackgroundPagePresenter = new BackgroundPagePresenter;
+  name_webdizz_clt_crx_client_presenter_BackgroundPagePresenter.view = name_webdizz_clt_crx_client_presenter_BackgroundPagePresenterView;
+  module.eventBus = $Mvp4gModuleImpl$2(new Mvp4gModuleImpl$2, name_webdizz_clt_crx_client_presenter_TranslationPresenter, name_webdizz_clt_crx_client_presenter_BackgroundPagePresenter);
+  name_webdizz_clt_crx_client_presenter_TranslationPresenter.eventBus = module.eventBus;
+  name_webdizz_clt_crx_client_presenter_BackgroundPagePresenter.eventBus = module.eventBus;
+  name_webdizz_clt_crx_client_presenter_BackgroundPagePresenter.binded || (name_webdizz_clt_crx_client_presenter_BackgroundPagePresenter.binded = true);
+  $start(module.eventBus);
+  CONSOLE.log('Enter into BackgroundPage.onBackgroundPageLoad.');
+  $Event$ListenerHandle(new Event$ListenerHandle, $addListenerImpl(chrome.extension.onConnect, $ConnectEventHandler(new ConnectEventHandler, module.eventBus)));
+}
+
+function BackgroundPage_0(){
+}
+
+_ = BackgroundPage_0.prototype = new Extension;
+_.typeId$ = 0;
+var CONSOLE;
+function $clinit_138(){
+  $clinit_138 = nullMethod;
+  $clinit_137();
+}
+
+function BackgroundPage_generated(){
+}
+
+_ = BackgroundPage_generated.prototype = new BackgroundPage_0;
+_.typeId$ = 0;
+function $clinit_139(){
+  $clinit_139 = nullMethod;
+  chrome.extension.getBackgroundPage().localStorage;
+}
+
+function $clinit_140(){
+  $clinit_140 = nullMethod;
+  DEST_LANGUAGE = $ExtConfiguration$Configuration(new ExtConfiguration$Configuration);
+}
+
+function $ExtConfiguration$Configuration(this$static){
+  $clinit_140();
+  this$static.name_0 = 'DEST_LANGUAGE';
+  return this$static;
+}
+
+function ExtConfiguration$Configuration(){
+}
+
+_ = ExtConfiguration$Configuration.prototype = new Enum;
+_.typeId$ = 42;
+var DEST_LANGUAGE;
+function instance(){
+  if (!port_0) {
+    throw $RuntimeException(new RuntimeException);
+  }
+  return port_0;
+}
+
+var port_0 = null;
+function $clinit_143(){
+  $clinit_143 = nullMethod;
+  CONSOLE_0 = chrome.extension.getBackgroundPage().console;
+}
+
+function $ConnectEventHandler(this$static, eventBus){
+  $clinit_143();
+  this$static.eventBus = eventBus;
+  return this$static;
+}
+
+function $onConnect(this$static, port){
+  !port_0 && (port_0 = port);
+  CONSOLE_0.log('Enter into onConnect handler');
+  $Event$ListenerHandle(new Event$ListenerHandle, $addListenerImpl_0(port.onMessage, $MessageEventHandler(new MessageEventHandler, this$static.eventBus)));
+}
+
+function ConnectEventHandler(){
+}
+
+_ = ConnectEventHandler.prototype = new Object_0;
+_.typeId$ = 0;
+_.eventBus = null;
+var CONSOLE_0;
+function $clinit_144(){
+  $clinit_144 = nullMethod;
+  CONSOLE_1 = chrome.extension.getBackgroundPage().console;
+}
+
+function $MessageEventHandler(this$static, eventBus){
+  $clinit_144();
+  this$static.eventBus = eventBus;
+  return this$static;
+}
+
+function MessageEventHandler(){
+}
+
+_ = MessageEventHandler.prototype = new Object_0;
+_.onMessage_0 = function onMessage(message){
+  var castedMessage;
+  CONSOLE_1.log('Message event handler');
+  !!message && (castedMessage = message , $equals_1('SelectTextMessage', castedMessage.type) && $selectText(this.eventBus, castedMessage) , undefined);
+}
+;
+_.typeId$ = 0;
+_.eventBus = null;
+var CONSOLE_1;
+function create_1(message, widget){
+  return {widget:widget, message:message, type:'ShowTranslatedTextMessage'};
+}
+
+function $isTranslatable(keys){
+  var key, key$array, key$index, key$max, result;
+  result = false;
+  for (key$array = keys , key$index = 0 , key$max = key$array.length; key$index < key$max; ++key$index) {
+    key = key$array[key$index];
+    if ($equals_1('Ctrl', key)) {
+      result = true;
+      break;
+    }
+  }
+  return result;
+}
+
+function $onSelectText(this$static, message){
+  var transTextMessage;
+  if ($isTranslatable(message.keys)) {
+    alert(message.text + ' should be translated');
+    transTextMessage = {text:message.text, type:'TranslateTextMessage'};
+    $translateText(this$static.eventBus, transTextMessage);
+    this$static.selectTextMessage = message;
+  }
+}
+
+function $onShowTranslatedText(this$static, widget){
+  var asString, message, port;
+  port = instance();
+  asString = escapeValue($toString_0(widget));
+  message = create_1(this$static.selectTextMessage, asString);
+  port.postMessage(message);
+}
+
+function BackgroundPagePresenter(){
+}
+
+_ = BackgroundPagePresenter.prototype = new BasePresenter;
+_.typeId$ = 0;
+_.selectTextMessage = null;
+function $BackgroundPagePresenter$1(this$static){
+  return this$static;
+}
+
+function BackgroundPagePresenter$1(){
+}
+
+_ = BackgroundPagePresenter$1.prototype = new Object_0;
+_.onDetect = function onDetect(languageCode){
+  alert('Detected lang: ' + languageCode);
+  window.localStorage.setItem(($clinit_140() , DEST_LANGUAGE).name_0, languageCode);
+}
+;
+_.typeId$ = 0;
+function $detectSrcLanguage(this$static, message){
+  detect(message.text, $TranslationPresenter$1(new TranslationPresenter$1, this$static, message));
+}
+
+function $handleTranslationResult(this$static, src, dest, from, result){
+  var transTextMsg, translation;
+  translation = result.translation;
+  transTextMsg = {textFrom:from, translation:translation, src:src, dest:dest, type:'PrepareTranslatedTextDisplayMessage'};
+  $handleTranslatedText(this$static.eventBus, transTextMsg);
+}
+
+function $onTranslatedText(this$static, message){
+  ($clinit_35() , dynamicCast(this$static.view, 21).translatedText).textContent = message.translation || '';
+  $showTranslatedText(this$static.eventBus, dynamicCast(dynamicCast(this$static.view, 21), 22));
+}
+
+function $translateText_0(this$static, message, result){
+  var dest, from, src, lang;
+  if (!result.error) {
+    src = result.language;
+    dest = (lang = $getItem(($clinit_140() , DEST_LANGUAGE).name_0) , (null == lang || $equals_1('', lang)) && (lang = ($clinit_59() , RUSSIAN).langCode) , lang);
+    from = message.text;
+    translate(from, src, dest, $TranslationPresenter$2(new TranslationPresenter$2, this$static, src, dest, from));
+  }
+  !!result.error;
+}
+
+function TranslationPresenter(){
+}
+
+_ = TranslationPresenter.prototype = new BasePresenter;
+_.typeId$ = 0;
+function $TranslationPresenter$1(this$static, this$0, val$message){
+  this$static.this$0 = this$0;
+  this$static.val$message = val$message;
+  return this$static;
+}
+
+function TranslationPresenter$1(){
+}
+
+_ = TranslationPresenter$1.prototype = new LangDetCallback;
+_.typeId$ = 0;
+_.this$0 = null;
+_.val$message = null;
+function $TranslationPresenter$2(this$static, this$0, val$src, val$dest, val$from){
+  this$static.this$0 = this$0;
+  this$static.val$src = val$src;
+  this$static.val$dest = val$dest;
+  this$static.val$from = val$from;
+  return this$static;
+}
+
+function TranslationPresenter$2(){
+}
+
+_ = TranslationPresenter$2.prototype = new TranslationCallback;
+_.typeId$ = 0;
+_.this$0 = null;
+_.val$dest = null;
+_.val$from = null;
+_.val$src = null;
+function BackgroundPageView(){
+}
+
+_ = BackgroundPageView.prototype = new Object_0;
+_.typeId$ = 0;
+function $TranslationView(this$static){
+  var attachRecord0, domId0, f_HTMLPanel1, translatedText;
+  $initWidget(this$static, (!style_3 && (style_3 = new name_webdizz_clt_crx_client_view_TranslationView_TranslationUiBinderImpl_GenBundle_default_InlineClientBundleGenerator$1) , translatedText = null , domId0 = $createUniqueId($doc) , f_HTMLPanel1 = $HTMLPanel(new HTMLPanel, "<table style='background-color: #363636; white-space: nowrap; background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0%, #000), color-stop(50%, #363636), color-stop(100%, #000)); overflow: visible !important; -webkit-border-radius: 10px !important;border-color: #000000 !important;opacity: 0.8 !important;color: #fafafa !important;padding: 8px !important; min-height: 30px; min-width: 100px;' width='100%'> <tr> <td width='100%'> Translated to: <span id='" + domId0 + "'><\/span><br> <\/td> <\/tr> <\/table>") , attachRecord0 = attachToDom(f_HTMLPanel1.element) , translatedText = $doc.getElementById(domId0) , translatedText.removeAttribute('id') , attachRecord0.origParent?attachRecord0.origParent.insertBefore(attachRecord0.element, attachRecord0.origSibling):orphan(attachRecord0.element) , this$static.translatedText = translatedText , $ensureInjected((!style_3 && (style_3 = new name_webdizz_clt_crx_client_view_TranslationView_TranslationUiBinderImpl_GenBundle_default_InlineClientBundleGenerator$1) , style_3)) , f_HTMLPanel1));
+  return this$static;
+}
+
+function TranslationView(){
+}
+
+_ = TranslationView.prototype = new Composite;
+_.typeId$ = 43;
+_.translatedText = null;
+var style_3 = null;
+function $ensureInjected(this$static){
+  if (!this$static.injected) {
+    this$static.injected = true;
+    $clinit_42();
+    $push_0(toInject, '.G1314xv1A-name-webdizz-clt-crx-client-view-TranslationView_TranslationUiBinderImpl_GenCss_style-important {\n  font-weight : bold;\n}\n');
+    schedule();
+    return true;
+  }
+  return false;
+}
+
+function name_webdizz_clt_crx_client_view_TranslationView_TranslationUiBinderImpl_GenBundle_default_InlineClientBundleGenerator$1(){
+}
+
+_ = name_webdizz_clt_crx_client_view_TranslationView_TranslationUiBinderImpl_GenBundle_default_InlineClientBundleGenerator$1.prototype = new Object_0;
+_.typeId$ = 0;
+_.injected = false;
+var $entry = entry_0;
+function gwtOnLoad(errFn, modName, modBase){
+  $moduleName = modName;
+  $moduleBase = modBase;
+  if (errFn)
+    try {
+      $entry(init)();
+    }
+     catch (e) {
+      errFn(modName);
+    }
+   else {
+    $entry(init)();
+  }
+}
+
+var _3Ljava_lang_StackTraceElement_2_classLit = new Class, _3Ljava_lang_Throwable_2_classLit = new Class, _3Lcom_google_gwt_user_client_ui_Widget_2_classLit = new Class, _3Ljava_lang_Object_2_classLit = new Class;
+gwtOnLoad();
+</script></body></html>
