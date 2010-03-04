@@ -1,1 +1,13 @@
-There should be more appropriate message.
+This is an extension for Chrome will help you to know more about language you are learn.
+
+Implemented feauters and customizations:
+
+- select and translate word 
+- GWT linker to create Chrome Extension manifest file
+- HTML5 LocalStorage wrapper for GWT
+
+TODO:
+
+- abilities to store translated words
+- abilities to notify stored words
+- and others...
