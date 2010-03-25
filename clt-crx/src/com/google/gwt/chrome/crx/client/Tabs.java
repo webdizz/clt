@@ -401,7 +401,8 @@ public class Tabs extends JavaScriptObject {
 	 */
 	public static final native void executeScript(int tabId,
 			ExecutionDetails details)/*-{
-		chrome.tabs.executeScript(tabId, details, function(){alert('script was executed'+details.file);});
+		//callback function can be as a 3d parameter
+		chrome.tabs.executeScript(tabId, details);
 	}-*/;
 
 	protected Tabs() {
