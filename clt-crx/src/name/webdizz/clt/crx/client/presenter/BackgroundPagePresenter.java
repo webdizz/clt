@@ -7,15 +7,15 @@ import name.webdizz.clt.crx.client.ActivationKeysHolder;
 import name.webdizz.clt.crx.client.Alert;
 import name.webdizz.clt.crx.client.ExtConfiguration;
 import name.webdizz.clt.crx.client.ExtEventBus;
-import name.webdizz.clt.crx.client.PortFactory;
 import name.webdizz.clt.crx.client.event.message.SelectTextMessage;
 import name.webdizz.clt.crx.client.event.message.ShowTranslatedTextMessage;
 import name.webdizz.clt.crx.client.event.message.TranslateTextMessage;
 import name.webdizz.clt.crx.client.view.BackgroundPageView;
 
-import com.google.gwt.chrome.crx.client.Port;
 import com.google.gwt.chrome.crx.client.Tabs;
 import com.google.gwt.chrome.crx.client.Tabs.OnDetectLanguageCallback;
+import com.google.gwt.chrome.crx.client.Tabs.OnTabCallback;
+import com.google.gwt.chrome.crx.client.Tabs.Tab;
 import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
@@ -67,7 +67,13 @@ public class BackgroundPagePresenter extends
 		}
 	}
 
-	public void onSelectText(SelectTextMessage message) {
+	/**
+	 * Is called by {@link ExtEventBus} when a "selectText" event triggered.
+	 * 
+	 * @param message
+	 *            the {@link SelectTextMessage} contains text to translate
+	 */
+	public void onSelectText(final SelectTextMessage message) {
 		if (isTranslatable(message.getKeys())) {
 			Alert.info(message.getText() + " should be translated");
 			TranslateTextMessage transTextMessage;
@@ -77,12 +83,23 @@ public class BackgroundPagePresenter extends
 		}
 	}
 
+	/**
+	 * Send message to the extension script to display translated text within a
+	 * window.
+	 * 
+	 * @param widget
+	 *            a {@link Widget} to show as a translation
+	 */
 	public void onShowTranslatedText(final Widget widget) {
-		Port port = PortFactory.instance();
-		ShowTranslatedTextMessage message;
-		String asString = JsonUtils.escapeValue(widget.toString());
-		message = ShowTranslatedTextMessage.create(selectTextMessage, asString);
-		port.postMessage(message);
+		Tabs.getSelected(new OnTabCallback() {
+			public void onTab(Tab tab) {
+				ShowTranslatedTextMessage message;
+				String asString = JsonUtils.escapeValue(widget.toString());
+				message = ShowTranslatedTextMessage.create(selectTextMessage,
+						asString);
+				Tabs.sendRequest(tab.getId(), message);
+			}
+		});
 	}
 
 	/**

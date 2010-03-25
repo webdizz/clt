@@ -352,6 +352,25 @@ public class Tabs extends JavaScriptObject {
 		return chrome.tabs.connect(tabId);
 	}-*/;
 
+	/**
+	 * Connects to the content script(s) in the given tab. The <a href=
+	 * "http://code.google.com/chrome/extensions/extension.html#event-onConnect"
+	 * >chrome.extension.onConnect</a> event is fired in each content script
+	 * running in the specified tab for the current extension. For more details,
+	 * see <a href=
+	 * "http://code.google.com/chrome/extensions/content_scripts.html#messaging"
+	 * >Content Script Messaging</a>.
+	 * 
+	 * @param tabId
+	 *            the tab id to connect to
+	 * @param portName
+	 *            the port name to connect to
+	 * @return {@link Port}
+	 */
+	public static final native Port connect(int tabId, String portName)/*-{
+		return chrome.tabs.connect(tabId, {name: portName});
+	}-*/;
+
 	public static final native void sendRequest(int tabId, Message message)/*-{
 		chrome.tabs.sendRequest(tabId, message);
 	}-*/;
