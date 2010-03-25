@@ -1,6 +1,5 @@
 (function(){
-	var port = chrome.extension.connect();
-	alert("from script "+port.portId_);
+	var port = chrome.extension.connect({name:"clt"});
 	/**
 	*  Register mouse up event handler 
 	*/
@@ -30,8 +29,11 @@
 	
 	document.body.addEventListener('mousedown', function(evt) {
 		var wrapper = document.getElementById('-chrome-clt-ext-dialog-wrapper-container');
-		wrapper.style.display = 'none';
-		wrapper.innerHTML = '';
+		if(wrapper.style.display != 'none'){
+			//TODO: need to be closed by close button
+			//wrapper.style.display = 'none';
+			//wrapper.innerHTML = '';
+		}
 	}, false);
 	
 	var connectionHandler = function(m){
@@ -58,8 +60,9 @@
 		}
 		elem.style.left = message.offsetX + 40 + 'px';
 	};
-	port.onMessage.addListener(connectionHandler);
+	chrome.extension.onRequest.addListener(connectionHandler);
 }());
+
 /**
  *
  */
