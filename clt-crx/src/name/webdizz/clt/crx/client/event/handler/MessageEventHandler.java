@@ -6,6 +6,7 @@ package name.webdizz.clt.crx.client.event.handler;
 import name.webdizz.clt.crx.client.ExtEventBus;
 import name.webdizz.clt.crx.client.event.message.Message;
 import name.webdizz.clt.crx.client.event.message.SelectTextMessage;
+import name.webdizz.clt.crx.client.event.message.StoreTranslationMessage;
 
 import com.google.gwt.chrome.crx.client.Chrome;
 import com.google.gwt.chrome.crx.client.Console;
@@ -42,6 +43,9 @@ class MessageEventHandler implements Listener {
 		Message castedMessage = message.cast();
 		if (SelectTextMessage.TYPE.equals(castedMessage.getType())) {
 			eventBus.selectText((SelectTextMessage) castedMessage);
+		}
+		if (StoreTranslationMessage.TYPE.equals(castedMessage.getType())) {
+			eventBus.storeTranslation((StoreTranslationMessage) castedMessage);
 		}
 	}
 

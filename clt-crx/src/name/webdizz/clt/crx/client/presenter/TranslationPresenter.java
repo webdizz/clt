@@ -29,11 +29,15 @@ public class TranslationPresenter extends
 		BasePresenter<TranslationPresenter.ITranslationView, ExtEventBus> {
 
 	public interface ITranslationView {
+		
 		void setTranslatedText(String text);
+		
+		void setTranslateableText(final String text);
 
 		String widgetAsString();
 
 		Widget asWidget();
+		
 	}
 
 	private ExtConfiguration configuration;
@@ -62,6 +66,7 @@ public class TranslationPresenter extends
 	public void onTranslatedText(
 			final PrepareTranslatedTextDisplayMessage message) {
 		view.setTranslatedText(message.getTranslation());
+		view.setTranslateableText(message.getTextFrom());
 		eventBus.showTranslatedText(view.asWidget());
 	}
 
