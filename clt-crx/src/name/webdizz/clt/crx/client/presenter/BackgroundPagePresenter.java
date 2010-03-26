@@ -4,7 +4,6 @@
 package name.webdizz.clt.crx.client.presenter;
 
 import name.webdizz.clt.crx.client.ActivationKeysHolder;
-import name.webdizz.clt.crx.client.Alert;
 import name.webdizz.clt.crx.client.ExtConfiguration;
 import name.webdizz.clt.crx.client.ExtEventBus;
 import name.webdizz.clt.crx.client.event.message.SelectTextMessage;
@@ -60,7 +59,9 @@ public class BackgroundPagePresenter extends
 		if ("".equals(configuration.getDestLanguage())) {
 			Tabs.detectLanguage(new OnDetectLanguageCallback() {
 				public void onDetect(String languageCode) {
-					Alert.info("Detected lang: " + languageCode);
+					eventBus
+							.trace("BackgroundPagePresenter.detectLanguage(): Detected lang - "
+									+ languageCode);
 					configuration.setDestLanguage(languageCode);
 				}
 			});
@@ -75,7 +76,8 @@ public class BackgroundPagePresenter extends
 	 */
 	public void onSelectText(final SelectTextMessage message) {
 		if (isTranslatable(message.getKeys())) {
-			Alert.info(message.getText() + " should be translated");
+			eventBus.trace("BackgroundPagePresenter.onSelectText() :"
+					+ message.getText() + " should be translated");
 			TranslateTextMessage transTextMessage;
 			transTextMessage = TranslateTextMessage.create(message.getText());
 			eventBus.translateText(transTextMessage);
