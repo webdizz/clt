@@ -11,7 +11,7 @@ import com.google.gwt.core.client.JavaScriptObject;
  * @author Izzet_Mustafayev
  * 
  */
-public class Translation extends JavaScriptObject {
+public final class Translation extends JavaScriptObject {
 
 	protected Translation() {
 	}
