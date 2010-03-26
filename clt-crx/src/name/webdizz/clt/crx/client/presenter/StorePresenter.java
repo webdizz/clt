@@ -3,6 +3,7 @@
  */
 package name.webdizz.clt.crx.client.presenter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import name.webdizz.clt.crx.client.ExtEventBus;
@@ -40,24 +41,9 @@ public class StorePresenter extends
 
 		public void onSuccess(List<Translation> result) {
 			if (null != result && !result.isEmpty()) {
-				// should return random translation
-				int size = result.size() - 1;
-				int index = Random.nextInt(size);
-				Translation translation = null;
-				while (null == translation) {
-					try {
-						translation = result.get(index);
-					} catch (IndexOutOfBoundsException e) {
-						index = Random.nextInt(size);
-					}
-				}
-				final ShowWordMessage message = ShowWordMessage
-						.create(translation.getText());
-				Tabs.getSelected(new OnTabCallback() {
-					public void onTab(Tab tab) {
-						Tabs.sendRequest(tab.getId(), message);
-					}
-				});
+				translations = result;
+				isDirty = false;
+				fireShowWord();
 			}
 		}
 	}
@@ -69,6 +55,10 @@ public class StorePresenter extends
 	}
 
 	private LocalDataService service = GWT.create(LocalDataService.class);
+
+	private List<Translation> translations = new ArrayList<Translation>();
+
+	private boolean isDirty = false;
 
 	public StorePresenter() {
 		service.initDatabase(new VoidCallback() {
@@ -105,12 +95,40 @@ public class StorePresenter extends
 
 			public void onSuccess(List<Integer> rowIds) {
 				eventBus.info("Translation was stored. " + rowIds.size());
+				isDirty = true;
 			}
 		});
 	}
 
 	public void onLoadWords(LoadWordsMessage message) {
 		eventBus.trace("StorePresenter.onLoadWords()");
-		service.getRandTranslation(new LoadWordsHandler());
+		if (isDirty || translations.isEmpty()) {
+			service.getRandTranslation(new LoadWordsHandler());
+		} else {
+			fireShowWord();
+		}
+	}
+
+	/**
+	 */
+	private void fireShowWord() {
+		// should return random translation
+		int size = translations.size() - 1;
+		int index = Random.nextInt(size);
+		Translation translation = null;
+		while (null == translation) {
+			try {
+				translation = translations.get(index);
+			} catch (IndexOutOfBoundsException e) {
+				index = Random.nextInt(size);
+			}
+		}
+		final ShowWordMessage message = ShowWordMessage.create(translation
+				.getText());
+		Tabs.getSelected(new OnTabCallback() {
+			public void onTab(Tab tab) {
+				Tabs.sendRequest(tab.getId(), message);
+			}
+		});
 	}
 }
