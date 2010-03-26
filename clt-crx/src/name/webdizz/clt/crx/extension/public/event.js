@@ -1,3 +1,38 @@
+var CltTimer = function() {
+	// Property: Frequency of elapse event of the timer in millisecond
+	this.interval = 1000;
+
+	// Property: Whether the timer is enable or not
+	this.enable = new Boolean(false);
+
+	// Event: Timer tick
+	this.tick;
+
+	// Member variable: Hold interval id of the timer
+	var timerId = 0;
+
+	// Member variable: Hold instance of this class
+	var thisObject;
+
+	// Function: Start the timer
+	this.start = function() {
+		this.enable = new Boolean(true);
+
+		thisObject = this;
+		if (thisObject.enable) {
+			thisObject.timerId = setInterval(function() {
+				thisObject.tick();
+			}, thisObject.interval);
+		}
+	};
+
+	// Function: Stops the timer
+	this.stop = function() {
+		thisObject.enable = new Boolean(false);
+		clearInterval(thisObject.timerId);
+	};
+};
+
 (function() {
 	var port = chrome.extension.connect( {
 		name : "clt"
@@ -86,18 +121,15 @@
 							});
 						});
 	};
-	
-	var assignLoadWordsClickHandler = function(){
-		var btn = document.getElementById('cltLoadWords');
-		btn
-				.addEventListener(
-						'click',
-						function(evt) {
-							port.postMessage( {
-								type : 'LoadWordsMessage'
-							});
-						});
+	//start timer to load words periodicaly
+	var cltTimer = new CltTimer();
+	cltTimer.interval = 60000;
+	cltTimer.tick = function(){
+		port.postMessage( {
+			type : 'LoadWordsMessage'
+		});
 	};
+	cltTimer.start();
 	// add messaging listener handler
 	chrome.extension.onRequest.addListener(connectionHandler);
 }());
@@ -122,41 +154,3 @@ if (!document.getElementById('-chrome-clt-ext-dialog-wrapper-container')) {
 		document.body.appendChild(d);
 	})();
 }
-// timer
-(function() {
-	var Timer = function() {
-		this.secs; 
-		this.timerID = null;
-		this.timerRunning = false;
-		this.delay = 1000;
-
-		this.initializeTimer = function() {
-			// Set the length of the timer, in seconds
-			this.secs = 10;
-			this.stop();
-			this.start();
-		};
-
-		this.stop = function() {
-			if (this.timerRunning);
-				clearTimeout(this.timerID);
-			this.timerRunning = false;
-		};
-
-		this.start = function() {
-			var self = this;
-			if (this.secs == 0) {
-				this.stop();
-				// Here's where you put something useful that's
-				// supposed to happen after the allotted time.
-				// For example, you could display a message:
-				alert("You have just wasted 10 seconds of your life.");
-			} else {
-				self.status = this.secs;
-				secs = secs - 1;
-				timerRunning = true;
-				timerID = self.setTimeout("start()", this.delay);
-			}
-		};
-	};
-}());
