@@ -26,6 +26,6 @@ public interface LocalDataService extends DataService {
 	@Update("INSERT INTO translations (text, translation, src, dest, translated) VALUES ({translation.getText()}, {translation.getTranslation()}, {translation.getSrc()}, {translation.getDest()}, {translation.getTranslated()} )")
 	void storeTranslation(Translation translation, RowIdListCallback callback);
 
-	@Update("SELECT * FROM translations")
-	void getTranslations(ListCallback<Translation> callback);
+	@Update("SELECT * FROM translations ORDER BY id")
+	void getRandTranslation(ListCallback<Translation> callback);
 }

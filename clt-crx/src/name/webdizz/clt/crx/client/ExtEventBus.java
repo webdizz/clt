@@ -3,6 +3,7 @@
  */
 package name.webdizz.clt.crx.client;
 
+import name.webdizz.clt.crx.client.event.message.LoadWordsMessage;
 import name.webdizz.clt.crx.client.event.message.PrepareTranslatedTextDisplayMessage;
 import name.webdizz.clt.crx.client.event.message.SelectTextMessage;
 import name.webdizz.clt.crx.client.event.message.StoreTranslationMessage;
@@ -32,7 +33,7 @@ public interface ExtEventBus extends EventBus {
 
 	@Event(handlers = BackgroundPagePresenter.class)
 	void selectText(SelectTextMessage message);
-
+	
 	@Event(handlers = TranslationPresenter.class)
 	void translateText(TranslateTextMessage message);
 
@@ -45,12 +46,15 @@ public interface ExtEventBus extends EventBus {
 	@Event(handlers = StorePresenter.class)
 	void storeTranslation(StoreTranslationMessage message);
 
+	@Event(handlers = StorePresenter.class)
+	void loadWords(LoadWordsMessage message);
+
 	@Event(handlers = MonitorPresenter.class)
 	void error(String message);
 
 	@Event(handlers = MonitorPresenter.class)
 	void info(String message);
-	
+
 	@Event(handlers = MonitorPresenter.class)
 	void trace(String message);
 }
