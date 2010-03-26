@@ -8,6 +8,7 @@ import name.webdizz.clt.crx.client.event.message.SelectTextMessage;
 import name.webdizz.clt.crx.client.event.message.StoreTranslationMessage;
 import name.webdizz.clt.crx.client.event.message.TranslateTextMessage;
 import name.webdizz.clt.crx.client.presenter.BackgroundPagePresenter;
+import name.webdizz.clt.crx.client.presenter.MonitorPresenter;
 import name.webdizz.clt.crx.client.presenter.StorePresenter;
 import name.webdizz.clt.crx.client.presenter.TranslationPresenter;
 import name.webdizz.clt.crx.client.view.BackgroundPageView;
@@ -43,4 +44,13 @@ public interface ExtEventBus extends EventBus {
 
 	@Event(handlers = StorePresenter.class)
 	void storeTranslation(StoreTranslationMessage message);
+
+	@Event(handlers = MonitorPresenter.class)
+	void error(String message);
+
+	@Event(handlers = MonitorPresenter.class)
+	void info(String message);
+	
+	@Event(handlers = MonitorPresenter.class)
+	void trace(String message);
 }

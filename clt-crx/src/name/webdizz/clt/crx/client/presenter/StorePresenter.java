@@ -5,7 +5,7 @@ package name.webdizz.clt.crx.client.presenter;
 
 import java.util.List;
 
-import name.webdizz.clt.crx.client.Alert;
+import name.webdizz.clt.crx.client.ExtEventBus;
 import name.webdizz.clt.crx.client.db.LocalDataService;
 import name.webdizz.clt.crx.client.db.Translation;
 import name.webdizz.clt.crx.client.event.message.StoreTranslationMessage;
@@ -15,7 +15,6 @@ import com.google.code.gwt.database.client.service.RowIdListCallback;
 import com.google.code.gwt.database.client.service.VoidCallback;
 import com.google.gwt.core.client.GWT;
 import com.mvp4g.client.annotation.Presenter;
-import com.mvp4g.client.event.EventBus;
 import com.mvp4g.client.presenter.BasePresenter;
 
 /**
@@ -24,7 +23,7 @@ import com.mvp4g.client.presenter.BasePresenter;
  */
 @Presenter(view = StorePresenter.StorePresenterView.class)
 public class StorePresenter extends
-		BasePresenter<StorePresenter.IStorePresenterView, EventBus> {
+		BasePresenter<StorePresenter.IStorePresenterView, ExtEventBus> {
 
 	interface IStorePresenterView {
 	}
@@ -37,8 +36,8 @@ public class StorePresenter extends
 	public StorePresenter() {
 		service.initDatabase(new VoidCallback() {
 			public void onFailure(DataServiceException error) {
-				// TODO: should have more suitable error reporting approach
-				Alert.info(error.getMessage());
+				eventBus.error("StorePresenter.initDatabase() - "
+						+ error.getMessage());
 			}
 
 			public void onSuccess() {
@@ -54,23 +53,21 @@ public class StorePresenter extends
 	 *            the {@link StoreTranslationMessage} contains data to store
 	 */
 	public void onStoreTranslation(StoreTranslationMessage message) {
-		Alert.info(message.getTranslateable());
 		Translation translation = Translation.instance();
 		translation.setText(message.getTranslateable());
 		translation.setTranslation(message.getTranslation());
 		// TODO: those attributes should be resolved from app
 		translation.setDest("ua");
 		translation.setSrc("en");
-		Alert.info("te be stored");
 		service.storeTranslation(translation, new RowIdListCallback() {
 
 			public void onFailure(DataServiceException error) {
-				// TODO: should have more suitable error reporting approach
-				Alert.info(error.getMessage());
+				eventBus.error("StorePresenter.storeTranslation() - "
+						+ error.getMessage());
 			}
 
 			public void onSuccess(List<Integer> rowIds) {
-				Alert.info("Translation was stored. " + rowIds.size());
+				eventBus.info("Translation was stored. " + rowIds.size());
 			}
 		});
 	}
