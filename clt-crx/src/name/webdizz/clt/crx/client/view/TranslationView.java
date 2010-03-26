@@ -27,15 +27,22 @@ public class TranslationView extends Composite implements ITranslationView {
 
 	@UiField
 	SpanElement translatedText;
+	
+	@UiField
+	public
+	SpanElement translation;
 
 	public TranslationView() {
 		initWidget(uiBinder.createAndBindUi(this));
-
-		// Can access @UiField after calling createAndBindUi
 	}
 
 	public void setTranslatedText(final String text) {
 		translatedText.setInnerText(text);
+		translation.setAttribute("translation", text);
+	}
+	
+	public void setTranslateableText(final String text) {
+		translation.setAttribute("translateable", text);
 	}
 
 	public Widget asWidget() {

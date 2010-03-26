@@ -44,6 +44,7 @@
 				wrapper.innerHTML = jsonParse(m.widget);
 				wrapper.style['border-color'] = 'red';
 				performPositioning(wrapper, m.message);
+				assignStoreTranslationClickHandler();
 			break;
 		}
 	};
@@ -60,6 +61,19 @@
 		}
 		elem.style.left = message.offsetX + 40 + 'px';
 	};
+	
+	var assignStoreTranslationClickHandler = function(){
+		var btn = document.getElementById('cltStoreWord');
+		btn.addEventListener('click', function(evt) {
+			var data = document.getElementById('cltTranslationHolder').childNodes[1];
+			port.postMessage({
+				type: 'StoreTranslationMessage',
+				translation: data.getAttribute('translation'),
+				translateable: data.getAttribute('translateable')
+			});
+		});
+	};
+	//add messaging listener handler
 	chrome.extension.onRequest.addListener(connectionHandler);
 }());
 
