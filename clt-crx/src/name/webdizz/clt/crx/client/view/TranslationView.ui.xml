@@ -4,7 +4,8 @@
 	<g:HTMLPanel>
 		<div style="background-color: #363636; white-space: nowrap; background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0%, #000), color-stop(50%, #363636), color-stop(100%, #000)); overflow: visible !important; -webkit-border-radius: 10px !important;border-color: #000000 !important;opacity: 0.8 !important;color: #fafafa !important;padding: 8px !important; min-height: 30px; min-width: 100px;">
 			Translated to: <strong><span ui:field="translatedText" /></strong><br/>
-			<span id="cltStoreWord" style="cursor:pointer;">Store this word</span>
+			<span id="cltStoreWord" style="cursor:pointer;">Store this word</span><br/>
+			<span id="cltLoadWords" style="cursor:pointer;">Load words</span><br/>
 			<span id="cltTranslationHolder" style="display:none;">
 				<span ui:field="translation" />
 			</span>
