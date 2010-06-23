@@ -1,0 +1,5 @@
+#Wed Jun 23 14:12:11 EEST 2010
+eclipse.preferences.version=1
+jarsExcludedFromWebInfLib=/home/webdizz/.dev/projects/clt/clt/clt-crx/lib/commons-configuration-1.6.jar|/home/webdizz/.dev/projects/clt/clt/clt-crx/lib/commons-lang-2.4.jar|/home/webdizz/.dev/projects/clt/clt/clt-crx/lib/gwt-html5-database.jar|/home/webdizz/.dev/projects/clt/clt/clt-crx/lib/gwt-language.jar|/home/webdizz/.dev/projects/clt/clt/clt-crx/lib/mvp4g-1.1.0.jar
+warSrcDir=war
+warSrcDirIsOutput=true
