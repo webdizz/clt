@@ -14,23 +14,22 @@ import com.mvp4g.client.Mvp4gModule;
 /**
  * The Chrome extension background page script.
  */
-@Extension.ManifestInfo(name = "CLT (by webdizz)", description = "Learn words simpler while browsing internet.", version = "0.1", permissions = {
-		"tabs", "http://ajax.googleapis.com/*", "http://*.google.com/*",
-		"http://google.com/*", "http://*/*", "https://*/*" }, icons = {
-		"resources/icon16.png", "resources/icon32.png", "resources/icon48.png",
+@Extension.ManifestInfo(name = "CLT (by webdizz)", description = "Learn words simpler while browsing internet.", version = BackgroundPage.VERSION, permissions = {
+		"tabs", "http://ajax.googleapis.com/*", "http://*.google.com/*", "http://google.com/*", "http://*/*",
+		"https://*/*" }, icons = { "resources/icon16.png", "resources/icon32.png", "resources/icon48.png",
 		"resources/icon128.png" })
-public abstract class BackgroundPage extends Extension {
+public class BackgroundPage extends Extension {
 
-	private final class ChangeTabListener
-			implements
+	public static final String VERSION = "0.1";
+
+	private final class ChangeTabListener implements
 			com.google.gwt.chrome.crx.client.events.TabSelectionChangedEvent.Listener {
 		public void onTabSelectionChanged(int tabId, Data changedProps) {
 			executeScript(tabId);
 		}
 	}
 
-	static Console CONSOLE = Chrome.getExtension().getBackgroundPage()
-			.getConsole();
+	static Console CONSOLE = Chrome.getExtension().getBackgroundPage().getConsole();
 
 	/**
 	 * Our entry point function. All things start here.
@@ -48,16 +47,19 @@ public abstract class BackgroundPage extends Extension {
 
 		Tabs.getOnSelectionChangedEvent().addListener(new ChangeTabListener());
 
-		Chrome.getExtension().getOnConnectEvent().addListener(
-				new ConnectEventHandler((ExtEventBus) module.getEventBus()));
+		Chrome.getExtension().getOnConnectEvent()
+				.addListener(new ConnectEventHandler((ExtEventBus) module.getEventBus()));
 	}
 
 	/**
 	 * @param tabId
 	 */
 	private void executeScript(int tabId) {
-		Tabs.executeScript(tabId, ExecutionDetails.forFile(
-				ExtensionInitializer.JS_FILE, true));
+		Tabs.executeScript(tabId, ExecutionDetails.forFile(ExtensionInitializer.JS_FILE, true));
+	}
+
+	public String getVersion() {
+		return VERSION;
 	}
 
 }
