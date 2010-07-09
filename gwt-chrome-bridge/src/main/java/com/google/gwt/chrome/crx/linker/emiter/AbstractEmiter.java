@@ -5,6 +5,7 @@ package com.google.gwt.chrome.crx.linker.emiter;
 
 import java.util.List;
 
+import com.google.gwt.chrome.crx.client.BrowserAction;
 import com.google.gwt.core.ext.Generator;
 import com.google.gwt.user.rebind.SourceWriter;
 
@@ -14,7 +15,15 @@ import com.google.gwt.user.rebind.SourceWriter;
  */
 public abstract class AbstractEmiter implements Emiter {
 
-	protected void emitIcons(List<String> iconNames, List<String> iconPaths, SourceWriter sw) {
+	/**
+	 * Emits icons for the {@link BrowserAction}.
+	 * 
+	 * @param sw
+	 *            the {@link SourceWriter}
+	 * @param iconNames
+	 * @param iconPaths
+	 */
+	protected void emitIcons(final SourceWriter sw, final List<String> iconNames, final List<String> iconPaths) {
 		// Fill in the methods for kicking back the BrowserAction Icons.
 		for (int i = 0; i < iconNames.size(); i++) {
 			String iconName = Generator.escape(iconNames.get(i));
