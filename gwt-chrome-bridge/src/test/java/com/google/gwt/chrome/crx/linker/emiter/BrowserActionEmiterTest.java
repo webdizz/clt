@@ -19,7 +19,6 @@ import org.mockito.MockitoAnnotations;
 
 import com.google.gwt.chrome.crx.client.BrowserAction;
 import com.google.gwt.chrome.crx.client.Icon;
-import com.google.gwt.chrome.crx.linker.UserType;
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
@@ -76,7 +75,7 @@ public class BrowserActionEmiterTest {
 
 	@Test
 	public void shouldResolveIconFromMethodNameIfIconMethodWithoutSourceAnnotation() throws UnableToCompleteException {
-		JMethod jmethod = mockIconMethodsWithoutIcon(UserType.ICON_USER_TYPE.type());
+		JMethod jmethod = mockIconMethodsWithoutIcon(Emiter.ICON_USER_TYPE);
 
 		invokeCodeEmition();
 		verify(jmethod, times(2)).getName();
@@ -84,7 +83,7 @@ public class BrowserActionEmiterTest {
 
 	@Test
 	public void shouldResolveIconFromMethodSourceAnnotation() throws UnableToCompleteException {
-		JMethod jmethod = mockIconMethodsWithoutIcon(UserType.ICON_USER_TYPE.type());
+		JMethod jmethod = mockIconMethodsWithoutIcon(Emiter.ICON_USER_TYPE);
 
 		Icon.Source iconSource = mock(Icon.Source.class);
 		when(jmethod.getAnnotation(Icon.Source.class)).thenReturn(iconSource);
@@ -136,7 +135,7 @@ public class BrowserActionEmiterTest {
 	private void mockIconMethodsWithIcon() {
 		JMethod jmethod = mock(JMethod.class);
 		JType jtype = mock(JType.class);
-		when(jtype.getQualifiedSourceName()).thenReturn(UserType.ICON_USER_TYPE.type());
+		when(jtype.getQualifiedSourceName()).thenReturn(Emiter.ICON_USER_TYPE);
 		when(jtype.getSimpleSourceName()).thenReturn(TYPE_NAME);
 		when(jmethod.getReturnType()).thenReturn(jtype);
 		when(jmethod.getName()).thenReturn("methodName");

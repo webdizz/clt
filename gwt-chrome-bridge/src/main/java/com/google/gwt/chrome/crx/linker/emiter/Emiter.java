@@ -16,6 +16,8 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
  */
 public interface Emiter {
 
+	static final String ICON_USER_TYPE = "com.google.gwt.chrome.crx.client.Icon";
+	
 	String emit(TreeLogger logger, GeneratorContext context, JClassType userType, String typeName)
 			throws UnableToCompleteException;
 

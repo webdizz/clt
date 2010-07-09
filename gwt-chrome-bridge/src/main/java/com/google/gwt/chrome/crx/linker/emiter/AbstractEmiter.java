@@ -5,7 +5,6 @@ package com.google.gwt.chrome.crx.linker.emiter;
 
 import java.util.List;
 
-import com.google.gwt.chrome.crx.linker.UserType;
 import com.google.gwt.core.ext.Generator;
 import com.google.gwt.user.rebind.SourceWriter;
 
@@ -20,10 +19,10 @@ public abstract class AbstractEmiter implements Emiter {
 		for (int i = 0; i < iconNames.size(); i++) {
 			String iconName = Generator.escape(iconNames.get(i));
 			String iconField = Generator.escape(iconName) + "_field";
-			sw.println("private " + UserType.ICON_USER_TYPE + " " + iconField + " = null;");
-			sw.println("public " + UserType.ICON_USER_TYPE + " " + iconName + "() {");
+			sw.println("private " + ICON_USER_TYPE + " " + iconField + " = null;");
+			sw.println("public " + ICON_USER_TYPE + " " + iconName + "() {");
 			sw.println("  if (" + iconField + " == null) {");
-			sw.println("    " + iconField + " = new " + UserType.ICON_USER_TYPE + "(" + i + ", \""
+			sw.println("    " + iconField + " = new " + ICON_USER_TYPE + "(" + i + ", \""
 					+ Generator.escape(iconPaths.get(i)) + "\");");
 			sw.println("  }");
 			sw.println("  return " + iconField + ";");
