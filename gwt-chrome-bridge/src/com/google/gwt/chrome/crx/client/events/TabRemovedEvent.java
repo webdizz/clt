@@ -25,28 +25,28 @@ import com.google.gwt.core.client.JavaScriptObject;
  * >Tabs API</a>
  */
 public final class TabRemovedEvent extends Event {
-  /**
-   * Listener interface for TabRemovedEvent.
-   */
-  public interface Listener {
-    void onTabRemoved(int tabId);
-  }
+	/**
+	 * Listener interface for TabRemovedEvent.
+	 */
+	public interface Listener {
+		void onTabRemoved(int tabId);
+	}
 
-  protected TabRemovedEvent() {
-  }
+	protected TabRemovedEvent() {
+	}
 
-  public ListenerHandle addListener(Listener listener) {
-    return new ListenerHandle(this, addListenerImpl(listener));
-  }
+	public ListenerHandle addListener(Listener listener) {
+		return new ListenerHandle(this, addListenerImpl(listener));
+	}
 
-  private native JavaScriptObject addListenerImpl(Listener listener) /*-{
-    var handle = function(tabId) {
-      listener.
-          @com.google.gwt.chrome.crx.client.events.TabRemovedEvent.Listener::onTabRemoved(I)
-          (tabId);
-    }
+	private native JavaScriptObject addListenerImpl(Listener listener) /*-{
+																		var handle = function(tabId) {
+																		listener.
+																		@com.google.gwt.chrome.crx.client.events.TabRemovedEvent.Listener::onTabRemoved(I)
+																		(tabId);
+																		}
 
-    this.addListener(handle);
-    return handle;
-  }-*/;
+																		this.addListener(handle);
+																		return handle;
+																		}-*/;
 }

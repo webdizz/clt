@@ -22,65 +22,65 @@ import java.io.Writer;
  * JSON boolean.
  */
 public class JsonBoolean implements JsonValue {
-  public static final JsonBoolean FALSE = new JsonBoolean(false);
+	public static final JsonBoolean FALSE = new JsonBoolean(false);
 
-  public static final JsonBoolean TRUE = new JsonBoolean(true);
+	public static final JsonBoolean TRUE = new JsonBoolean(true);
 
-  public static JsonBoolean create(boolean value) {
-    return value ? TRUE : FALSE;
-  }
+	public static JsonBoolean create(boolean value) {
+		return value ? TRUE : FALSE;
+	}
 
-  private final boolean value;
+	private final boolean value;
 
-  private JsonBoolean(boolean value) {
-    this.value = value;
-  }
+	private JsonBoolean(boolean value) {
+		this.value = value;
+	}
 
-  public JsonArray asArray() {
-    return null;
-  }
+	public JsonArray asArray() {
+		return null;
+	}
 
-  public JsonBoolean asBoolean() {
-    return this;
-  }
+	public JsonBoolean asBoolean() {
+		return this;
+	}
 
-  public JsonNumber asNumber() {
-    return null;
-  }
+	public JsonNumber asNumber() {
+		return null;
+	}
 
-  public JsonObject asObject() {
-    return null;
-  }
+	public JsonObject asObject() {
+		return null;
+	}
 
-  public JsonString asString() {
-    return null;
-  }
+	public JsonString asString() {
+		return null;
+	}
 
-  public boolean getBoolean() {
-    return value;
-  }
+	public boolean getBoolean() {
+		return value;
+	}
 
-  public boolean isArray() {
-    return false;
-  }
+	public boolean isArray() {
+		return false;
+	}
 
-  public boolean isBoolean() {
-    return true;
-  }
+	public boolean isBoolean() {
+		return true;
+	}
 
-  public boolean isNumber() {
-    return false;
-  }
+	public boolean isNumber() {
+		return false;
+	}
 
-  public boolean isObject() {
-    return false;
-  }
+	public boolean isObject() {
+		return false;
+	}
 
-  public boolean isString() {
-    return false;
-  }
+	public boolean isString() {
+		return false;
+	}
 
-  public void write(Writer writer) throws IOException {
-    writer.write(Boolean.toString(value));
-  }
+	public void write(Writer writer) throws IOException {
+		writer.write(Boolean.toString(value));
+	}
 }

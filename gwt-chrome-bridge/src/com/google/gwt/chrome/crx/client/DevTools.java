@@ -26,54 +26,54 @@ import com.google.gwt.core.client.JavaScriptObject;
  */
 public class DevTools {
 
-  /**
-   * An object which allows subscription to different event types on a
-   * particular tab.
-   */
-  public static class TabEvents extends JavaScriptObject {
-    protected TabEvents() {
-    }
+	/**
+	 * An object which allows subscription to different event types on a
+	 * particular tab.
+	 */
+	public static class TabEvents extends JavaScriptObject {
+		protected TabEvents() {
+		}
 
-    public final native DevToolsPageEvent getPageEvent() /*-{
-      return this.onPageEvent;
-    }-*/;
+		public final native DevToolsPageEvent getPageEvent() /*-{
+																return this.onPageEvent;
+																}-*/;
 
-    public final native DevToolsTabCloseEvent getTabCloseEvent() /*-{
-      return this.onTabCloseEvent;
-    }-*/;
+		public final native DevToolsTabCloseEvent getTabCloseEvent() /*-{
+																		return this.onTabCloseEvent;
+																		}-*/;
 
-    public final native DevToolsTabUrlChangeEvent getTabUrlChangeEvent() /*-{
-      return this.onTabUrlChangeEvent;
-    }-*/;
-  }
+		public final native DevToolsTabUrlChangeEvent getTabUrlChangeEvent() /*-{
+																				return this.onTabUrlChangeEvent;
+																				}-*/;
+	}
 
-  /**
-   * Returns an object that allows subscription to different event types for a
-   * particular tab.
-   * 
-   * @param tabId the tab's id
-   * @return
-   */
-  public static TabEvents getTabEvents(int tabId) {
-    // Clients should check isEnabled() before invoking this.
-    assert isEnabled() : "devtools api is not enabled.";
-    return getTabEventsImpl(tabId);
-  }
+	/**
+	 * Returns an object that allows subscription to different event types for a
+	 * particular tab.
+	 * 
+	 * @param tabId
+	 *            the tab's id
+	 * @return
+	 */
+	public static TabEvents getTabEvents(int tabId) {
+		// Clients should check isEnabled() before invoking this.
+		assert isEnabled() : "devtools api is not enabled.";
+		return getTabEventsImpl(tabId);
+	}
 
-  public static native boolean isEnabled() /*-{
-    return !!chrome.devtools;
-  }-*/;
+	public static native boolean isEnabled() /*-{
+												return !!chrome.devtools;
+												}-*/;
 
-  public static native void setProfilingOptions(int tabId,
-      boolean enableStackTraces, boolean enableCpuProfiling) /*-{
-    chrome.devtools.setProfilingOptions(tabId, 
-        {
-          enableStackTraces: enableStackTraces,
-          enableCPUProfiling: enableCpuProfiling
-        });
-  }-*/;
+	public static native void setProfilingOptions(int tabId, boolean enableStackTraces, boolean enableCpuProfiling) /*-{
+																													chrome.devtools.setProfilingOptions(tabId, 
+																													{
+																													enableStackTraces: enableStackTraces,
+																													enableCPUProfiling: enableCpuProfiling
+																													});
+																													}-*/;
 
-  private static native TabEvents getTabEventsImpl(int tabId) /*-{
-    return chrome.devtools.getTabEvents(tabId);
-  }-*/;
+	private static native TabEvents getTabEventsImpl(int tabId) /*-{
+																return chrome.devtools.getTabEvents(tabId);
+																}-*/;
 }

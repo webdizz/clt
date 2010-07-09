@@ -21,7 +21,8 @@ import com.google.gwt.core.client.JavaScriptObject;
 /**
  * PageActions API.
  * 
- * See documentation at: <a href="http://dev.chromium.org/developers/design-documents/extensions/page-actions-api"
+ * See documentation at: <a href=
+ * "http://dev.chromium.org/developers/design-documents/extensions/page-actions-api"
  * >Page Actions</a>
  * 
  * The API is described in JSON form in the Chrome source:
@@ -29,24 +30,22 @@ import com.google.gwt.core.client.JavaScriptObject;
  */
 public class PageActions extends JavaScriptObject {
 
-  public static final native void disableForTab(String pageActionId, int tabId,
-      String url) /*-{
-    chrome.pageActions.disableForTab(pageActionId, {tabId: tabId, url: url});
-  }-*/;
+	public static final native void disableForTab(String pageActionId, int tabId, String url) /*-{
+																								chrome.pageActions.disableForTab(pageActionId, {tabId: tabId, url: url});
+																								}-*/;
 
-  public static final native void enableForTab(String pageActionId, int tabId,
-      String url, String title, int iconId) /*-{
-    chrome.pageActions.enableForTab(pageActionId,
-        {tabId: tabId,
-         url: url,
-         title: title,
-         iconId: iconId});
-  }-*/;
+	public static final native void enableForTab(String pageActionId, int tabId, String url, String title, int iconId) /*-{
+																														chrome.pageActions.enableForTab(pageActionId,
+																														{tabId: tabId,
+																														url: url,
+																														title: title,
+																														iconId: iconId});
+																														}-*/;
 
-  public static native PageActionEvent getPageActionEvent(String pageActionId) /*-{
-    return chrome.pageActions[pageActionId];
-  }-*/;
+	public static native PageActionEvent getPageActionEvent(String pageActionId) /*-{
+																					return chrome.pageActions[pageActionId];
+																					}-*/;
 
-  protected PageActions() {
-  }
+	protected PageActions() {
+	}
 }

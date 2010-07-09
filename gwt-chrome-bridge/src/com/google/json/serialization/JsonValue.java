@@ -22,72 +22,72 @@ import java.io.Writer;
  * JSON placeholder for null.
  */
 public interface JsonValue {
-  JsonValue NULL = new JsonValue() {
+	JsonValue NULL = new JsonValue() {
 
-    public JsonArray asArray() {
-      return null;
-    }
+		public JsonArray asArray() {
+			return null;
+		}
 
-    public JsonBoolean asBoolean() {
-      return null;
-    }
+		public JsonBoolean asBoolean() {
+			return null;
+		}
 
-    public JsonNumber asNumber() {
-      return null;
-    }
+		public JsonNumber asNumber() {
+			return null;
+		}
 
-    public JsonObject asObject() {
-      return null;
-    }
+		public JsonObject asObject() {
+			return null;
+		}
 
-    public JsonString asString() {
-      return null;
-    }
+		public JsonString asString() {
+			return null;
+		}
 
-    public boolean isArray() {
-      return false;
-    }
+		public boolean isArray() {
+			return false;
+		}
 
-    public boolean isBoolean() {
-      return false;
-    }
+		public boolean isBoolean() {
+			return false;
+		}
 
-    public boolean isNumber() {
-      return false;
-    }
+		public boolean isNumber() {
+			return false;
+		}
 
-    public boolean isObject() {
-      return false;
-    }
+		public boolean isObject() {
+			return false;
+		}
 
-    public boolean isString() {
-      return false;
-    }
+		public boolean isString() {
+			return false;
+		}
 
-    public void write(Writer writer) throws IOException {
-      writer.append("null");
-    }
-  };
+		public void write(Writer writer) throws IOException {
+			writer.append("null");
+		}
+	};
 
-  JsonArray asArray();
+	JsonArray asArray();
 
-  JsonBoolean asBoolean();
+	JsonBoolean asBoolean();
 
-  JsonNumber asNumber();
+	JsonNumber asNumber();
 
-  JsonObject asObject();
+	JsonObject asObject();
 
-  JsonString asString();
+	JsonString asString();
 
-  boolean isArray();
+	boolean isArray();
 
-  boolean isBoolean();
+	boolean isBoolean();
 
-  boolean isNumber();
+	boolean isNumber();
 
-  boolean isObject();
+	boolean isObject();
 
-  boolean isString();
+	boolean isString();
 
-  void write(Writer writer) throws IOException;
+	void write(Writer writer) throws IOException;
 }

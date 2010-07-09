@@ -59,18 +59,13 @@ public class ComponentGenerator extends Generator {
 	private static final String PLUGIN_USER_TYPE = "com.google.gwt.chrome.crx.client.Plugin";
 	private static final String TOOLSTRIP_USER_TYPE = "com.google.gwt.chrome.crx.client.ToolStrip";
 
-	private static String emitBrowserActionCode(TreeLogger logger,
-			GeneratorContext context, JClassType userType, String name,
-			List<String> icons, List<String> iconPaths) {
-		final String subclassName = userType.getSimpleSourceName().replace('.',
-				'_')
-				+ "_generated";
+	private static String emitBrowserActionCode(TreeLogger logger, GeneratorContext context, JClassType userType,
+			String name, List<String> icons, List<String> iconPaths) {
+		final String subclassName = userType.getSimpleSourceName().replace('.', '_') + "_generated";
 		final String packageName = userType.getPackage().getName();
-		final ClassSourceFileComposerFactory f = new ClassSourceFileComposerFactory(
-				packageName, subclassName);
+		final ClassSourceFileComposerFactory f = new ClassSourceFileComposerFactory(packageName, subclassName);
 		f.setSuperclass(userType.getQualifiedSourceName());
-		final PrintWriter pw = context.tryCreate(logger, packageName,
-				subclassName);
+		final PrintWriter pw = context.tryCreate(logger, packageName, subclassName);
 		if (pw != null) {
 			final SourceWriter sw = f.createSourceWriter(context, pw);
 
@@ -87,32 +82,26 @@ public class ComponentGenerator extends Generator {
 		return f.getCreatedClassName();
 	}
 
-	private static String emitComponent(TreeLogger logger,
-			GeneratorContext context, String typeName)
+	private static String emitComponent(TreeLogger logger, GeneratorContext context, String typeName)
 			throws UnableToCompleteException {
 		final TypeOracle typeOracle = context.getTypeOracle();
 
-		final JClassType toolStripType = typeOracle
-				.findType(TOOLSTRIP_USER_TYPE);
+		final JClassType toolStripType = typeOracle.findType(TOOLSTRIP_USER_TYPE);
 		assert toolStripType != null;
 
 		final JClassType pageType = typeOracle.findType(PAGE_USER_TYPE);
 		assert pageType != null;
 
-		final JClassType pageActionType = typeOracle
-				.findType(PAGEACTION_USER_TYPE);
+		final JClassType pageActionType = typeOracle.findType(PAGEACTION_USER_TYPE);
 		assert pageActionType != null;
 
-		final JClassType browserActionType = typeOracle
-				.findType(BROWSERACTION_USER_TYPE);
+		final JClassType browserActionType = typeOracle.findType(BROWSERACTION_USER_TYPE);
 		assert browserActionType != null;
 
-		final JClassType contentScriptType = typeOracle
-				.findType(CONTENTSCRIPT_USER_TYPE);
+		final JClassType contentScriptType = typeOracle.findType(CONTENTSCRIPT_USER_TYPE);
 		assert contentScriptType != null;
 
-		final JClassType extensionScriptType = typeOracle
-				.findType(EXTSCRIPT_USER_TYPE);
+		final JClassType extensionScriptType = typeOracle.findType(EXTSCRIPT_USER_TYPE);
 		assert extensionScriptType != null;
 
 		final JClassType pluginType = typeOracle.findType(PLUGIN_USER_TYPE);
@@ -136,12 +125,10 @@ public class ComponentGenerator extends Generator {
 			} else if (classType.isAssignableTo(pageActionType)) {
 				return processPageAction(logger, context, classType, typeName);
 			} else if (classType.isAssignableTo(browserActionType)) {
-				return processBrowserAction(logger, context, classType,
-						typeName);
+				return processBrowserAction(logger, context, classType, typeName);
 			}
 			// TODO(knorton): Better error message.
-			logger.log(TreeLogger.ERROR, "I can't generate one of those ("
-					+ typeName + ")");
+			logger.log(TreeLogger.ERROR, "I can't generate one of those (" + typeName + ")");
 			throw new UnableToCompleteException();
 		} catch (NotFoundException e) {
 			// TODO(knorton): Better error message.
@@ -150,13 +137,11 @@ public class ComponentGenerator extends Generator {
 		}
 	}
 
-	private static void emitComponentPage(TreeLogger logger,
-			GeneratorContext context, String name, String path)
+	private static void emitComponentPage(TreeLogger logger, GeneratorContext context, String name, String path)
 			throws UnableToCompleteException {
 		final OutputStream stream = context.tryCreateResource(logger, path);
 		if (stream != null) {
-			final PrintWriter writer = new PrintWriter(new OutputStreamWriter(
-					stream));
+			final PrintWriter writer = new PrintWriter(new OutputStreamWriter(stream));
 			writer.println("<html>");
 			writer.println("<head></head>");
 			writer.println("<body>");
@@ -173,25 +158,18 @@ public class ComponentGenerator extends Generator {
 		}
 	}
 
-	private static String emitComponentPageCode(TreeLogger logger,
-			GeneratorContext context, JClassType userType) {
-		final String subclassName = userType.getSimpleSourceName().replace('.',
-				'_')
-				+ "_generated";
+	private static String emitComponentPageCode(TreeLogger logger, GeneratorContext context, JClassType userType) {
+		final String subclassName = userType.getSimpleSourceName().replace('.', '_') + "_generated";
 		final String packageName = userType.getPackage().getName();
-		final ClassSourceFileComposerFactory f = new ClassSourceFileComposerFactory(
-				packageName, subclassName);
+		final ClassSourceFileComposerFactory f = new ClassSourceFileComposerFactory(packageName, subclassName);
 		f.setSuperclass(userType.getQualifiedSourceName());
-		final PrintWriter pw = context.tryCreate(logger, packageName,
-				subclassName);
+		final PrintWriter pw = context.tryCreate(logger, packageName, subclassName);
 		if (pw != null) {
 			final SourceWriter sw = f.createSourceWriter(context, pw);
 
 			// Write a default constructor that simply calls connect.
 			sw.println("public " + subclassName + "() {");
-			sw
-					.println("  connect(\"" + userType.getSimpleSourceName()
-							+ "\");");
+			sw.println("  connect(\"" + userType.getSimpleSourceName() + "\");");
 			sw.println("}");
 
 			sw.commit(logger);
@@ -199,37 +177,29 @@ public class ComponentGenerator extends Generator {
 		return f.getCreatedClassName();
 	}
 
-	private static void emitIcons(List<String> iconNames,
-			List<String> iconPaths, SourceWriter sw) {
+	private static void emitIcons(List<String> iconNames, List<String> iconPaths, SourceWriter sw) {
 		// Fill in the methods for kicking back the BrowserAction Icons.
 		for (int i = 0; i < iconNames.size(); i++) {
 			String iconName = Generator.escape(iconNames.get(i));
 			String iconField = Generator.escape(iconName) + "_field";
-			sw.println("private " + ICON_USER_TYPE + " " + iconField
-					+ " = null;");
+			sw.println("private " + ICON_USER_TYPE + " " + iconField + " = null;");
 			sw.println("public " + ICON_USER_TYPE + " " + iconName + "() {");
 			sw.println("  if (" + iconField + " == null) {");
-			sw.println("    " + iconField + " = new " + ICON_USER_TYPE + "("
-					+ i + ", \"" + Generator.escape(iconPaths.get(i)) + "\");");
+			sw.println("    " + iconField + " = new " + ICON_USER_TYPE + "(" + i + ", \""
+					+ Generator.escape(iconPaths.get(i)) + "\");");
 			sw.println("  }");
 			sw.println("  return " + iconField + ";");
 			sw.println("}");
 		}
 	}
 
-	private static String emitPageActionCode(TreeLogger logger,
-			GeneratorContext context, JClassType userType, String pageActionId,
-			String name, List<String> icons, List<String> iconPaths,
-			String popup) {
-		final String subclassName = userType.getSimpleSourceName().replace('.',
-				'_')
-				+ "_generated";
+	private static String emitPageActionCode(TreeLogger logger, GeneratorContext context, JClassType userType,
+			String pageActionId, String name, List<String> icons, List<String> iconPaths, String popup) {
+		final String subclassName = userType.getSimpleSourceName().replace('.', '_') + "_generated";
 		final String packageName = userType.getPackage().getName();
-		final ClassSourceFileComposerFactory f = new ClassSourceFileComposerFactory(
-				packageName, subclassName);
+		final ClassSourceFileComposerFactory f = new ClassSourceFileComposerFactory(packageName, subclassName);
 		f.setSuperclass(userType.getQualifiedSourceName());
-		final PrintWriter pw = context.tryCreate(logger, packageName,
-				subclassName);
+		final PrintWriter pw = context.tryCreate(logger, packageName, subclassName);
 		if (pw != null) {
 			final SourceWriter sw = f.createSourceWriter(context, pw);
 
@@ -253,14 +223,11 @@ public class ComponentGenerator extends Generator {
 		return f.getCreatedClassName();
 	}
 
-	private static String processBrowserAction(TreeLogger logger,
-			GeneratorContext context, JClassType userType, String typeName)
-			throws UnableToCompleteException {
-		BrowserAction.ManifestInfo spec = userType
-				.getAnnotation(BrowserAction.ManifestInfo.class);
+	private static String processBrowserAction(TreeLogger logger, GeneratorContext context, JClassType userType,
+			String typeName) throws UnableToCompleteException {
+		BrowserAction.ManifestInfo spec = userType.getAnnotation(BrowserAction.ManifestInfo.class);
 		if (spec == null) {
-			logger.log(TreeLogger.ERROR, "BrowserAction (" + typeName
-					+ ") must be annotated with a Specificaiton.");
+			logger.log(TreeLogger.ERROR, "BrowserAction (" + typeName + ") must be annotated with a Specificaiton.");
 			throw new UnableToCompleteException();
 		}
 		JMethod[] methods = userType.getMethods();
@@ -272,12 +239,10 @@ public class ComponentGenerator extends Generator {
 		// the path information. May even consider strong names. See what
 		// ClientBundle/ImageResource does.
 		for (int i = 0; i < methods.length; i++) {
-			if (methods[i].getReturnType().getQualifiedSourceName().equals(
-					ICON_USER_TYPE)) {
+			if (methods[i].getReturnType().getQualifiedSourceName().equals(ICON_USER_TYPE)) {
 				JMethod method = methods[i];
 				String iconFileName;
-				Icon.Source iconSource = method
-						.getAnnotation(Icon.Source.class);
+				Icon.Source iconSource = method.getAnnotation(Icon.Source.class);
 				if (iconSource == null) {
 					iconFileName = method.getName() + ".png";
 				} else {
@@ -288,47 +253,35 @@ public class ComponentGenerator extends Generator {
 			}
 		}
 		if (iconFileNames.size() == 0) {
-			logger.log(TreeLogger.ERROR,
-					"BrowserActions must have at least one Icon (" + typeName
-							+ ")");
+			logger.log(TreeLogger.ERROR, "BrowserActions must have at least one Icon (" + typeName + ")");
 			throw new UnableToCompleteException();
 		}
-		context.commitArtifact(logger, new BrowserActionArtifact(spec.name(),
-				iconFileNames.toArray(new String[0]), spec.defaultIcon()));
-		return emitBrowserActionCode(logger, context, userType, spec.name(),
-				iconMethodNames, iconFileNames);
+		context.commitArtifact(logger, new BrowserActionArtifact(spec.name(), iconFileNames.toArray(new String[0]),
+				spec.defaultIcon()));
+		return emitBrowserActionCode(logger, context, userType, spec.name(), iconMethodNames, iconFileNames);
 	}
 
-	private static void processContentScript(TreeLogger logger,
-			GeneratorContext context, JClassType userType, String typeName)
-			throws UnableToCompleteException {
-		ManifestInfo spec = userType
-				.getAnnotation(ContentScript.ManifestInfo.class);
+	private static void processContentScript(TreeLogger logger, GeneratorContext context, JClassType userType,
+			String typeName) throws UnableToCompleteException {
+		ManifestInfo spec = userType.getAnnotation(ContentScript.ManifestInfo.class);
 		if (spec == null) {
-			logger.log(TreeLogger.ERROR, "ContentScript (" + typeName
-					+ ") must be annotated with a Specificaiton.");
+			logger.log(TreeLogger.ERROR, "ContentScript (" + typeName + ") must be annotated with a Specificaiton.");
 			throw new UnableToCompleteException();
 		}
-		context.commitArtifact(logger, new ContentScriptArtifact(spec.path(),
-				spec.whiteList(), spec.runAt()));
+		context.commitArtifact(logger, new ContentScriptArtifact(spec.path(), spec.whiteList(), spec.runAt()));
 	}
 
-	private static void processExtensionScript(TreeLogger logger,
-			GeneratorContext context, JClassType userType, String typeName)
-			throws UnableToCompleteException {
-		ExtensionScript.ManifestInfo spec = userType
-				.getAnnotation(ExtensionScript.ManifestInfo.class);
+	private static void processExtensionScript(TreeLogger logger, GeneratorContext context, JClassType userType,
+			String typeName) throws UnableToCompleteException {
+		ExtensionScript.ManifestInfo spec = userType.getAnnotation(ExtensionScript.ManifestInfo.class);
 		if (spec == null) {
-			logger.log(TreeLogger.ERROR, "ExtensionScript (" + typeName
-					+ ") must be annotated with a Specificaiton.");
+			logger.log(TreeLogger.ERROR, "ExtensionScript (" + typeName + ") must be annotated with a Specificaiton.");
 			throw new UnableToCompleteException();
 		}
-		context.commitArtifact(logger, new ExtensionScriptArtifact(spec.path(),
-				spec.script()));
+		context.commitArtifact(logger, new ExtensionScriptArtifact(spec.path(), spec.script()));
 	}
 
-	private static String processPage(TreeLogger logger,
-			GeneratorContext context, JClassType userType)
+	private static String processPage(TreeLogger logger, GeneratorContext context, JClassType userType)
 			throws UnableToCompleteException {
 		// TODO(knorton): The fact that we use the simple source name is a
 		// problem
@@ -342,14 +295,11 @@ public class ComponentGenerator extends Generator {
 		return emitComponentPageCode(logger, context, userType);
 	}
 
-	private static String processPageAction(TreeLogger logger,
-			GeneratorContext context, JClassType userType, String typeName)
-			throws UnableToCompleteException {
-		PageAction.ManifestInfo spec = userType
-				.getAnnotation(PageAction.ManifestInfo.class);
+	private static String processPageAction(TreeLogger logger, GeneratorContext context, JClassType userType,
+			String typeName) throws UnableToCompleteException {
+		PageAction.ManifestInfo spec = userType.getAnnotation(PageAction.ManifestInfo.class);
 		if (spec == null) {
-			logger.log(TreeLogger.ERROR, "PageAction (" + typeName
-					+ ") must be annotated with a Specificaiton.");
+			logger.log(TreeLogger.ERROR, "PageAction (" + typeName + ") must be annotated with a Specificaiton.");
 			throw new UnableToCompleteException();
 		}
 		JMethod[] methods = userType.getMethods();
@@ -361,12 +311,10 @@ public class ComponentGenerator extends Generator {
 		// the path information. May even consider strong names. See what
 		// ClientBundle/ImageResource does.
 		for (int i = 0; i < methods.length; i++) {
-			if (methods[i].getReturnType().getQualifiedSourceName().equals(
-					ICON_USER_TYPE)) {
+			if (methods[i].getReturnType().getQualifiedSourceName().equals(ICON_USER_TYPE)) {
 				JMethod method = methods[i];
 				String iconFileName;
-				Icon.Source iconSource = method
-						.getAnnotation(Icon.Source.class);
+				Icon.Source iconSource = method.getAnnotation(Icon.Source.class);
 				if (iconSource == null) {
 					iconFileName = method.getName() + ".png";
 				} else {
@@ -377,42 +325,34 @@ public class ComponentGenerator extends Generator {
 			}
 		}
 		if (iconFileNames.size() == 0) {
-			logger.log(TreeLogger.ERROR,
-					"PageActions must have at least one Icon (" + typeName
-							+ ")");
+			logger.log(TreeLogger.ERROR, "PageActions must have at least one Icon (" + typeName + ")");
 			throw new UnableToCompleteException();
 		}
 		if ("".equals(spec.popup())) {
-			context.commitArtifact(logger, new PageActionArtifact(spec
-					.pageActionId(), spec.name(), iconFileNames
-					.toArray(new String[0])));
+			context.commitArtifact(logger,
+					new PageActionArtifact(spec.pageActionId(), spec.name(), iconFileNames.toArray(new String[0])));
 		} else {
-			context.commitArtifact(logger, new PageActionArtifact(spec
-					.pageActionId(), spec.name(), iconFileNames
-					.toArray(new String[0]), spec.popup()));
+			context.commitArtifact(
+					logger,
+					new PageActionArtifact(spec.pageActionId(), spec.name(), iconFileNames.toArray(new String[0]), spec
+							.popup()));
 		}
 
-		return emitPageActionCode(logger, context, userType, spec
-				.pageActionId(), spec.name(), iconMethodNames, iconFileNames,
-				spec.popup());
+		return emitPageActionCode(logger, context, userType, spec.pageActionId(), spec.name(), iconMethodNames,
+				iconFileNames, spec.popup());
 	}
 
-	private static void processPlugin(TreeLogger logger,
-			GeneratorContext context, JClassType userType, String typeName)
+	private static void processPlugin(TreeLogger logger, GeneratorContext context, JClassType userType, String typeName)
 			throws UnableToCompleteException {
-		Plugin.ManifestInfo spec = userType
-				.getAnnotation(Plugin.ManifestInfo.class);
+		Plugin.ManifestInfo spec = userType.getAnnotation(Plugin.ManifestInfo.class);
 		if (spec == null) {
-			logger.log(TreeLogger.ERROR, "Plugin (" + typeName
-					+ ") must be annotated with a Specificaiton.");
+			logger.log(TreeLogger.ERROR, "Plugin (" + typeName + ") must be annotated with a Specificaiton.");
 			throw new UnableToCompleteException();
 		}
-		context.commitArtifact(logger, new PluginArtifact(spec.path(), spec
-				.isPublic()));
+		context.commitArtifact(logger, new PluginArtifact(spec.path(), spec.isPublic()));
 	}
 
-	private static String processToolStrip(TreeLogger logger,
-			GeneratorContext context, JClassType userType)
+	private static String processToolStrip(TreeLogger logger, GeneratorContext context, JClassType userType)
 			throws UnableToCompleteException {
 		String name = userType.getSimpleSourceName();
 		String path = name + ".html";
@@ -422,8 +362,8 @@ public class ComponentGenerator extends Generator {
 	}
 
 	@Override
-	public String generate(TreeLogger logger, GeneratorContext context,
-			String typeName) throws UnableToCompleteException {
+	public String generate(TreeLogger logger, GeneratorContext context, String typeName)
+			throws UnableToCompleteException {
 		return emitComponent(logger, context, typeName);
 	}
 }

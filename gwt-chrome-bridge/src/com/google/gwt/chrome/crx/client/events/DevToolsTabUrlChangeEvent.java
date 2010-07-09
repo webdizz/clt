@@ -23,28 +23,28 @@ import com.google.gwt.core.client.JavaScriptObject;
  */
 public class DevToolsTabUrlChangeEvent extends Event {
 
-  /**
-   * Invoked when the monitored tab navigates to a new url.
-   */
-  public interface Listener {
-    // TODO(knorton): This should be changed to take a String URL.
-    void onTabUrlChanged(JavaScriptObject object);
-  }
+	/**
+	 * Invoked when the monitored tab navigates to a new url.
+	 */
+	public interface Listener {
+		// TODO(knorton): This should be changed to take a String URL.
+		void onTabUrlChanged(JavaScriptObject object);
+	}
 
-  protected DevToolsTabUrlChangeEvent() {
-  }
+	protected DevToolsTabUrlChangeEvent() {
+	}
 
-  public final ListenerHandle addListener(Listener listener) {
-    return new ListenerHandle(this, addListenerImpl(listener));
-  }
+	public final ListenerHandle addListener(Listener listener) {
+		return new ListenerHandle(this, addListenerImpl(listener));
+	}
 
-  private native JavaScriptObject addListenerImpl(Listener listener) /*-{
-    var handle = function(object) {
-      listener.
-          @com.google.gwt.chrome.crx.client.events.DevToolsTabUrlChangeEvent$Listener::onTabUrlChanged(Lcom/google/gwt/core/client/JavaScriptObject;)
-          (object);
-    }
-    this.addListener(handle);
-    return handle;
-  }-*/;
+	private native JavaScriptObject addListenerImpl(Listener listener) /*-{
+																		var handle = function(object) {
+																		listener.
+																		@com.google.gwt.chrome.crx.client.events.DevToolsTabUrlChangeEvent$Listener::onTabUrlChanged(Lcom/google/gwt/core/client/JavaScriptObject;)
+																		(object);
+																		}
+																		this.addListener(handle);
+																		return handle;
+																		}-*/;
 }

@@ -22,44 +22,44 @@ import com.google.gwt.core.ext.linker.Artifact;
  * Artifacts for ContentScripts.
  */
 public class ContentScriptArtifact extends Artifact<ContentScriptArtifact> {
-  private static final long serialVersionUID = -1216255540374320761L;
+	private static final long serialVersionUID = -1216255540374320761L;
 
-  private final String path;
-  private final String runAt;
-  private final String[] whiteList;
-  
-  public ContentScriptArtifact(String path, String[] whiteList, String runAt) {
-    super(ExtensionLinker.class);
-    this.path = path;
-    this.whiteList = whiteList;
-    this.runAt = runAt;
-  }
+	private final String path;
+	private final String runAt;
+	private final String[] whiteList;
 
-  public String getPath() {
-    return path;
-  }
-  
-  public String getRunAt() {
-    return this.runAt;
-  }
-  
-  public String[] getWhiteList() {
-    return this.whiteList;
-  }
+	public ContentScriptArtifact(String path, String[] whiteList, String runAt) {
+		super(ExtensionLinker.class);
+		this.path = path;
+		this.whiteList = whiteList;
+		this.runAt = runAt;
+	}
 
-  @Override
-  public int hashCode() {
-    return path.hashCode();
-  }
+	public String getPath() {
+		return path;
+	}
 
-  @Override
-  protected int compareToComparableArtifact(ContentScriptArtifact o) {
-    assert o != null;
-    return path.compareTo(o.path);
-  }
+	public String getRunAt() {
+		return this.runAt;
+	}
 
-  @Override
-  protected Class<ContentScriptArtifact> getComparableArtifactType() {
-    return ContentScriptArtifact.class;
-  }
+	public String[] getWhiteList() {
+		return this.whiteList;
+	}
+
+	@Override
+	public int hashCode() {
+		return path.hashCode();
+	}
+
+	@Override
+	protected int compareToComparableArtifact(ContentScriptArtifact o) {
+		assert o != null;
+		return path.compareTo(o.path);
+	}
+
+	@Override
+	protected Class<ContentScriptArtifact> getComparableArtifactType() {
+		return ContentScriptArtifact.class;
+	}
 }

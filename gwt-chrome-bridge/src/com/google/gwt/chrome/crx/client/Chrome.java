@@ -31,8 +31,8 @@ import com.google.gwt.core.client.JsArray;
  */
 public class Chrome extends JavaScriptObject {
 	public static final native Chrome getExtension() /*-{
-		return chrome.extension;
-	}-*/;
+														return chrome.extension;
+														}-*/;
 
 	/**
 	 * API for chrome.extension.
@@ -53,12 +53,12 @@ public class Chrome extends JavaScriptObject {
 	}
 
 	public final native BackgroundPage getBackgroundPage() /*-{
-		return this.getBackgroundPage();
-	}-*/;
+															return this.getBackgroundPage();
+															}-*/;
 
 	public final native ConnectEvent getOnConnectEvent() /*-{
-		return this.onConnect;
-	}-*/;
+															return this.onConnect;
+															}-*/;
 
 	/**
 	 * Convert a relative path within an extension install directory to a
@@ -69,8 +69,8 @@ public class Chrome extends JavaScriptObject {
 	 * @return fully-qualified URL
 	 */
 	public final native String getUrl(String resource) /*-{
-		return this.getURL(resource);
-	}-*/;
+														return this.getURL(resource);
+														}-*/;
 
 	/**
 	 * Returns an array of the global JavaScript objects for each of the views
@@ -80,8 +80,8 @@ public class Chrome extends JavaScriptObject {
 	 * @return Array of global objects
 	 */
 	public final native JsArray<View> getViews() /*-{
-		return this.getViews();
-	}-*/;
+													return this.getViews();
+													}-*/;
 
 	/**
 	 * Attempts to connect to other listeners within the extension (such as the
@@ -95,7 +95,7 @@ public class Chrome extends JavaScriptObject {
 	 *         the extension.
 	 */
 	public final native Port connect() /*-{
-		return this.connect();
-	}-*/;
+										return this.connect();
+										}-*/;
 
 }

@@ -22,38 +22,38 @@ import com.google.gwt.core.client.JavaScriptObject;
  * to listen for events from the devtools timeline agent.
  */
 public class DevToolsPageEvent extends Event {
-  /**
-   * The record that gets passed back onPageEvent.
-   */
-  public static class PageEvent extends JavaScriptObject {
-    protected PageEvent() {
-    }
+	/**
+	 * The record that gets passed back onPageEvent.
+	 */
+	public static class PageEvent extends JavaScriptObject {
+		protected PageEvent() {
+		}
 
-    public final native String getMethod() /*-{
-      return this[0];
-    }-*/;
-  }
+		public final native String getMethod() /*-{
+												return this[0];
+												}-*/;
+	}
 
-  /**
-   * Called when a page event is received.
-   */
-  public interface Listener {
-    void onPageEvent(PageEvent event);
-  }
+	/**
+	 * Called when a page event is received.
+	 */
+	public interface Listener {
+		void onPageEvent(PageEvent event);
+	}
 
-  protected DevToolsPageEvent() {
-  }
+	protected DevToolsPageEvent() {
+	}
 
-  public final ListenerHandle addListener(Listener listener) {
-    return new ListenerHandle(this, addListenerImpl(listener));
-  }
+	public final ListenerHandle addListener(Listener listener) {
+		return new ListenerHandle(this, addListenerImpl(listener));
+	}
 
-  private native JavaScriptObject addListenerImpl(Listener listener) /*-{
-    var handle = function(event) {
-      listener.@com.google.gwt.chrome.crx.client.events.DevToolsPageEvent$Listener::onPageEvent(Lcom/google/gwt/chrome/crx/client/events/DevToolsPageEvent$PageEvent;)(event);
-    };
+	private native JavaScriptObject addListenerImpl(Listener listener) /*-{
+																		var handle = function(event) {
+																		listener.@com.google.gwt.chrome.crx.client.events.DevToolsPageEvent$Listener::onPageEvent(Lcom/google/gwt/chrome/crx/client/events/DevToolsPageEvent$PageEvent;)(event);
+																		};
 
-    this.addListener(handle);
-    return handle;
-  }-*/;
+																		this.addListener(handle);
+																		return handle;
+																		}-*/;
 }

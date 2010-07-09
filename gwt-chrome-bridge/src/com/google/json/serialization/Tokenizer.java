@@ -20,182 +20,181 @@ import java.io.IOException;
 import java.io.Reader;
 
 class Tokenizer {
-  private static final int INVALID_CHAR = -1;
-  private static final String STOPCHARS = ",:]}/\\\"[{;=#";
-  private static JsonNumber getNumberForLiteral(String literal)
-      throws JsonException {
-    try {
-      // The .2 is not a good value, we would need 0.2
-      if (literal.indexOf('.') > 0 || literal.indexOf('e') > 0
-          || literal.indexOf('E') > 0) {
-        return JsonNumber.create(Double.parseDouble(literal));
-      }
-      return JsonNumber.create(Long.parseLong(literal));
-    } catch (NumberFormatException e) {
-      throw new JsonException("Invalid number literal: " + literal);
-    }
-  }
+	private static final int INVALID_CHAR = -1;
+	private static final String STOPCHARS = ",:]}/\\\"[{;=#";
 
-  private static JsonValue getValueForLiteral(String literal)
-      throws JsonException {
-    if ("".equals(literal)) {
-      throw new JsonException("Missing value");
-    }
+	private static JsonNumber getNumberForLiteral(String literal) throws JsonException {
+		try {
+			// The .2 is not a good value, we would need 0.2
+			if (literal.indexOf('.') > 0 || literal.indexOf('e') > 0 || literal.indexOf('E') > 0) {
+				return JsonNumber.create(Double.parseDouble(literal));
+			}
+			return JsonNumber.create(Long.parseLong(literal));
+		} catch (NumberFormatException e) {
+			throw new JsonException("Invalid number literal: " + literal);
+		}
+	}
 
-    if ("null".equals(literal)) {
-      return JsonValue.NULL;
-    }
+	private static JsonValue getValueForLiteral(String literal) throws JsonException {
+		if ("".equals(literal)) {
+			throw new JsonException("Missing value");
+		}
 
-    if ("true".equals(literal)) {
-      return JsonBoolean.create(true);
-    }
+		if ("null".equals(literal)) {
+			return JsonValue.NULL;
+		}
 
-    if ("false".equals(literal)) {
-      return JsonBoolean.create(false);
-    }
+		if ("true".equals(literal)) {
+			return JsonBoolean.create(true);
+		}
 
-    final char c = literal.charAt(0);
-    if (c == '-' || Character.isDigit(c)) {
-      return getNumberForLiteral(literal);
-    }
+		if ("false".equals(literal)) {
+			return JsonBoolean.create(false);
+		}
 
-    throw new JsonException("Invalid literal: \"" + literal + "\"");
-  }
+		final char c = literal.charAt(0);
+		if (c == '-' || Character.isDigit(c)) {
+			return getNumberForLiteral(literal);
+		}
 
-  private int pushBackBuffer = INVALID_CHAR;
+		throw new JsonException("Invalid literal: \"" + literal + "\"");
+	}
 
-  private final Reader reader;
+	private int pushBackBuffer = INVALID_CHAR;
 
-  Tokenizer(Reader reader) {
-    this.reader = new BufferedReader(reader);
-  }
+	private final Reader reader;
 
-  void back(char c) {
-    assert pushBackBuffer == INVALID_CHAR;
-    pushBackBuffer = c;
-  }
+	Tokenizer(Reader reader) {
+		this.reader = new BufferedReader(reader);
+	}
 
-  void back(int c) {
-    back((char) c);
-  }
+	void back(char c) {
+		assert pushBackBuffer == INVALID_CHAR;
+		pushBackBuffer = c;
+	}
 
-  int next() throws IOException {
-    if (pushBackBuffer != INVALID_CHAR) {
-      final int c = pushBackBuffer;
-      pushBackBuffer = INVALID_CHAR;
-      return c;
-    }
+	void back(int c) {
+		back((char) c);
+	}
 
-    return reader.read();
-  }
+	int next() throws IOException {
+		if (pushBackBuffer != INVALID_CHAR) {
+			final int c = pushBackBuffer;
+			pushBackBuffer = INVALID_CHAR;
+			return c;
+		}
 
-  String next(int n) throws IOException, JsonException {
-    if (n == 0) {
-      return "";
-    }
+		return reader.read();
+	}
 
-    char[] buffer = new char[n];
-    int pos = 0;
+	String next(int n) throws IOException, JsonException {
+		if (n == 0) {
+			return "";
+		}
 
-    if (pushBackBuffer != INVALID_CHAR) {
-      buffer[0] = (char) pushBackBuffer;
-      pos = 1;
-      pushBackBuffer = INVALID_CHAR;
-    }
+		char[] buffer = new char[n];
+		int pos = 0;
 
-    int len;
-    while ((pos < n) && ((len = reader.read(buffer, pos, n - pos)) != -1)) {
-      pos += len;
-    }
+		if (pushBackBuffer != INVALID_CHAR) {
+			buffer[0] = (char) pushBackBuffer;
+			pos = 1;
+			pushBackBuffer = INVALID_CHAR;
+		}
 
-    if (pos < n) {
-      throw new JsonException(/* TODO(knorton): Add message. */);
-    }
+		int len;
+		while ((pos < n) && ((len = reader.read(buffer, pos, n - pos)) != -1)) {
+			pos += len;
+		}
 
-    return String.valueOf(buffer);
-  }
+		if (pos < n) {
+			throw new JsonException(/* TODO(knorton): Add message. */);
+		}
 
-  int nextNonWhitespace() throws IOException {
-    while (true) {
-      final int c = next();
-      if (!Character.isWhitespace(c)) {
-        return c;
-      }
-    }
-  }
+		return String.valueOf(buffer);
+	}
 
-  String nextString() throws IOException, JsonException {
-    final StringBuffer buffer = new StringBuffer();
-    int c = next();
-    assert c == '"';
-    while (true) {
-      c = next();
-      switch (c) {
-        case '\r':
-        case '\n':
-          throw new JsonException("");
-        case '\\':
-          c = next();
-          switch (c) {
-            case 'b':
-              buffer.append('\b');
-              break;
-            case 't':
-              buffer.append('\t');
-              break;
-            case 'n':
-              buffer.append('\n');
-              break;
-            case 'f':
-              buffer.append('\f');
-              break;
-            case 'r':
-              buffer.append('\r');
-              break;
-            // TODO(knorton): I'm not sure I should even support this escaping
-            // mode since JSON is always UTF-8.
-            case 'u':
-              buffer.append((char) Integer.parseInt(next(4), 16));
-              break;
-            default:
-              buffer.append((char) c);
-          }
-          break;
-        default:
-          if (c == '"') {
-            return buffer.toString();
-          }
-          buffer.append((char) c);
-      }
-    }
-  }
+	int nextNonWhitespace() throws IOException {
+		while (true) {
+			final int c = next();
+			if (!Character.isWhitespace(c)) {
+				return c;
+			}
+		}
+	}
 
-  String nextUntilOneOf(String chars) throws IOException {
-    final StringBuffer buffer = new StringBuffer();
-    int c = next();
-    while (c != INVALID_CHAR) {
-      if (Character.isWhitespace(c) || chars.indexOf((char) c) >= 0) {
-        back(c);
-        break;
-      }
-      buffer.append((char) c);
-      c = next();
-    }
-    return buffer.toString();
-  }
+	String nextString() throws IOException, JsonException {
+		final StringBuffer buffer = new StringBuffer();
+		int c = next();
+		assert c == '"';
+		while (true) {
+			c = next();
+			switch (c) {
+			case '\r':
+			case '\n':
+				throw new JsonException("");
+			case '\\':
+				c = next();
+				switch (c) {
+				case 'b':
+					buffer.append('\b');
+					break;
+				case 't':
+					buffer.append('\t');
+					break;
+				case 'n':
+					buffer.append('\n');
+					break;
+				case 'f':
+					buffer.append('\f');
+					break;
+				case 'r':
+					buffer.append('\r');
+					break;
+				// TODO(knorton): I'm not sure I should even support this
+				// escaping
+				// mode since JSON is always UTF-8.
+				case 'u':
+					buffer.append((char) Integer.parseInt(next(4), 16));
+					break;
+				default:
+					buffer.append((char) c);
+				}
+				break;
+			default:
+				if (c == '"') {
+					return buffer.toString();
+				}
+				buffer.append((char) c);
+			}
+		}
+	}
 
-  JsonValue nextValue() throws IOException, JsonException {
-    final int c = nextNonWhitespace();
-    back(c);
-    switch (c) {
-      case '"':
-        return JsonString.create(nextString());
-      case '{':
-        return JsonObject.parse(this);
-      case '[':
-        return JsonArray.parse(this);
-      default:
-        return getValueForLiteral(nextUntilOneOf(STOPCHARS));
-    }
-  }
+	String nextUntilOneOf(String chars) throws IOException {
+		final StringBuffer buffer = new StringBuffer();
+		int c = next();
+		while (c != INVALID_CHAR) {
+			if (Character.isWhitespace(c) || chars.indexOf((char) c) >= 0) {
+				back(c);
+				break;
+			}
+			buffer.append((char) c);
+			c = next();
+		}
+		return buffer.toString();
+	}
+
+	JsonValue nextValue() throws IOException, JsonException {
+		final int c = nextNonWhitespace();
+		back(c);
+		switch (c) {
+		case '"':
+			return JsonString.create(nextString());
+		case '{':
+			return JsonObject.parse(this);
+		case '[':
+			return JsonArray.parse(this);
+		default:
+			return getValueForLiteral(nextUntilOneOf(STOPCHARS));
+		}
+	}
 }

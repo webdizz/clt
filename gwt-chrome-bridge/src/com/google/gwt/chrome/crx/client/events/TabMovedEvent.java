@@ -27,48 +27,48 @@ import com.google.gwt.core.client.JavaScriptObject;
  * >Tabs API</a>
  */
 public final class TabMovedEvent extends Event {
-  /**
-   * Data object passed onTabMoved.
-   */
-  public static class Data extends JavaScriptObject {
-    protected Data() {
-    }
+	/**
+	 * Data object passed onTabMoved.
+	 */
+	public static class Data extends JavaScriptObject {
+		protected Data() {
+		}
 
-    public final native int getFromIndex() /*-{
-      return this.fromIndex;
-    }-*/;
+		public final native int getFromIndex() /*-{
+												return this.fromIndex;
+												}-*/;
 
-    public final native int getToIndex() /*-{
-      return this.toIndex;
-    }-*/;
+		public final native int getToIndex() /*-{
+												return this.toIndex;
+												}-*/;
 
-    public final native int getWindowId() /*-{
-      return this.windowId;
-    }-*/;
-  }
+		public final native int getWindowId() /*-{
+												return this.windowId;
+												}-*/;
+	}
 
-  /**
-   * Listener interface for TabMovedEvents.
-   */
-  public interface Listener {
-    void onTabMoved(int tabId, Data data);
-  }
+	/**
+	 * Listener interface for TabMovedEvents.
+	 */
+	public interface Listener {
+		void onTabMoved(int tabId, Data data);
+	}
 
-  protected TabMovedEvent() {
-  }
+	protected TabMovedEvent() {
+	}
 
-  public ListenerHandle addListener(Listener listener) {
-    return new ListenerHandle(this, addListenerImpl(listener));
-  }
+	public ListenerHandle addListener(Listener listener) {
+		return new ListenerHandle(this, addListenerImpl(listener));
+	}
 
-  private native JavaScriptObject addListenerImpl(Listener listener) /*-{
-    var handle = function(tabId, data) {
-      listener.
-          @com.google.gwt.chrome.crx.client.events.TabMovedEvent.Listener::onTabMoved(ILcom/google/gwt/chrome/crx/client/events/TabMovedEvent$Data;)
-          (tabId, data);
-    }
+	private native JavaScriptObject addListenerImpl(Listener listener) /*-{
+																		var handle = function(tabId, data) {
+																		listener.
+																		@com.google.gwt.chrome.crx.client.events.TabMovedEvent.Listener::onTabMoved(ILcom/google/gwt/chrome/crx/client/events/TabMovedEvent$Data;)
+																		(tabId, data);
+																		}
 
-    this.addListener(handle);
-    return handle;
-  }-*/;
+																		this.addListener(handle);
+																		return handle;
+																		}-*/;
 }

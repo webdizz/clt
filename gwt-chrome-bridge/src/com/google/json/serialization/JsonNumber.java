@@ -22,106 +22,106 @@ import java.io.Writer;
  * JSON Number.
  */
 public abstract class JsonNumber implements JsonValue {
-  private static class JsonDecimal extends JsonNumber {
-    private final double value;
+	private static class JsonDecimal extends JsonNumber {
+		private final double value;
 
-    public JsonDecimal(double value) {
-      this.value = value;
-    }
+		public JsonDecimal(double value) {
+			this.value = value;
+		}
 
-    @Override
-    public double getDecimal() {
-      return value;
-    }
+		@Override
+		public double getDecimal() {
+			return value;
+		}
 
-    @Override
-    public long getInteger() {
-      return (long) value;
-    }
+		@Override
+		public long getInteger() {
+			return (long) value;
+		}
 
-    public void write(Writer writer) throws IOException {
-      writer.write(Double.toString(value));
-    }
-  }
+		public void write(Writer writer) throws IOException {
+			writer.write(Double.toString(value));
+		}
+	}
 
-  private static class JsonInteger extends JsonNumber {
-    private final long value;
+	private static class JsonInteger extends JsonNumber {
+		private final long value;
 
-    public JsonInteger(long value) {
-      this.value = value;
-    }
+		public JsonInteger(long value) {
+			this.value = value;
+		}
 
-    @Override
-    public double getDecimal() {
-      return value;
-    }
+		@Override
+		public double getDecimal() {
+			return value;
+		}
 
-    @Override
-    public long getInteger() {
-      return value;
-    }
+		@Override
+		public long getInteger() {
+			return value;
+		}
 
-    public void write(Writer writer) throws IOException {
-      writer.write(Long.toString(value));
-    }
-  }
+		public void write(Writer writer) throws IOException {
+			writer.write(Long.toString(value));
+		}
+	}
 
-  public static JsonNumber create(double value) {
-    return new JsonDecimal(value);
-  }
+	public static JsonNumber create(double value) {
+		return new JsonDecimal(value);
+	}
 
-  public static JsonNumber create(int value) {
-    return new JsonInteger(value);
-  }
+	public static JsonNumber create(int value) {
+		return new JsonInteger(value);
+	}
 
-  public static JsonNumber create(long value) {
-    return new JsonInteger(value);
-  }
+	public static JsonNumber create(long value) {
+		return new JsonInteger(value);
+	}
 
-  private JsonNumber() {
-  }
+	private JsonNumber() {
+	}
 
-  public JsonArray asArray() {
-    return null;
-  }
+	public JsonArray asArray() {
+		return null;
+	}
 
-  public JsonBoolean asBoolean() {
-    return null;
-  }
+	public JsonBoolean asBoolean() {
+		return null;
+	}
 
-  public JsonNumber asNumber() {
-    return this;
-  }
+	public JsonNumber asNumber() {
+		return this;
+	}
 
-  public JsonObject asObject() {
-    return null;
-  }
+	public JsonObject asObject() {
+		return null;
+	}
 
-  public JsonString asString() {
-    return null;
-  }
+	public JsonString asString() {
+		return null;
+	}
 
-  public abstract double getDecimal();
+	public abstract double getDecimal();
 
-  public abstract long getInteger();
+	public abstract long getInteger();
 
-  public boolean isArray() {
-    return false;
-  }
+	public boolean isArray() {
+		return false;
+	}
 
-  public boolean isBoolean() {
-    return false;
-  }
+	public boolean isBoolean() {
+		return false;
+	}
 
-  public boolean isNumber() {
-    return true;
-  }
+	public boolean isNumber() {
+		return true;
+	}
 
-  public boolean isObject() {
-    return false;
-  }
+	public boolean isObject() {
+		return false;
+	}
 
-  public boolean isString() {
-    return false;
-  }
+	public boolean isString() {
+		return false;
+	}
 }

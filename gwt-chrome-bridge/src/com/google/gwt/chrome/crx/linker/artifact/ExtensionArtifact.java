@@ -19,81 +19,81 @@ import com.google.gwt.chrome.crx.linker.ExtensionLinker;
 import com.google.gwt.core.ext.linker.Artifact;
 
 public class ExtensionArtifact extends Artifact<ExtensionArtifact> {
-  private static final long serialVersionUID = 8088249825810527401L;
+	private static final long serialVersionUID = 8088249825810527401L;
 
-  public static class IconInfo {
-    private final String filename;
-    private final int size;
+	public static class IconInfo {
+		private final String filename;
+		private final int size;
 
-    public IconInfo(String filename, int size) {
-      this.filename = filename;
-      this.size = size;
-    }
+		public IconInfo(String filename, int size) {
+			this.filename = filename;
+			this.size = size;
+		}
 
-    public String getFilename() {
-      return filename;
-    }
+		public String getFilename() {
+			return filename;
+		}
 
-    public int getSize() {
-      return size;
-    }
-  }
+		public int getSize() {
+			return size;
+		}
+	}
 
-  private final String description;
-  private final String name;
-  private final String[] permissions;
-  private final String version;
-  private final String updateUrl;
-  private final IconInfo[] icons;
+	private final String description;
+	private final String name;
+	private final String[] permissions;
+	private final String version;
+	private final String updateUrl;
+	private final IconInfo[] icons;
 
-  public ExtensionArtifact(String name, String description, String version,
-      String[] permissions, String updateUrl, IconInfo[] icons) {
-    super(ExtensionLinker.class);
-    this.name = name;
-    this.description = description;
-    this.version = version;
-    this.permissions = permissions;
-    this.updateUrl = updateUrl;
-    this.icons = icons;
-  }
+	public ExtensionArtifact(String name, String description, String version, String[] permissions, String updateUrl,
+			IconInfo[] icons) {
+		super(ExtensionLinker.class);
+		this.name = name;
+		this.description = description;
+		this.version = version;
+		this.permissions = permissions;
+		this.updateUrl = updateUrl;
+		this.icons = icons;
+	}
 
-  public String getDescription() {
-    return description;
-  }
+	public String getDescription() {
+		return description;
+	}
 
-  public IconInfo[] getIcons() {
-    return icons;
-  }
+	public IconInfo[] getIcons() {
+		return icons;
+	}
 
-  public String getName() {
-    return name;
-  }
+	public String getName() {
+		return name;
+	}
 
-  public String[] getPermissions() {
-    return this.permissions;
-  }
+	public String[] getPermissions() {
+		return this.permissions;
+	}
 
-  public String getUpdateUrl() {
-    return updateUrl;
-  }
+	public String getUpdateUrl() {
+		return updateUrl;
+	}
 
-  public String getVersion() {
-    return version;
-  }
+	public String getVersion() {
+		return version;
+	}
 
-  @Override
-  public int hashCode() {
-    return name.hashCode();
-  }
+	@Override
+	public int hashCode() {
+		return name.hashCode();
+	}
 
-  @Override
-  protected int compareToComparableArtifact(ExtensionArtifact o) {
-    assert o != null;
-    return name.compareTo(o.name);
-  }
+	@Override
+	protected int compareToComparableArtifact(ExtensionArtifact o) {
+		assert o != null;
+		return name.compareTo(o.name);
+	}
 
-  @Override
-  protected Class<ExtensionArtifact> getComparableArtifactType() {
-    return ExtensionArtifact.class;
-  }
+	@Override
+	protected Class<ExtensionArtifact> getComparableArtifactType() {
+		return ExtensionArtifact.class;
+	}
 }

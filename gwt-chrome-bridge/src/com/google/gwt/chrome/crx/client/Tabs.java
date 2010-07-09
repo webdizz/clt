@@ -70,36 +70,36 @@ public class Tabs extends JavaScriptObject {
 		}
 
 		public final native String getFavIconUrl() /*-{
-			return this.favIconUrl;
-		}-*/;
+													return this.favIconUrl;
+													}-*/;
 
 		public final native int getId() /*-{
-			return this.id;
-		}-*/;
+										return this.id;
+										}-*/;
 
 		public final native int getIndex() /*-{
-			return this.index;
-		}-*/;
+											return this.index;
+											}-*/;
 
 		public final native String getStatus() /*-{
-			return this.status;
-		}-*/;
+												return this.status;
+												}-*/;
 
 		public final native String getTitle() /*-{
-			return this.title;
-		}-*/;
+												return this.title;
+												}-*/;
 
 		public final native String getUrl() /*-{
-			return this.url;
-		}-*/;
+											return this.url;
+											}-*/;
 
 		public final native int getWindowId() /*-{
-			return this.windowId;
-		}-*/;
+												return this.windowId;
+												}-*/;
 
 		public final native boolean isSelected() /*-{
-			return this.selected;
-		}-*/;
+													return this.selected;
+													}-*/;
 	}
 
 	/**
@@ -109,8 +109,8 @@ public class Tabs extends JavaScriptObject {
 	 * 
 	 */
 	public static native void create() /*-{
-		chrome.tabs.create();
-	}-*/;
+										chrome.tabs.create();
+										}-*/;
 
 	/**
 	 * An overload of
@@ -121,8 +121,8 @@ public class Tabs extends JavaScriptObject {
 	 *            the starting url of the tab you want to open
 	 */
 	public static native void create(String url) /*-{
-		chrome.tabs.create({'url':url});
-	}-*/;
+													chrome.tabs.create({'url':url});
+													}-*/;
 
 	/**
 	 * An overload of
@@ -139,15 +139,14 @@ public class Tabs extends JavaScriptObject {
 	 * @param selected
 	 *            whether or not the tab will be selected (have focus)
 	 */
-	public static native void create(String url, int windowId, int index,
-			boolean selected) /*-{
-		chrome.tabs.create({
-		  'url':url,
-		  'windowId':windowId,
-		  'index':index,
-		  'selected':selected
-		});
-	}-*/;
+	public static native void create(String url, int windowId, int index, boolean selected) /*-{
+																							chrome.tabs.create({
+																							'url':url,
+																							'windowId':windowId,
+																							'index':index,
+																							'selected':selected
+																							});
+																							}-*/;
 
 	/**
 	 * Creates a new tab in the specified window and calls you back with the new
@@ -165,19 +164,18 @@ public class Tabs extends JavaScriptObject {
 	 * @param callback
 	 *            a callback that gets called when the tab has been created
 	 */
-	public static native void create(String url, int windowId, int index,
-			boolean selected, OnTabCallback callback) /*-{
-		chrome.tabs.create({
-		  'url':url,
-		  'windowId':windowId,
-		  'index':index,
-		  'selected':selected
-		}, function(tab) {
-		  callback.
-		  @com.google.gwt.chrome.crx.client.Tabs.OnTabCallback::onTab(Lcom/google/gwt/chrome/crx/client/Tabs$Tab;)
-		  (tab);
-		});
-	}-*/;
+	public static native void create(String url, int windowId, int index, boolean selected, OnTabCallback callback) /*-{
+																													chrome.tabs.create({
+																													'url':url,
+																													'windowId':windowId,
+																													'index':index,
+																													'selected':selected
+																													}, function(tab) {
+																													callback.
+																													@com.google.gwt.chrome.crx.client.Tabs.OnTabCallback::onTab(Lcom/google/gwt/chrome/crx/client/Tabs$Tab;)
+																													(tab);
+																													});
+																													}-*/;
 
 	/**
 	 * An overload of
@@ -190,20 +188,20 @@ public class Tabs extends JavaScriptObject {
 	 *            a callback that gets called when the tab has been created
 	 */
 	public static native void create(String url, OnTabCallback callback) /*-{
-		chrome.tabs.create({'url':url}, function(tab) {
-		  callback.
-		  @com.google.gwt.chrome.crx.client.Tabs.OnTabCallback::onTab(Lcom/google/gwt/chrome/crx/client/Tabs$Tab;)
-		  (tab);
-		});
-	}-*/;
+																			chrome.tabs.create({'url':url}, function(tab) {
+																			callback.
+																			@com.google.gwt.chrome.crx.client.Tabs.OnTabCallback::onTab(Lcom/google/gwt/chrome/crx/client/Tabs$Tab;)
+																			(tab);
+																			});
+																			}-*/;
 
 	public static native void get(int tabId, OnTabCallback callback) /*-{
-		chrome.tabs.get(tabId, function(tab) {
-		  callback.
-		  @com.google.gwt.chrome.crx.client.Tabs.OnTabCallback::onTab(Lcom/google/gwt/chrome/crx/client/Tabs$Tab;)
-		  (tab);
-		});
-	}-*/;
+																		chrome.tabs.get(tabId, function(tab) {
+																		callback.
+																		@com.google.gwt.chrome.crx.client.Tabs.OnTabCallback::onTab(Lcom/google/gwt/chrome/crx/client/Tabs$Tab;)
+																		(tab);
+																		});
+																		}-*/;
 
 	/**
 	 * Retrieve all tabs in the specified window.
@@ -213,14 +211,13 @@ public class Tabs extends JavaScriptObject {
 	 * @param callback
 	 *            returns the tabs asynchronously through this callback.
 	 */
-	public static native void getAllInWindow(int windowId,
-			OnTabsCallback callback) /*-{
-		chrome.tabs.getAllInWindow(id, function(tabs) {
-		  callback.
-		  @com.google.gwt.chrome.crx.client.Tabs.OnTabsCallback::onTabs(Lcom/google/gwt/core/client/JsArray;)
-		  (tabs);
-		});
-	}-*/;
+	public static native void getAllInWindow(int windowId, OnTabsCallback callback) /*-{
+																					chrome.tabs.getAllInWindow(id, function(tabs) {
+																					callback.
+																					@com.google.gwt.chrome.crx.client.Tabs.OnTabsCallback::onTabs(Lcom/google/gwt/core/client/JsArray;)
+																					(tabs);
+																					});
+																					}-*/;
 
 	/**
 	 * Retrieve all tabs in the current window context.
@@ -229,36 +226,36 @@ public class Tabs extends JavaScriptObject {
 	 *            returns the tabs asynchronously through this callback.
 	 */
 	public static native void getAllInWindow(OnTabsCallback callback) /*-{
-		chrome.tabs.getAllInWindow(undefine, function(tabs) {
-		  callback.
-		  @com.google.gwt.chrome.crx.client.Tabs.OnTabsCallback::onTabs(Lcom/google/gwt/core/client/JsArray;)
-		  (tabs);
-		});
-	}-*/;
+																		chrome.tabs.getAllInWindow(undefine, function(tabs) {
+																		callback.
+																		@com.google.gwt.chrome.crx.client.Tabs.OnTabsCallback::onTabs(Lcom/google/gwt/core/client/JsArray;)
+																		(tabs);
+																		});
+																		}-*/;
 
 	public static native TabEvent getOnCreatedEvent() /*-{
-		return chrome.tabs.onCreated;
-	}-*/;
+														return chrome.tabs.onCreated;
+														}-*/;
 
 	public static native TabSelectionChangedEvent getOnSelectionChangedEvent() /*-{
-		return chrome.tabs.onSelectionChanged;
-	}-*/;
+																				return chrome.tabs.onSelectionChanged;
+																				}-*/;
 
 	public static native TabAttachedEvent getOnTabAttachedEvent() /*-{
-		return chrome.tabs.onAttached;
-	}-*/;
+																	return chrome.tabs.onAttached;
+																	}-*/;
 
 	public static native TabDetachedEvent getOnTabDetachedEvent() /*-{
-		return chrome.tabs.onDetached;
-	}-*/;
+																	return chrome.tabs.onDetached;
+																	}-*/;
 
 	public static native TabRemovedEvent getOnTabRemovedEvent() /*-{
-		return chrome.tabs.onRemoved();
-	}-*/;
+																return chrome.tabs.onRemoved();
+																}-*/;
 
 	public static native TabUpdatedEvent getOnUpdatedEvent() /*-{
-		return chrome.tabs.onUpdated;
-	}-*/;
+																return chrome.tabs.onUpdated;
+																}-*/;
 
 	/**
 	 * Retrieve the currently selected tab in the specified window.
@@ -269,12 +266,12 @@ public class Tabs extends JavaScriptObject {
 	 *            returns the selected tab asynchronously through this callback.
 	 */
 	public static native void getSelected(int windowId, OnTabCallback callback) /*-{
-		chrome.tabs.getSelected(windowId, function(tab) {
-		  callback.
-		  @com.google.gwt.chrome.crx.client.Tabs.OnTabCallback::onTab(Lcom/google/gwt/chrome/crx/client/Tabs$Tab;)
-		  (tab);
-		});
-	}-*/;
+																				chrome.tabs.getSelected(windowId, function(tab) {
+																				callback.
+																				@com.google.gwt.chrome.crx.client.Tabs.OnTabCallback::onTab(Lcom/google/gwt/chrome/crx/client/Tabs$Tab;)
+																				(tab);
+																				});
+																				}-*/;
 
 	/**
 	 * Retrieve the currently selected tab in the current window context.
@@ -283,27 +280,26 @@ public class Tabs extends JavaScriptObject {
 	 *            returns the selected tab asynchronously through this callback.
 	 */
 	public static native void getSelected(OnTabCallback callback) /*-{
-		chrome.tabs.getSelected(undefined, function(tab) {
-		  callback.
-		  @com.google.gwt.chrome.crx.client.Tabs.OnTabCallback::onTab(Lcom/google/gwt/chrome/crx/client/Tabs$Tab;)
-		  (tab);
-		});
-	}-*/;
+																	chrome.tabs.getSelected(undefined, function(tab) {
+																	callback.
+																	@com.google.gwt.chrome.crx.client.Tabs.OnTabCallback::onTab(Lcom/google/gwt/chrome/crx/client/Tabs$Tab;)
+																	(tab);
+																	});
+																	}-*/;
 
 	public static native void move(int tabId, int index, int windowId) /*-{
-		chrome.tabs.move(tabId, {'index': index, 'windowId': windowId});
-	}-*/;
+																		chrome.tabs.move(tabId, {'index': index, 'windowId': windowId});
+																		}-*/;
 
 	public static native void remove(int tabId) /*-{
-		chrome.tabs.remove(tabId);
-	}-*/;
+												chrome.tabs.remove(tabId);
+												}-*/;
 
-	public static native void update(int tabId, String url, boolean selected,
-			OnUpdateCallback callback) /*-{
-		chrome.tabs.update(tabId, {'url':url, 'selected':selected}, function(tab) {
-		  callback.@com.google.gwt.chrome.crx.client.Tabs.OnUpdateCallback::onUpdate()();
-		});
-	}-*/;
+	public static native void update(int tabId, String url, boolean selected, OnUpdateCallback callback) /*-{
+																											chrome.tabs.update(tabId, {'url':url, 'selected':selected}, function(tab) {
+																											callback.@com.google.gwt.chrome.crx.client.Tabs.OnUpdateCallback::onUpdate()();
+																											});
+																											}-*/;
 
 	/**
 	 * Detects the primary language of the content in the current selected tab.
@@ -312,12 +308,11 @@ public class Tabs extends JavaScriptObject {
 	 *            The callback parameter that will be called after language
 	 *            detection
 	 */
-	public static final native void detectLanguage(
-			OnDetectLanguageCallback callback) /*-{
-		chrome.tabs.detectLanguage(null, function(language) {
-		  callback.@com.google.gwt.chrome.crx.client.Tabs.OnDetectLanguageCallback::onDetect(Ljava/lang/String;)(language);
-		});
-	}-*/;
+	public static final native void detectLanguage(OnDetectLanguageCallback callback) /*-{
+																						chrome.tabs.detectLanguage(null, function(language) {
+																						callback.@com.google.gwt.chrome.crx.client.Tabs.OnDetectLanguageCallback::onDetect(Ljava/lang/String;)(language);
+																						});
+																						}-*/;
 
 	/**
 	 * Connects to the content script(s) in the current selected tab. The <a
@@ -332,8 +327,8 @@ public class Tabs extends JavaScriptObject {
 	 * @return {@link Port}
 	 */
 	public static final native Port connect()/*-{
-		return chrome.tabs.connect(-1);
-	}-*/;
+												return chrome.tabs.connect(-1);
+												}-*/;
 
 	/**
 	 * Connects to the content script(s) in the given tab. The <a href=
@@ -349,8 +344,8 @@ public class Tabs extends JavaScriptObject {
 	 * @return {@link Port}
 	 */
 	public static final native Port connect(int tabId)/*-{
-		return chrome.tabs.connect(tabId);
-	}-*/;
+														return chrome.tabs.connect(tabId);
+														}-*/;
 
 	/**
 	 * Connects to the content script(s) in the given tab. The <a href=
@@ -368,26 +363,24 @@ public class Tabs extends JavaScriptObject {
 	 * @return {@link Port}
 	 */
 	public static final native Port connect(int tabId, String portName)/*-{
-		return chrome.tabs.connect(tabId, {name: portName});
-	}-*/;
+																		return chrome.tabs.connect(tabId, {name: portName});
+																		}-*/;
 
 	public static final native void sendRequest(int tabId, Message message)/*-{
-		chrome.tabs.sendRequest(tabId, message);
-	}-*/;
+																			chrome.tabs.sendRequest(tabId, message);
+																			}-*/;
 
 	public final static class ExecutionDetails extends JavaScriptObject {
 		protected ExecutionDetails() {
 		}
 
-		public static final native ExecutionDetails forFile(String file,
-				boolean allFrames)/*-{
-			return {file: file, allFrames: allFrames};
-		}-*/;
+		public static final native ExecutionDetails forFile(String file, boolean allFrames)/*-{
+																							return {file: file, allFrames: allFrames};
+																							}-*/;
 
-		public static final native ExecutionDetails forCode(String jsCode,
-				boolean allFrames)/*-{
-			return {code: jsCode, allFrames: allFrames};
-		}-*/;
+		public static final native ExecutionDetails forCode(String jsCode, boolean allFrames)/*-{
+																								return {code: jsCode, allFrames: allFrames};
+																								}-*/;
 	}
 
 	/**
@@ -399,11 +392,10 @@ public class Tabs extends JavaScriptObject {
 	 *            code or file property must be set, but both may not be set at
 	 *            the same time.
 	 */
-	public static final native void executeScript(int tabId,
-			ExecutionDetails details)/*-{
-		//callback function can be as a 3d parameter
-		chrome.tabs.executeScript(tabId, details);
-	}-*/;
+	public static final native void executeScript(int tabId, ExecutionDetails details)/*-{
+																						//callback function can be as a 3d parameter
+																						chrome.tabs.executeScript(tabId, details);
+																						}-*/;
 
 	protected Tabs() {
 	}

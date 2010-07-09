@@ -21,13 +21,13 @@ import com.google.gwt.core.client.JavaScriptObject;
  * Wrapper for console.log().
  */
 public class Console extends JavaScriptObject {
-  protected Console() {
-  }
+	protected Console() {
+	}
 
-  /**
-   * Write a debug message to the JavaScript console.
-   */
-  public final native void log(String logMessage) /*-{
-    this.log(logMessage);
-  }-*/;
+	/**
+	 * Write a debug message to the JavaScript console.
+	 */
+	public final native void log(String logMessage) /*-{
+													this.log(logMessage);
+													}-*/;
 }

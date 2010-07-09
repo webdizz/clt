@@ -39,32 +39,32 @@ public class Windows {
 		}
 
 		public final native String getFavIconUrl() /*-{
-			return this.favIconUrl;
-		}-*/;
+													return this.favIconUrl;
+													}-*/;
 
 		public final native int getId() /*-{
-			return this.id;
-		}-*/;
+										return this.id;
+										}-*/;
 
 		public final native int getIndex() /*-{
-			return this.index;
-		}-*/;
+											return this.index;
+											}-*/;
 
 		public final native String getTitle() /*-{
-			return this.title;
-		}-*/;
+												return this.title;
+												}-*/;
 
 		public final native String getUrl() /*-{
-			return this.url;
-		}-*/;
+											return this.url;
+											}-*/;
 
 		public final native int getWindowId() /*-{
-			return this.windowId;
-		}-*/;
+												return this.windowId;
+												}-*/;
 
 		public final native boolean isSelected() /*-{
-			return this.selected;
-		}-*/;
+													return this.selected;
+													}-*/;
 	}
 
 	/**
@@ -109,16 +109,15 @@ public class Windows {
 	 *            the {@link OnWindowCallback} invoked asynchronously when the
 	 *            window is created.
 	 */
-	public static native void create(String url, int left, int top, int width,
-			int height, OnWindowCallback callback) /*-{
-		chrome.windows.create({'url': url, 'left': left, 'top': top, 'width': width, 
-		                       'height': height}, 
-		                      function(wnd){
-		    callback.
-		    @com.google.gwt.chrome.crx.client.Windows$OnWindowCallback::onWindow(Lcom/google/gwt/chrome/crx/client/Windows$Window;)
-		    (wnd);
-		 });
-	}-*/;
+	public static native void create(String url, int left, int top, int width, int height, OnWindowCallback callback) /*-{
+																														chrome.windows.create({'url': url, 'left': left, 'top': top, 'width': width, 
+																														'height': height}, 
+																														function(wnd){
+																														callback.
+																														@com.google.gwt.chrome.crx.client.Windows$OnWindowCallback::onWindow(Lcom/google/gwt/chrome/crx/client/Windows$Window;)
+																														(wnd);
+																														});
+																														}-*/;
 
 	/**
 	 * Overload of
@@ -138,50 +137,48 @@ public class Windows {
 	 * @param height
 	 *            the height of the window
 	 */
-	public static native void create(String url, int left, int top, int width,
-			int height) /*-{
-		chrome.windows.create({'url': url, 'left': left, 'top': top, 'width': width, 
-		                       'height': height});
-	}-*/;
+	public static native void create(String url, int left, int top, int width, int height) /*-{
+																							chrome.windows.create({'url': url, 'left': left, 'top': top, 'width': width, 
+																							       'height': height});
+																							}-*/;
 
 	public static native void get(int windowId, OnWindowCallback callback) /*-{
-		chrome.windows.get(windowId, function(wnd){ 
-		    callback.
-		    @com.google.gwt.chrome.crx.client.Windows$OnWindowCallback::onWindow(Lcom/google/gwt/chrome/crx/client/Windows$Window;)
-		    (wnd);
-		 });
-	}-*/;
+																			chrome.windows.get(windowId, function(wnd){ 
+																			callback.
+																			@com.google.gwt.chrome.crx.client.Windows$OnWindowCallback::onWindow(Lcom/google/gwt/chrome/crx/client/Windows$Window;)
+																			(wnd);
+																			});
+																			}-*/;
 
-	public static native void getAll(boolean populateTabs,
-			OnWindowsCallback callback) /*-{
-		chrome.windows.getAll(populateTabs, function(wnds){ 
-		    callback.
-		    @com.google.gwt.chrome.crx.client.Windows$OnWindowsCallback::onWindow(Lcom/google/gwt/core/client/JsArray;)(wnds);
-		    (wnd);
-		 });
-	}-*/;
+	public static native void getAll(boolean populateTabs, OnWindowsCallback callback) /*-{
+																						chrome.windows.getAll(populateTabs, function(wnds){ 
+																						callback.
+																						@com.google.gwt.chrome.crx.client.Windows$OnWindowsCallback::onWindow(Lcom/google/gwt/core/client/JsArray;)(wnds);
+																						(wnd);
+																						});
+																						}-*/;
 
 	public static native void getCurrent(OnWindowCallback callback) /*-{
-		chrome.windows.getCurrent(function(wnd){ 
-		    callback.
-		    @com.google.gwt.chrome.crx.client.Windows$OnWindowCallback::onWindow(Lcom/google/gwt/chrome/crx/client/Windows$Window;)
-		    (wnd);
-		 });
-	}-*/;
+																	chrome.windows.getCurrent(function(wnd){ 
+																	callback.
+																	@com.google.gwt.chrome.crx.client.Windows$OnWindowCallback::onWindow(Lcom/google/gwt/chrome/crx/client/Windows$Window;)
+																	(wnd);
+																	});
+																	}-*/;
 
 	public static native void getLastFocused(OnWindowCallback callback) /*-{
-		chrome.windows.getLastFocused(function(wnd){ 
-		    callback.
-		    @com.google.gwt.chrome.crx.client.Windows$OnWindowCallback::onWindow(Lcom/google/gwt/chrome/crx/client/Windows$Window;)
-		    (wnd);
-		 });
-	}-*/;
+																		chrome.windows.getLastFocused(function(wnd){ 
+																		callback.
+																		@com.google.gwt.chrome.crx.client.Windows$OnWindowCallback::onWindow(Lcom/google/gwt/chrome/crx/client/Windows$Window;)
+																		(wnd);
+																		});
+																		}-*/;
 
 	public static native void remove(int windowId, OnRemovedCallback callback) /*-{
-		chrome.windows.remove(windowId, function(wnd) {
-		    callback.
-		    @com.google.gwt.chrome.crx.client.Windows$OnRemovedCallback::onRemove()
-		    ();
-		});
-	}-*/;
+																				chrome.windows.remove(windowId, function(wnd) {
+																				callback.
+																				@com.google.gwt.chrome.crx.client.Windows$OnRemovedCallback::onRemove()
+																				();
+																				});
+																				}-*/;
 }

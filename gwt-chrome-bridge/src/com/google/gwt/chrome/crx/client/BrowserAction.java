@@ -36,39 +36,40 @@ import java.lang.annotation.Target;
  * 
  */
 public abstract class BrowserAction implements Component {
-  /**
-   * Annotation for defining the properties of a PageAction.
-   */
-  @Target(ElementType.TYPE)
-  @Retention(RetentionPolicy.RUNTIME)
-  @Documented
-  public @interface ManifestInfo {
-    String defaultIcon();
-    String name();
-  }
+	/**
+	 * Annotation for defining the properties of a PageAction.
+	 */
+	@Target(ElementType.TYPE)
+	@Retention(RetentionPolicy.RUNTIME)
+	@Documented
+	public @interface ManifestInfo {
+		String defaultIcon();
 
-  protected BrowserAction() {
-  }
+		String name();
+	}
 
-  public final void addListener(Listener listener) {
-    getBrowserActionEvent().addListener(listener);
-  }
+	protected BrowserAction() {
+	}
 
-  public abstract String getName();
+	public final void addListener(Listener listener) {
+		getBrowserActionEvent().addListener(listener);
+	}
 
-  public final void setIcon(int tabId, Icon icon) {
-    setIconImpl(tabId, icon.getPath());
-  }
+	public abstract String getName();
 
-  public final native void setTitle(int tabId, String title) /*-{
-    chrome.browserAction.setTitle({tabId: tabId, title: title});
-  }-*/;
+	public final void setIcon(int tabId, Icon icon) {
+		setIconImpl(tabId, icon.getPath());
+	}
 
-  private native BrowserActionEvent getBrowserActionEvent() /*-{
-    return chrome.browserAction.onClicked;
-  }-*/;
+	public final native void setTitle(int tabId, String title) /*-{
+																chrome.browserAction.setTitle({tabId: tabId, title: title});
+																}-*/;
 
-  private native void setIconImpl(int tabId, String iconPath) /*-{
-    chrome.browserAction.setIcon({tabId: tabId, path: iconPath});
-  }-*/;
+	private native BrowserActionEvent getBrowserActionEvent() /*-{
+																return chrome.browserAction.onClicked;
+																}-*/;
+
+	private native void setIconImpl(int tabId, String iconPath) /*-{
+																chrome.browserAction.setIcon({tabId: tabId, path: iconPath});
+																}-*/;
 }

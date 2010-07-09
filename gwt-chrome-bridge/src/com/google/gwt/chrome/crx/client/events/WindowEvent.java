@@ -25,28 +25,28 @@ import com.google.gwt.core.client.JavaScriptObject;
  * >Windows API</a>
  */
 public final class WindowEvent extends Event {
-  /**
-   * Callback for events that return a single window id in the first argument.
-   */
-  public interface Listener {
-    void onWindow(int windowId);
-  }
+	/**
+	 * Callback for events that return a single window id in the first argument.
+	 */
+	public interface Listener {
+		void onWindow(int windowId);
+	}
 
-  protected WindowEvent() {
-  }
+	protected WindowEvent() {
+	}
 
-  public ListenerHandle addListener(Listener listener) {
-    return new ListenerHandle(this, addListenerImpl(listener));
-  }
+	public ListenerHandle addListener(Listener listener) {
+		return new ListenerHandle(this, addListenerImpl(listener));
+	}
 
-  private native JavaScriptObject addListenerImpl(Listener listener) /*-{
-    var handle = function(windowId) {
-      listener.
-          @com.google.gwt.chrome.crx.client.events.WindowEvent.Listener::onWindow(I)
-          (windowId);
-    }
+	private native JavaScriptObject addListenerImpl(Listener listener) /*-{
+																		var handle = function(windowId) {
+																		listener.
+																		@com.google.gwt.chrome.crx.client.events.WindowEvent.Listener::onWindow(I)
+																		(windowId);
+																		}
 
-    this.addListener(handle);
-    return handle;
-  }-*/;
+																		this.addListener(handle);
+																		return handle;
+																		}-*/;
 }
