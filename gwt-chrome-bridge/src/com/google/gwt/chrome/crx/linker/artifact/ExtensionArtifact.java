@@ -13,27 +13,28 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.google.gwt.chrome.crx.linker;
+package com.google.gwt.chrome.crx.linker.artifact;
 
+import com.google.gwt.chrome.crx.linker.ExtensionLinker;
 import com.google.gwt.core.ext.linker.Artifact;
 
-class ExtensionArtifact extends Artifact<ExtensionArtifact> {
+public class ExtensionArtifact extends Artifact<ExtensionArtifact> {
   private static final long serialVersionUID = 8088249825810527401L;
 
-  static class IconInfo {
+  public static class IconInfo {
     private final String filename;
     private final int size;
 
-    IconInfo(String filename, int size) {
+    public IconInfo(String filename, int size) {
       this.filename = filename;
       this.size = size;
     }
 
-    String getFilename() {
+    public String getFilename() {
       return filename;
     }
 
-    int getSize() {
+    public int getSize() {
       return size;
     }
   }

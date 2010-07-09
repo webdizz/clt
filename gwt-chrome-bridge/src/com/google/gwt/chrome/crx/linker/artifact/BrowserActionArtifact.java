@@ -13,11 +13,12 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.google.gwt.chrome.crx.linker;
+package com.google.gwt.chrome.crx.linker.artifact;
 
+import com.google.gwt.chrome.crx.linker.ExtensionLinker;
 import com.google.gwt.core.ext.linker.Artifact;
 
-class BrowserActionArtifact extends Artifact<BrowserActionArtifact> {
+public class BrowserActionArtifact extends Artifact<BrowserActionArtifact> {
 	private static final long serialVersionUID = -544245597242157263L;
 	private final String[] icons;
 	private final String name;
