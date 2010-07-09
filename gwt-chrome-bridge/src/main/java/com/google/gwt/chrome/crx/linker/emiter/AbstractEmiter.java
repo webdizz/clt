@@ -47,10 +47,16 @@ public abstract class AbstractEmiter implements Emiter {
 	 * @param name
 	 *            the name to return
 	 */
-	protected void writeGetName(final SourceWriter sw, final String name) {
+	protected void emitNameGetter(final SourceWriter sw, final String name) {
 		sw.println("public String getName() {");
 		// TODO(jaimeyap): Use proper string escaping from generator libs.
 		sw.println("  return \"" + name + "\";");
+		sw.println("}");
+	}
+
+	protected void emitIdGetter(final SourceWriter sw, final String id) {
+		sw.println("public String getId() {");
+		sw.println("  return \"" + id + "\";");
 		sw.println("}");
 	}
 

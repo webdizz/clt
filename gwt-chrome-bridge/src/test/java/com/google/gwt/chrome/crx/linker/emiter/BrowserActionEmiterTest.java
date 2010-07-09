@@ -151,7 +151,7 @@ public class BrowserActionEmiterTest {
 		when(userType.getPackage()).thenReturn(jpackage);
 	}
 
-	private String invokeCodeEmition() throws UnableToCompleteException {
+	protected String invokeCodeEmition() throws UnableToCompleteException {
 		Emiter emiter = new BrowserActionEmiter();
 		return emiter.emit(logger, context, userType, TYPE_NAME);
 	}
