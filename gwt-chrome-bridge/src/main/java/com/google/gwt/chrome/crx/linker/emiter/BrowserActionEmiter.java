@@ -35,6 +35,15 @@ public class BrowserActionEmiter extends AbstractEmiter {
 		List<String> iconFiles = new ArrayList<String>();
 		List<String> iconMethods = new ArrayList<String>();
 
+		processIconMethods(methods, iconFiles, iconMethods);
+		validator.ensureActionHasIcon(iconFiles);
+		BrowserActionArtifact artifact = new BrowserActionArtifact(spec.name(), iconFiles.toArray(new String[0]),
+				spec.defaultIcon());
+		context.commitArtifact(logger, artifact);
+		return emitCode(logger, context, userType, spec.name(), iconMethods, iconFiles);
+	}
+
+	protected void processIconMethods(JMethod[] methods, List<String> iconFiles, List<String> iconMethods) {
 		// TODO(jaimeyap): Do something smarter about verifying that the files
 		// actually exist on disk, and then coming up with something sane for
 		// the path information. May even consider strong names. See what
@@ -52,11 +61,6 @@ public class BrowserActionEmiter extends AbstractEmiter {
 				iconMethods.add(method.getName());
 			}
 		}
-		validator.ensureActionHasIcon(iconFiles);
-		BrowserActionArtifact artifact = new BrowserActionArtifact(spec.name(), iconFiles.toArray(new String[0]),
-				spec.defaultIcon());
-		context.commitArtifact(logger, artifact);
-		return emitCode(logger, context, userType, spec.name(), iconMethods, iconFiles);
 	}
 
 	private String emitCode(TreeLogger logger, GeneratorContext context, JClassType userType, String name,
@@ -69,8 +73,8 @@ public class BrowserActionEmiter extends AbstractEmiter {
 		final PrintWriter pw = context.tryCreate(logger, packageName, subclassName);
 		if (pw != null) {
 			SourceWriter sw = sourceFileComposerFactory.createSourceWriter(context, pw);
-			// Impl for the getter for name.
-			writeGetName(sw, name);
+			
+			emitNameGetter(sw, name);
 			emitIcons(sw, icons, iconPaths);
 			sw.commit(logger);
 		}
