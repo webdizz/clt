@@ -85,7 +85,7 @@ public class BrowserActionEmiter extends AbstractEmiter {
 			SourceWriter sw = sourceFileComposerFactory.createSourceWriter(context, pw);
 			// Impl for the getter for name.
 			writeGetName(sw, name);
-			emitIcons(icons, iconPaths, sw);
+			emitIcons(sw, icons, iconPaths);
 			sw.commit(logger);
 		}
 		return sourceFileComposerFactory.getCreatedClassName();
