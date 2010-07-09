@@ -18,29 +18,24 @@ package com.google.gwt.chrome.crx.linker;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.google.gwt.chrome.crx.client.Component;
 import com.google.gwt.chrome.crx.client.ContentScript;
 import com.google.gwt.chrome.crx.client.ContentScript.ManifestInfo;
 import com.google.gwt.chrome.crx.client.ExtensionScript;
-import com.google.gwt.chrome.crx.client.Icon;
-import com.google.gwt.chrome.crx.client.PageAction;
 import com.google.gwt.chrome.crx.client.Plugin;
 import com.google.gwt.chrome.crx.linker.artifact.ContentScriptArtifact;
 import com.google.gwt.chrome.crx.linker.artifact.ExtensionScriptArtifact;
-import com.google.gwt.chrome.crx.linker.artifact.PageActionArtifact;
 import com.google.gwt.chrome.crx.linker.artifact.PluginArtifact;
 import com.google.gwt.chrome.crx.linker.artifact.ToolStripArtifact;
 import com.google.gwt.chrome.crx.linker.emiter.BrowserActionEmiter;
 import com.google.gwt.chrome.crx.linker.emiter.Emiter;
+import com.google.gwt.chrome.crx.linker.emiter.PageActionEmiter;
 import com.google.gwt.core.ext.Generator;
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
-import com.google.gwt.core.ext.typeinfo.JMethod;
 import com.google.gwt.core.ext.typeinfo.NotFoundException;
 import com.google.gwt.core.ext.typeinfo.TypeOracle;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
@@ -54,7 +49,6 @@ public class ComponentGenerator extends Generator {
 	private static final String CONTENTSCRIPT_USER_TYPE = "com.google.gwt.chrome.crx.client.ContentScript";
 	private static final String EXTSCRIPT_USER_TYPE = "com.google.gwt.chrome.crx.client.ExtensionScript";
 	private static final String PAGE_USER_TYPE = "com.google.gwt.chrome.crx.client.Page";
-	private static final String PAGEACTION_USER_TYPE = "com.google.gwt.chrome.crx.client.PageAction";
 	private static final String PLUGIN_USER_TYPE = "com.google.gwt.chrome.crx.client.Plugin";
 	private static final String TOOLSTRIP_USER_TYPE = "com.google.gwt.chrome.crx.client.ToolStrip";
 
@@ -68,7 +62,7 @@ public class ComponentGenerator extends Generator {
 		final JClassType pageType = typeOracle.findType(PAGE_USER_TYPE);
 		assert pageType != null;
 
-		final JClassType pageActionType = typeOracle.findType(PAGEACTION_USER_TYPE);
+		final JClassType pageActionType = typeOracle.findType(Emiter.PAGEACTION_USER_TYPE);
 		assert pageActionType != null;
 
 		final JClassType browserActionType = typeOracle.findType(BROWSERACTION_USER_TYPE);
@@ -99,7 +93,7 @@ public class ComponentGenerator extends Generator {
 				processPlugin(logger, context, classType, typeName);
 				return typeName;
 			} else if (classType.isAssignableTo(pageActionType)) {
-				return processPageAction(logger, context, classType, typeName);
+				return new PageActionEmiter().emit(logger, context, classType, typeName);
 			} else if (classType.isAssignableTo(browserActionType)) {
 				return new BrowserActionEmiter().emit(logger, context, classType, typeName);
 			}
@@ -153,52 +147,6 @@ public class ComponentGenerator extends Generator {
 		return f.getCreatedClassName();
 	}
 
-	private static void emitIcons(List<String> iconNames, List<String> iconPaths, SourceWriter sw) {
-		// Fill in the methods for kicking back the BrowserAction Icons.
-		for (int i = 0; i < iconNames.size(); i++) {
-			String iconName = Generator.escape(iconNames.get(i));
-			String iconField = Generator.escape(iconName) + "_field";
-			sw.println("private " + Emiter.ICON_USER_TYPE + " " + iconField + " = null;");
-			sw.println("public " + Emiter.ICON_USER_TYPE + " " + iconName + "() {");
-			sw.println("  if (" + iconField + " == null) {");
-			sw.println("    " + iconField + " = new " + Emiter.ICON_USER_TYPE + "(" + i + ", \""
-					+ Generator.escape(iconPaths.get(i)) + "\");");
-			sw.println("  }");
-			sw.println("  return " + iconField + ";");
-			sw.println("}");
-		}
-	}
-
-	private static String emitPageActionCode(TreeLogger logger, GeneratorContext context, JClassType userType,
-			String pageActionId, String name, List<String> icons, List<String> iconPaths, String popup) {
-		final String subclassName = userType.getSimpleSourceName().replace('.', '_') + "_generated";
-		final String packageName = userType.getPackage().getName();
-		final ClassSourceFileComposerFactory f = new ClassSourceFileComposerFactory(packageName, subclassName);
-		f.setSuperclass(userType.getQualifiedSourceName());
-		final PrintWriter pw = context.tryCreate(logger, packageName, subclassName);
-		if (pw != null) {
-			final SourceWriter sw = f.createSourceWriter(context, pw);
-
-			// Impls for the getters for id and name.
-			sw.println("public String getId() {");
-			sw.println("  return \"" + pageActionId + "\";");
-			sw.println("}");
-			sw.println("public String getName() {");
-			sw.println("  return \"" + name + "\";");
-			sw.println("}");
-			if (null != popup) {
-				sw.println("public String getPopup() {");
-				sw.println("  return \"" + popup + "\";");
-				sw.println("}");
-			}
-
-			emitIcons(icons, iconPaths, sw);
-
-			sw.commit(logger);
-		}
-		return f.getCreatedClassName();
-	}
-
 	private static void processContentScript(TreeLogger logger, GeneratorContext context, JClassType userType,
 			String typeName) throws UnableToCompleteException {
 		ManifestInfo spec = userType.getAnnotation(ContentScript.ManifestInfo.class);
@@ -231,53 +179,6 @@ public class ComponentGenerator extends Generator {
 		emitComponentPage(logger, context, name, path);
 		// No need to commit any artifact for the linker.
 		return emitComponentPageCode(logger, context, userType);
-	}
-
-	private static String processPageAction(TreeLogger logger, GeneratorContext context, JClassType userType,
-			String typeName) throws UnableToCompleteException {
-		PageAction.ManifestInfo spec = userType.getAnnotation(PageAction.ManifestInfo.class);
-		if (spec == null) {
-			logger.log(TreeLogger.ERROR, "PageAction (" + typeName + ") must be annotated with a Specificaiton.");
-			throw new UnableToCompleteException();
-		}
-		JMethod[] methods = userType.getMethods();
-		List<String> iconFileNames = new ArrayList<String>();
-		List<String> iconMethodNames = new ArrayList<String>();
-
-		// TODO(jaimeyap): Do something smarter about verifying that the files
-		// actually exist on disk, and then coming up with something sane for
-		// the path information. May even consider strong names. See what
-		// ClientBundle/ImageResource does.
-		for (int i = 0; i < methods.length; i++) {
-			if (methods[i].getReturnType().getQualifiedSourceName().equals(Emiter.ICON_USER_TYPE)) {
-				JMethod method = methods[i];
-				String iconFileName;
-				Icon.Source iconSource = method.getAnnotation(Icon.Source.class);
-				if (iconSource == null) {
-					iconFileName = method.getName() + ".png";
-				} else {
-					iconFileName = iconSource.value();
-				}
-				iconFileNames.add(iconFileName);
-				iconMethodNames.add(method.getName());
-			}
-		}
-		if (iconFileNames.size() == 0) {
-			logger.log(TreeLogger.ERROR, "PageActions must have at least one Icon (" + typeName + ")");
-			throw new UnableToCompleteException();
-		}
-		if ("".equals(spec.popup())) {
-			context.commitArtifact(logger,
-					new PageActionArtifact(spec.pageActionId(), spec.name(), iconFileNames.toArray(new String[0])));
-		} else {
-			context.commitArtifact(
-					logger,
-					new PageActionArtifact(spec.pageActionId(), spec.name(), iconFileNames.toArray(new String[0]), spec
-							.popup()));
-		}
-
-		return emitPageActionCode(logger, context, userType, spec.pageActionId(), spec.name(), iconMethodNames,
-				iconFileNames, spec.popup());
 	}
 
 	private static void processPlugin(TreeLogger logger, GeneratorContext context, JClassType userType, String typeName)
