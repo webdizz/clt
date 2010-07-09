@@ -8,8 +8,12 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 import org.junit.Before;
 import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -23,6 +27,8 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JMethod;
 import com.google.gwt.core.ext.typeinfo.JPackage;
 import com.google.gwt.core.ext.typeinfo.JType;
+import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
+import com.google.gwt.user.rebind.SourceWriter;
 
 /**
  * @author webdizz
@@ -41,6 +47,7 @@ public class BrowserActionEmiterTest {
 
 	private static final String CLASS_NAME = "BrowserAction";
 	private static final String TYPE_NAME = "com.google.gwt.chrome." + CLASS_NAME;
+	private static final String SUBPACKEG_NAME = TYPE_NAME.replace(".", "_") + "_generated";
 
 	@Before
 	public void setUp() {
@@ -50,6 +57,7 @@ public class BrowserActionEmiterTest {
 		JPackage jpackage = mock(JPackage.class);
 		when(userType.getPackage()).thenReturn(jpackage);
 		BrowserAction.ManifestInfo spec = mock(BrowserAction.ManifestInfo.class);
+		when(spec.name()).thenReturn("actionName");
 		when(userType.getAnnotation(BrowserAction.ManifestInfo.class)).thenReturn(spec);
 	}
 
@@ -104,24 +112,61 @@ public class BrowserActionEmiterTest {
 	}
 
 	@Test
-	public void shouldCreateProperWriter() throws UnableToCompleteException {
+	public void shouldTryToCreateProperWriter() throws UnableToCompleteException {
 		JMethod jmethod = mock(JMethod.class);
 		JType jtype = mock(JType.class);
 		when(jtype.getQualifiedSourceName()).thenReturn(UserType.ICON_USER_TYPE.type());
 		when(jtype.getSimpleSourceName()).thenReturn(TYPE_NAME);
 		when(jmethod.getReturnType()).thenReturn(jtype);
 		when(userType.getMethods()).thenReturn(new JMethod[] { jmethod });
-		
+
 		JPackage jpackage = mock(JPackage.class);
 		when(jpackage.getName()).thenReturn(TYPE_NAME);
 		when(userType.getPackage()).thenReturn(jpackage);
 
 		Icon.Source iconSource = mock(Icon.Source.class);
 		when(jmethod.getAnnotation(Icon.Source.class)).thenReturn(iconSource);
-		
+
 		Emiter emiter = new BrowserActionEmiter();
 		emiter.emit(logger, context, userType, TYPE_NAME);
-		verify(context).tryCreate(logger, TYPE_NAME, TYPE_NAME.replace(".", "_") + "_generated");
+		verify(context).tryCreate(logger, TYPE_NAME, SUBPACKEG_NAME);
+	}
+
+	@Test
+	public void shouldCreateProperWriter() throws UnableToCompleteException {
+		JMethod jmethod = mock(JMethod.class);
+		JType jtype = mock(JType.class);
+		when(jtype.getQualifiedSourceName()).thenReturn(UserType.ICON_USER_TYPE.type());
+		when(jtype.getSimpleSourceName()).thenReturn(TYPE_NAME);
+		when(jmethod.getReturnType()).thenReturn(jtype);
+		when(jmethod.getName()).thenReturn("methodName");
+		when(userType.getMethods()).thenReturn(new JMethod[] { jmethod });
+
+		JPackage jpackage = mock(JPackage.class);
+		when(jpackage.getName()).thenReturn(TYPE_NAME);
+		when(userType.getPackage()).thenReturn(jpackage);
+
+		Icon.Source iconSource = mock(Icon.Source.class);
+		when(iconSource.value()).thenReturn("filename");
+		when(jmethod.getAnnotation(Icon.Source.class)).thenReturn(iconSource);
+
+		final ClassSourceFileComposerFactory sourceFileComposerFactoryImpl = new ClassSourceFileComposerFactory(
+				TYPE_NAME, SUBPACKEG_NAME);
+
+		StringWriter stringWriter = new StringWriter();
+		SourceWriter sw = sourceFileComposerFactoryImpl.createSourceWriter(context, new PrintWriter(stringWriter));
+		PrintWriter pw = new PrintWriter(stringWriter);
+
+		ClassSourceFileComposerFactory sourceFileComposerFactoryMock = mock(ClassSourceFileComposerFactory.class);
+
+		when(sourceFileComposerFactoryMock.createSourceWriter(context, pw)).thenReturn(sw);
+
+		when(context.tryCreate(logger, TYPE_NAME, SUBPACKEG_NAME)).thenReturn(pw);
+
+		Emiter emiter = new BrowserActionEmiter();
+		String createdClass = emiter.emit(logger, context, userType, TYPE_NAME);
+
+		assertEquals(TYPE_NAME + '.' + SUBPACKEG_NAME, createdClass);
 	}
 
 }

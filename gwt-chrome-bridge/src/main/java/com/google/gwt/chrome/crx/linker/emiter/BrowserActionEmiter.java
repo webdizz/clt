@@ -79,11 +79,12 @@ public class BrowserActionEmiter implements Emiter {
 			List<String> icons, List<String> iconPaths) {
 		final String subclassName = userType.getSimpleSourceName().replace('.', '_') + "_generated";
 		final String packageName = userType.getPackage().getName();
-		final ClassSourceFileComposerFactory f = new ClassSourceFileComposerFactory(packageName, subclassName);
-		f.setSuperclass(userType.getQualifiedSourceName());
+		final ClassSourceFileComposerFactory sourceFileComposerFactory = new ClassSourceFileComposerFactory(
+				packageName, subclassName);
+		sourceFileComposerFactory.setSuperclass(userType.getQualifiedSourceName());
 		final PrintWriter pw = context.tryCreate(logger, packageName, subclassName);
 		if (pw != null) {
-			final SourceWriter sw = f.createSourceWriter(context, pw);
+			final SourceWriter sw = sourceFileComposerFactory.createSourceWriter(context, pw);
 
 			// Impl for the getter for name.
 			sw.println("public String getName() {");
@@ -95,7 +96,7 @@ public class BrowserActionEmiter implements Emiter {
 
 			sw.commit(logger);
 		}
-		return f.getCreatedClassName();
+		return sourceFileComposerFactory.getCreatedClassName();
 	}
 
 	private static void emitIcons(List<String> iconNames, List<String> iconPaths, SourceWriter sw) {
