@@ -21,15 +21,13 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gwt.chrome.crx.client.BrowserAction;
 import com.google.gwt.chrome.crx.client.Component;
 import com.google.gwt.chrome.crx.client.ContentScript;
+import com.google.gwt.chrome.crx.client.ContentScript.ManifestInfo;
 import com.google.gwt.chrome.crx.client.ExtensionScript;
 import com.google.gwt.chrome.crx.client.Icon;
 import com.google.gwt.chrome.crx.client.PageAction;
 import com.google.gwt.chrome.crx.client.Plugin;
-import com.google.gwt.chrome.crx.client.ContentScript.ManifestInfo;
-import com.google.gwt.chrome.crx.linker.artifact.BrowserActionArtifact;
 import com.google.gwt.chrome.crx.linker.artifact.ContentScriptArtifact;
 import com.google.gwt.chrome.crx.linker.artifact.ExtensionScriptArtifact;
 import com.google.gwt.chrome.crx.linker.artifact.PageActionArtifact;
@@ -55,7 +53,6 @@ public class ComponentGenerator extends Generator {
 	private static final String BROWSERACTION_USER_TYPE = "com.google.gwt.chrome.crx.client.BrowserAction";
 	private static final String CONTENTSCRIPT_USER_TYPE = "com.google.gwt.chrome.crx.client.ContentScript";
 	private static final String EXTSCRIPT_USER_TYPE = "com.google.gwt.chrome.crx.client.ExtensionScript";
-	private static final String ICON_USER_TYPE = "com.google.gwt.chrome.crx.client.Icon";
 	private static final String PAGE_USER_TYPE = "com.google.gwt.chrome.crx.client.Page";
 	private static final String PAGEACTION_USER_TYPE = "com.google.gwt.chrome.crx.client.PageAction";
 	private static final String PLUGIN_USER_TYPE = "com.google.gwt.chrome.crx.client.Plugin";
@@ -161,10 +158,10 @@ public class ComponentGenerator extends Generator {
 		for (int i = 0; i < iconNames.size(); i++) {
 			String iconName = Generator.escape(iconNames.get(i));
 			String iconField = Generator.escape(iconName) + "_field";
-			sw.println("private " + ICON_USER_TYPE + " " + iconField + " = null;");
-			sw.println("public " + ICON_USER_TYPE + " " + iconName + "() {");
+			sw.println("private " + Emiter.ICON_USER_TYPE + " " + iconField + " = null;");
+			sw.println("public " + Emiter.ICON_USER_TYPE + " " + iconName + "() {");
 			sw.println("  if (" + iconField + " == null) {");
-			sw.println("    " + iconField + " = new " + ICON_USER_TYPE + "(" + i + ", \""
+			sw.println("    " + iconField + " = new " + Emiter.ICON_USER_TYPE + "(" + i + ", \""
 					+ Generator.escape(iconPaths.get(i)) + "\");");
 			sw.println("  }");
 			sw.println("  return " + iconField + ";");
@@ -252,7 +249,7 @@ public class ComponentGenerator extends Generator {
 		// the path information. May even consider strong names. See what
 		// ClientBundle/ImageResource does.
 		for (int i = 0; i < methods.length; i++) {
-			if (methods[i].getReturnType().getQualifiedSourceName().equals(ICON_USER_TYPE)) {
+			if (methods[i].getReturnType().getQualifiedSourceName().equals(Emiter.ICON_USER_TYPE)) {
 				JMethod method = methods[i];
 				String iconFileName;
 				Icon.Source iconSource = method.getAnnotation(Icon.Source.class);
