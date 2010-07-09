@@ -9,7 +9,6 @@ import java.util.List;
 
 import com.google.gwt.chrome.crx.client.BrowserAction;
 import com.google.gwt.chrome.crx.client.Icon;
-import com.google.gwt.chrome.crx.linker.UserType;
 import com.google.gwt.chrome.crx.linker.artifact.BrowserActionArtifact;
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
@@ -39,7 +38,7 @@ public class BrowserActionEmiter extends AbstractEmiter {
 		// the path information. May even consider strong names. See what
 		// ClientBundle/ImageResource does.
 		for (JMethod method : methods) {
-			if (method.getReturnType().getQualifiedSourceName().equals(UserType.ICON_USER_TYPE.type())) {
+			if (method.getReturnType().getQualifiedSourceName().equals(Emiter.ICON_USER_TYPE)) {
 				String iconFileName;
 				Icon.Source iconSource = method.getAnnotation(Icon.Source.class);
 				if (iconSource == null) {

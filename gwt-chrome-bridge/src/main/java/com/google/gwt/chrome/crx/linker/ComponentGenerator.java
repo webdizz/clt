@@ -35,6 +35,8 @@ import com.google.gwt.chrome.crx.linker.artifact.ExtensionScriptArtifact;
 import com.google.gwt.chrome.crx.linker.artifact.PageActionArtifact;
 import com.google.gwt.chrome.crx.linker.artifact.PluginArtifact;
 import com.google.gwt.chrome.crx.linker.artifact.ToolStripArtifact;
+import com.google.gwt.chrome.crx.linker.emiter.BrowserActionEmiter;
+import com.google.gwt.chrome.crx.linker.emiter.Emiter;
 import com.google.gwt.core.ext.Generator;
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
@@ -58,29 +60,6 @@ public class ComponentGenerator extends Generator {
 	private static final String PAGEACTION_USER_TYPE = "com.google.gwt.chrome.crx.client.PageAction";
 	private static final String PLUGIN_USER_TYPE = "com.google.gwt.chrome.crx.client.Plugin";
 	private static final String TOOLSTRIP_USER_TYPE = "com.google.gwt.chrome.crx.client.ToolStrip";
-
-	private static String emitBrowserActionCode(TreeLogger logger, GeneratorContext context, JClassType userType,
-			String name, List<String> icons, List<String> iconPaths) {
-		final String subclassName = userType.getSimpleSourceName().replace('.', '_') + "_generated";
-		final String packageName = userType.getPackage().getName();
-		final ClassSourceFileComposerFactory f = new ClassSourceFileComposerFactory(packageName, subclassName);
-		f.setSuperclass(userType.getQualifiedSourceName());
-		final PrintWriter pw = context.tryCreate(logger, packageName, subclassName);
-		if (pw != null) {
-			final SourceWriter sw = f.createSourceWriter(context, pw);
-
-			// Impl for the getter for name.
-			sw.println("public String getName() {");
-			// TODO(jaimeyap): Use proper string escaping from generator libs.
-			sw.println("  return \"" + name + "\";");
-			sw.println("}");
-
-			emitIcons(icons, iconPaths, sw);
-
-			sw.commit(logger);
-		}
-		return f.getCreatedClassName();
-	}
 
 	private static String emitComponent(TreeLogger logger, GeneratorContext context, String typeName)
 			throws UnableToCompleteException {
@@ -125,7 +104,7 @@ public class ComponentGenerator extends Generator {
 			} else if (classType.isAssignableTo(pageActionType)) {
 				return processPageAction(logger, context, classType, typeName);
 			} else if (classType.isAssignableTo(browserActionType)) {
-				return processBrowserAction(logger, context, classType, typeName);
+				return new BrowserActionEmiter().emit(logger, context, classType, typeName);
 			}
 			// TODO(knorton): Better error message.
 			logger.log(TreeLogger.ERROR, "I can't generate one of those (" + typeName + ")");
@@ -221,44 +200,6 @@ public class ComponentGenerator extends Generator {
 			sw.commit(logger);
 		}
 		return f.getCreatedClassName();
-	}
-
-	private static String processBrowserAction(TreeLogger logger, GeneratorContext context, JClassType userType,
-			String typeName) throws UnableToCompleteException {
-		BrowserAction.ManifestInfo spec = userType.getAnnotation(BrowserAction.ManifestInfo.class);
-		if (spec == null) {
-			logger.log(TreeLogger.ERROR, "BrowserAction (" + typeName + ") must be annotated with a Specificaiton.");
-			throw new UnableToCompleteException();
-		}
-		JMethod[] methods = userType.getMethods();
-		List<String> iconFileNames = new ArrayList<String>();
-		List<String> iconMethodNames = new ArrayList<String>();
-
-		// TODO(jaimeyap): Do something smarter about verifying that the files
-		// actually exist on disk, and then coming up with something sane for
-		// the path information. May even consider strong names. See what
-		// ClientBundle/ImageResource does.
-		for (int i = 0; i < methods.length; i++) {
-			if (methods[i].getReturnType().getQualifiedSourceName().equals(ICON_USER_TYPE)) {
-				JMethod method = methods[i];
-				String iconFileName;
-				Icon.Source iconSource = method.getAnnotation(Icon.Source.class);
-				if (iconSource == null) {
-					iconFileName = method.getName() + ".png";
-				} else {
-					iconFileName = iconSource.value();
-				}
-				iconFileNames.add(iconFileName);
-				iconMethodNames.add(method.getName());
-			}
-		}
-		if (iconFileNames.size() == 0) {
-			logger.log(TreeLogger.ERROR, "BrowserActions must have at least one Icon (" + typeName + ")");
-			throw new UnableToCompleteException();
-		}
-		context.commitArtifact(logger, new BrowserActionArtifact(spec.name(), iconFileNames.toArray(new String[0]),
-				spec.defaultIcon()));
-		return emitBrowserActionCode(logger, context, userType, spec.name(), iconMethodNames, iconFileNames);
 	}
 
 	private static void processContentScript(TreeLogger logger, GeneratorContext context, JClassType userType,
