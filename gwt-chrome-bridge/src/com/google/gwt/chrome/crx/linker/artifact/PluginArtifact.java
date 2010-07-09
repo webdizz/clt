@@ -13,8 +13,9 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.google.gwt.chrome.crx.linker;
+package com.google.gwt.chrome.crx.linker.artifact;
 
+import com.google.gwt.chrome.crx.linker.ExtensionLinker;
 import com.google.gwt.core.ext.linker.Artifact;
 
 /**

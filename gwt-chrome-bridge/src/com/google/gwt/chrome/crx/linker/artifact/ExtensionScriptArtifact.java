@@ -1,5 +1,6 @@
-package com.google.gwt.chrome.crx.linker;
+package com.google.gwt.chrome.crx.linker.artifact;
 
+import com.google.gwt.chrome.crx.linker.ExtensionLinker;
 import com.google.gwt.core.ext.linker.Artifact;
 
 /**

@@ -21,7 +21,14 @@ import java.util.Set;
 import java.util.SortedSet;
 
 import com.google.gwt.chrome.crx.client.Extension;
-import com.google.gwt.chrome.crx.linker.ExtensionArtifact.IconInfo;
+import com.google.gwt.chrome.crx.linker.artifact.BrowserActionArtifact;
+import com.google.gwt.chrome.crx.linker.artifact.ContentScriptArtifact;
+import com.google.gwt.chrome.crx.linker.artifact.ExtensionArtifact;
+import com.google.gwt.chrome.crx.linker.artifact.ExtensionScriptArtifact;
+import com.google.gwt.chrome.crx.linker.artifact.PageActionArtifact;
+import com.google.gwt.chrome.crx.linker.artifact.PluginArtifact;
+import com.google.gwt.chrome.crx.linker.artifact.ToolStripArtifact;
+import com.google.gwt.chrome.crx.linker.artifact.ExtensionArtifact.IconInfo;
 import com.google.gwt.core.ext.LinkerContext;
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;

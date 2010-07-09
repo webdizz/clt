@@ -17,7 +17,8 @@ package com.google.gwt.chrome.crx.linker;
 
 import com.google.gwt.chrome.crx.client.Extension;
 import com.google.gwt.chrome.crx.client.Extension.ManifestInfo;
-import com.google.gwt.chrome.crx.linker.ExtensionArtifact.IconInfo;
+import com.google.gwt.chrome.crx.linker.artifact.ExtensionArtifact;
+import com.google.gwt.chrome.crx.linker.artifact.ExtensionArtifact.IconInfo;
 import com.google.gwt.core.ext.Generator;
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
