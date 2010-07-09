@@ -3,6 +3,7 @@
  */
 package com.google.gwt.chrome.crx.linker.emiter;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -13,7 +14,6 @@ import java.io.StringWriter;
 
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -45,8 +45,7 @@ public class BrowserActionEmiterTest {
 	@Mock
 	private JClassType userType;
 
-	private static final String CLASS_NAME = "BrowserAction";
-	private static final String TYPE_NAME = "com.google.gwt.chrome." + CLASS_NAME;
+	private static final String TYPE_NAME = "com.google.gwt.chrome.BrowserAction";
 	private static final String SUBPACKEG_NAME = TYPE_NAME.replace(".", "_") + "_generated";
 
 	@Before
@@ -65,8 +64,7 @@ public class BrowserActionEmiterTest {
 	public void shouldThrowUnableToCompleteExceptionIfNoSpec() throws UnableToCompleteException {
 		when(userType.getAnnotation(BrowserAction.ManifestInfo.class)).thenReturn(null);
 
-		Emiter emiter = new BrowserActionEmiter();
-		emiter.emit(logger, context, userType, TYPE_NAME);
+		invokeCodeEmition();
 	}
 
 	@Test(expected = UnableToCompleteException.class)
@@ -78,8 +76,7 @@ public class BrowserActionEmiterTest {
 		when(jmethod.getReturnType()).thenReturn(jtype);
 		when(userType.getMethods()).thenReturn(new JMethod[] { jmethod });
 
-		Emiter emiter = new BrowserActionEmiter();
-		emiter.emit(logger, context, userType, TYPE_NAME);
+		invokeCodeEmition();
 	}
 
 	@Test
@@ -90,8 +87,7 @@ public class BrowserActionEmiterTest {
 		when(jmethod.getReturnType()).thenReturn(jtype);
 		when(userType.getMethods()).thenReturn(new JMethod[] { jmethod });
 
-		Emiter emiter = new BrowserActionEmiter();
-		emiter.emit(logger, context, userType, TYPE_NAME);
+		invokeCodeEmition();
 		verify(jmethod, times(2)).getName();
 	}
 
@@ -100,55 +96,45 @@ public class BrowserActionEmiterTest {
 		JMethod jmethod = mock(JMethod.class);
 		JType jtype = mock(JType.class);
 		when(jtype.getQualifiedSourceName()).thenReturn(UserType.ICON_USER_TYPE.type());
-		Icon.Source iconSource = mock(Icon.Source.class);
-		when(jmethod.getAnnotation(Icon.Source.class)).thenReturn(iconSource);
 		when(jmethod.getReturnType()).thenReturn(jtype);
 		when(userType.getMethods()).thenReturn(new JMethod[] { jmethod });
 
-		Emiter emiter = new BrowserActionEmiter();
-		emiter.emit(logger, context, userType, TYPE_NAME);
+		Icon.Source iconSource = mock(Icon.Source.class);
+		when(jmethod.getAnnotation(Icon.Source.class)).thenReturn(iconSource);
+
+		invokeCodeEmition();
 		verify(iconSource).value();
 		verify(jmethod, times(1)).getName();
 	}
 
 	@Test
 	public void shouldTryToCreateProperWriter() throws UnableToCompleteException {
-		JMethod jmethod = mock(JMethod.class);
-		JType jtype = mock(JType.class);
-		when(jtype.getQualifiedSourceName()).thenReturn(UserType.ICON_USER_TYPE.type());
-		when(jtype.getSimpleSourceName()).thenReturn(TYPE_NAME);
-		when(jmethod.getReturnType()).thenReturn(jtype);
-		when(userType.getMethods()).thenReturn(new JMethod[] { jmethod });
+		mockIconMethods();
 
-		JPackage jpackage = mock(JPackage.class);
-		when(jpackage.getName()).thenReturn(TYPE_NAME);
-		when(userType.getPackage()).thenReturn(jpackage);
+		mockJPackage();
 
-		Icon.Source iconSource = mock(Icon.Source.class);
-		when(jmethod.getAnnotation(Icon.Source.class)).thenReturn(iconSource);
-
-		Emiter emiter = new BrowserActionEmiter();
-		emiter.emit(logger, context, userType, TYPE_NAME);
+		invokeCodeEmition();
 		verify(context).tryCreate(logger, TYPE_NAME, SUBPACKEG_NAME);
 	}
 
-	@Test
-	public void shouldCreateProperWriter() throws UnableToCompleteException {
+	private void mockIconMethods() {
 		JMethod jmethod = mock(JMethod.class);
 		JType jtype = mock(JType.class);
 		when(jtype.getQualifiedSourceName()).thenReturn(UserType.ICON_USER_TYPE.type());
 		when(jtype.getSimpleSourceName()).thenReturn(TYPE_NAME);
 		when(jmethod.getReturnType()).thenReturn(jtype);
 		when(jmethod.getName()).thenReturn("methodName");
-		when(userType.getMethods()).thenReturn(new JMethod[] { jmethod });
-
-		JPackage jpackage = mock(JPackage.class);
-		when(jpackage.getName()).thenReturn(TYPE_NAME);
-		when(userType.getPackage()).thenReturn(jpackage);
-
 		Icon.Source iconSource = mock(Icon.Source.class);
 		when(iconSource.value()).thenReturn("filename");
 		when(jmethod.getAnnotation(Icon.Source.class)).thenReturn(iconSource);
+		when(userType.getMethods()).thenReturn(new JMethod[] { jmethod });
+	}
+
+	@Test
+	public void shouldCreateProperWriter() throws UnableToCompleteException {
+		mockIconMethods();
+
+		mockJPackage();
 
 		final ClassSourceFileComposerFactory sourceFileComposerFactoryImpl = new ClassSourceFileComposerFactory(
 				TYPE_NAME, SUBPACKEG_NAME);
@@ -163,10 +149,20 @@ public class BrowserActionEmiterTest {
 
 		when(context.tryCreate(logger, TYPE_NAME, SUBPACKEG_NAME)).thenReturn(pw);
 
-		Emiter emiter = new BrowserActionEmiter();
-		String createdClass = emiter.emit(logger, context, userType, TYPE_NAME);
+		String createdClass = invokeCodeEmition();
 
 		assertEquals(TYPE_NAME + '.' + SUBPACKEG_NAME, createdClass);
+	}
+
+	private void mockJPackage() {
+		JPackage jpackage = mock(JPackage.class);
+		when(jpackage.getName()).thenReturn(TYPE_NAME);
+		when(userType.getPackage()).thenReturn(jpackage);
+	}
+
+	private String invokeCodeEmition() throws UnableToCompleteException {
+		Emiter emiter = new BrowserActionEmiter();
+		return emiter.emit(logger, context, userType, TYPE_NAME);
 	}
 
 }
