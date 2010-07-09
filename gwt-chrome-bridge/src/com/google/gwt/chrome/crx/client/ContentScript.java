@@ -33,21 +33,21 @@ import java.lang.annotation.Target;
  * >Content Scripts</a>
  */
 public abstract class ContentScript implements Component {
-  public static final String DOCUMENT_START = "document_start";
-  public static final String DOCUMENT_END = "document_end";
-  
-  /**
-   * ContentScript Specification annotation for defining the fields that go in
-   * the manifest.
-   */
-  @Target(ElementType.TYPE)
-  @Retention(RetentionPolicy.RUNTIME)
-  @Documented
-  public @interface ManifestInfo {
-    String[] whiteList();
+	public static final String DOCUMENT_START = "document_start";
+	public static final String DOCUMENT_END = "document_end";
 
-    String path();
-    
-    String runAt();
-  }
+	/**
+	 * ContentScript Specification annotation for defining the fields that go in
+	 * the manifest.
+	 */
+	@Target(ElementType.TYPE)
+	@Retention(RetentionPolicy.RUNTIME)
+	@Documented
+	public @interface ManifestInfo {
+		String[] whiteList();
+
+		String path();
+
+		String runAt();
+	}
 }

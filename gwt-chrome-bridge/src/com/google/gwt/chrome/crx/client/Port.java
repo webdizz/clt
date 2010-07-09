@@ -32,18 +32,18 @@ public class Port extends JavaScriptObject {
 	}
 
 	public final native String getName() /*-{
-		return this.name;
-	}-*/;
+											return this.name;
+											}-*/;
 
 	public final native MessageEvent getOnMessageEvent() /*-{
-		return this.onMessage;
-	}-*/;
+															return this.onMessage;
+															}-*/;
 
 	public final native int getId() /*-{
-		return this.portId_;
-	}-*/;
+									return this.portId_;
+									}-*/;
 
 	public final native void postMessage(JavaScriptObject msg) /*-{
-		this.postMessage(msg);
-	}-*/;
+																this.postMessage(msg);
+																}-*/;
 }

@@ -20,52 +20,53 @@ import com.google.gwt.core.client.JavaScriptObject;
 /**
  * Overlay for event object returned from chrome.pageActions[pageActionId].
  * 
- * See documentation at: <a href="http://dev.chromium.org/developers/design-documents/extensions/page-actions-api"
+ * See documentation at: <a href=
+ * "http://dev.chromium.org/developers/design-documents/extensions/page-actions-api"
  * >Page Actions API</a>
  */
 public final class PageActionEvent extends Event {
-  /**
-   * The data object that gets passed to a {@link Listener} when a page action
-   * is clicked.
-   */
-  public static class Info extends JavaScriptObject {
-    protected Info() {
-    }
+	/**
+	 * The data object that gets passed to a {@link Listener} when a page action
+	 * is clicked.
+	 */
+	public static class Info extends JavaScriptObject {
+		protected Info() {
+		}
 
-    public final native int getButton() /*-{
-      return this.button;
-    }-*/;
+		public final native int getButton() /*-{
+											return this.button;
+											}-*/;
 
-    public final native int getTabId() /*-{
-      return this.tabId;
-    }-*/;
+		public final native int getTabId() /*-{
+											return this.tabId;
+											}-*/;
 
-    public final native String getTabUrl() /*-{
-      return this.tabUrl;
-    }-*/;
-  }
+		public final native String getTabUrl() /*-{
+												return this.tabUrl;
+												}-*/;
+	}
 
-  /**
-   * The listener interface for handling PageAction Events.
-   */
-  public interface Listener {
-    void onPageAction(int pageActionId, Info info);
-  }
+	/**
+	 * The listener interface for handling PageAction Events.
+	 */
+	public interface Listener {
+		void onPageAction(int pageActionId, Info info);
+	}
 
-  protected PageActionEvent() {
-  }
+	protected PageActionEvent() {
+	}
 
-  public ListenerHandle addListener(Listener listener) {
-    return new ListenerHandle(this, addListenerImpl(listener));
-  }
+	public ListenerHandle addListener(Listener listener) {
+		return new ListenerHandle(this, addListenerImpl(listener));
+	}
 
-  private native JavaScriptObject addListenerImpl(Listener listener) /*-{
-    var handle = function(pageActionId, info) {
-        listener.
-          @com.google.gwt.chrome.crx.client.events.PageActionEvent.Listener::onPageAction(ILcom/google/gwt/chrome/crx/client/events/PageActionEvent$Info;)
-          (pageActionId, info);
-    }
-    this.addListener(handle);
-    return handle;
-  }-*/;
+	private native JavaScriptObject addListenerImpl(Listener listener) /*-{
+																		var handle = function(pageActionId, info) {
+																		listener.
+																		@com.google.gwt.chrome.crx.client.events.PageActionEvent.Listener::onPageAction(ILcom/google/gwt/chrome/crx/client/events/PageActionEvent$Info;)
+																		(pageActionId, info);
+																		}
+																		this.addListener(handle);
+																		return handle;
+																		}-*/;
 }

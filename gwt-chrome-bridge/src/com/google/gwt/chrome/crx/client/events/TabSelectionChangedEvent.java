@@ -25,40 +25,40 @@ import com.google.gwt.core.client.JavaScriptObject;
  * >Tabs API</a>
  */
 public final class TabSelectionChangedEvent extends Event {
-  /**
-   * DataObject for TabSelection changes.
-   */
-  public static class Data extends JavaScriptObject {
-    protected Data() {
-    }
+	/**
+	 * DataObject for TabSelection changes.
+	 */
+	public static class Data extends JavaScriptObject {
+		protected Data() {
+		}
 
-    public final native int getWindowId() /*-{
-      return this.windowId;
-    }-*/;
-  }
+		public final native int getWindowId() /*-{
+												return this.windowId;
+												}-*/;
+	}
 
-  /**
-   * Listener interface.
-   */
-  public interface Listener {
-    void onTabSelectionChanged(int tabId, Data changedProps);
-  }
+	/**
+	 * Listener interface.
+	 */
+	public interface Listener {
+		void onTabSelectionChanged(int tabId, Data changedProps);
+	}
 
-  protected TabSelectionChangedEvent() {
-  }
+	protected TabSelectionChangedEvent() {
+	}
 
-  public ListenerHandle addListener(Listener listener) {
-    return new ListenerHandle(this, addListenerImpl(listener));
-  }
+	public ListenerHandle addListener(Listener listener) {
+		return new ListenerHandle(this, addListenerImpl(listener));
+	}
 
-  private native JavaScriptObject addListenerImpl(Listener listener) /*-{
-    var handle = function(tabId, data) {
-      listener.
-          @com.google.gwt.chrome.crx.client.events.TabSelectionChangedEvent.Listener::onTabSelectionChanged(ILcom/google/gwt/chrome/crx/client/events/TabSelectionChangedEvent$Data;)
-          (tabId, data);
-    }
+	private native JavaScriptObject addListenerImpl(Listener listener) /*-{
+																		var handle = function(tabId, data) {
+																		listener.
+																		@com.google.gwt.chrome.crx.client.events.TabSelectionChangedEvent.Listener::onTabSelectionChanged(ILcom/google/gwt/chrome/crx/client/events/TabSelectionChangedEvent$Data;)
+																		(tabId, data);
+																		}
 
-    this.addListener(handle);
-    return handle;
-  }-*/;
+																		this.addListener(handle);
+																		return handle;
+																		}-*/;
 }

@@ -25,44 +25,44 @@ import com.google.gwt.core.client.JavaScriptObject;
  * >Tabs API</a>
  */
 public final class TabDetachedEvent extends Event {
-  /**
-   * Data object that gets passed onTabDetached.
-   */
-  public static class Data extends JavaScriptObject {
-    protected Data() {
-    }
+	/**
+	 * Data object that gets passed onTabDetached.
+	 */
+	public static class Data extends JavaScriptObject {
+		protected Data() {
+		}
 
-    public final native int getOldPosition() /*-{
-      return this.oldPosition;
-    }-*/;
+		public final native int getOldPosition() /*-{
+													return this.oldPosition;
+													}-*/;
 
-    public final native int getOldWindowId() /*-{
-      return this.oldWindowId;
-    }-*/;
-  }
+		public final native int getOldWindowId() /*-{
+													return this.oldWindowId;
+													}-*/;
+	}
 
-  /**
-   * Listener interface for receiving TabDetachedEvents.
-   */
-  public interface Listener {
-    void onTabDetached(int tabId, Data data);
-  }
+	/**
+	 * Listener interface for receiving TabDetachedEvents.
+	 */
+	public interface Listener {
+		void onTabDetached(int tabId, Data data);
+	}
 
-  protected TabDetachedEvent() {
-  }
+	protected TabDetachedEvent() {
+	}
 
-  public ListenerHandle addListener(Listener listener) {
-    return new ListenerHandle(this, addListenerImpl(listener));
-  }
+	public ListenerHandle addListener(Listener listener) {
+		return new ListenerHandle(this, addListenerImpl(listener));
+	}
 
-  private native JavaScriptObject addListenerImpl(Listener listener) /*-{
-    var handle = function(tabId, data) {
-      listener.
-          @com.google.gwt.chrome.crx.client.events.TabDetachedEvent.Listener::onTabDetached(ILcom/google/gwt/chrome/crx/client/events/TabDetachedEvent$Data;)
-          (tabId, data);
-    }
+	private native JavaScriptObject addListenerImpl(Listener listener) /*-{
+																		var handle = function(tabId, data) {
+																		listener.
+																		@com.google.gwt.chrome.crx.client.events.TabDetachedEvent.Listener::onTabDetached(ILcom/google/gwt/chrome/crx/client/events/TabDetachedEvent$Data;)
+																		(tabId, data);
+																		}
 
-    this.addListener(handle);
-    return handle;
-  }-*/;
+																		this.addListener(handle);
+																		return handle;
+																		}-*/;
 }

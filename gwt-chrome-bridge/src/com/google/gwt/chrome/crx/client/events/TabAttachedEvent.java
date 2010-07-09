@@ -25,44 +25,44 @@ import com.google.gwt.core.client.JavaScriptObject;
  * >Tabs API</a>
  */
 public final class TabAttachedEvent extends Event {
-  /**
-   * The data object that gets passed back onTabAttached.
-   */
-  public static class Data extends JavaScriptObject {
-    protected Data() {
-    }
+	/**
+	 * The data object that gets passed back onTabAttached.
+	 */
+	public static class Data extends JavaScriptObject {
+		protected Data() {
+		}
 
-    public final native int getNewPosition() /*-{
-      return this.newPosition;
-    }-*/;
+		public final native int getNewPosition() /*-{
+													return this.newPosition;
+													}-*/;
 
-    public final native int getNewWindowId() /*-{
-      return this.newWindowId;
-    }-*/;
-  }
+		public final native int getNewWindowId() /*-{
+													return this.newWindowId;
+													}-*/;
+	}
 
-  /**
-   * Listener interface for receiving TabAttachedEvents.
-   */
-  public interface Listener {
-    void onTabAttached(int tabId, Data data);
-  }
+	/**
+	 * Listener interface for receiving TabAttachedEvents.
+	 */
+	public interface Listener {
+		void onTabAttached(int tabId, Data data);
+	}
 
-  protected TabAttachedEvent() {
-  }
+	protected TabAttachedEvent() {
+	}
 
-  public ListenerHandle addListener(Listener listener) {
-    return new ListenerHandle(this, addListenerImpl(listener));
-  }
+	public ListenerHandle addListener(Listener listener) {
+		return new ListenerHandle(this, addListenerImpl(listener));
+	}
 
-  private native JavaScriptObject addListenerImpl(Listener listener) /*-{
-    var handle = function(tabId, data) {
-      listener.
-          @com.google.gwt.chrome.crx.client.events.TabAttachedEvent.Listener::onTabAttached(ILcom/google/gwt/chrome/crx/client/events/TabAttachedEvent$Data;)
-          (tabId, data);
-    }
+	private native JavaScriptObject addListenerImpl(Listener listener) /*-{
+																		var handle = function(tabId, data) {
+																		listener.
+																		@com.google.gwt.chrome.crx.client.events.TabAttachedEvent.Listener::onTabAttached(ILcom/google/gwt/chrome/crx/client/events/TabAttachedEvent$Data;)
+																		(tabId, data);
+																		}
 
-    this.addListener(handle);
-    return handle;
-  }-*/;
+																		this.addListener(handle);
+																		return handle;
+																		}-*/;
 }

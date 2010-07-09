@@ -22,7 +22,7 @@ public class BrowserActionArtifact extends Artifact<BrowserActionArtifact> {
 	private static final long serialVersionUID = -544245597242157263L;
 	private final String[] icons;
 	private final String name;
-	
+
 	private final String defaultIcon;
 
 	public BrowserActionArtifact(String name, String[] icons, String defaultIcon) {

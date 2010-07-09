@@ -29,15 +29,15 @@ import java.lang.annotation.Target;
  * >NPAPI Plugins</a>
  */
 public abstract class Plugin implements Component {
-  /**
-   * Annotation for specifying plugin details in the manifest.
-   */
-  @Target(ElementType.TYPE)
-  @Retention(RetentionPolicy.RUNTIME)
-  @Documented
-  public @interface ManifestInfo {
-    String path();
+	/**
+	 * Annotation for specifying plugin details in the manifest.
+	 */
+	@Target(ElementType.TYPE)
+	@Retention(RetentionPolicy.RUNTIME)
+	@Documented
+	public @interface ManifestInfo {
+		String path();
 
-    boolean isPublic();
-  }
+		boolean isPublic();
+	}
 }

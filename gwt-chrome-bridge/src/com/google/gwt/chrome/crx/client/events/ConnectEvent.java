@@ -29,47 +29,49 @@ import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
  * 
  */
 public final class ConnectEvent extends Event {
-  /**
-   * Called when a ContentScript opens a port.
-   */
-  public interface Listener {
-    void onConnect(Port port);
-  }
+	/**
+	 * Called when a ContentScript opens a port.
+	 */
+	public interface Listener {
+		void onConnect(Port port);
+	}
 
-  /**
-   * Takes care of reporting exceptions to the console in hosted mode.
-   * 
-   * @param listener the listener object to call back.
-   * @param port argument from the callback.
-   */
-  @SuppressWarnings("unused")
-  private static void onConnectImpl(Listener listener, Port port) {
-    UncaughtExceptionHandler ueh = GWT.getUncaughtExceptionHandler();
-    if (ueh != null) {
-      try {
-        listener.onConnect(port);
-      } catch (Exception ex) {
-        ueh.onUncaughtException(ex);
-      }
-    } else {
-      listener.onConnect(port);
-    }
-  }
+	/**
+	 * Takes care of reporting exceptions to the console in hosted mode.
+	 * 
+	 * @param listener
+	 *            the listener object to call back.
+	 * @param port
+	 *            argument from the callback.
+	 */
+	@SuppressWarnings("unused")
+	private static void onConnectImpl(Listener listener, Port port) {
+		UncaughtExceptionHandler ueh = GWT.getUncaughtExceptionHandler();
+		if (ueh != null) {
+			try {
+				listener.onConnect(port);
+			} catch (Exception ex) {
+				ueh.onUncaughtException(ex);
+			}
+		} else {
+			listener.onConnect(port);
+		}
+	}
 
-  protected ConnectEvent() {
-  }
+	protected ConnectEvent() {
+	}
 
-  public ListenerHandle addListener(Listener listener) {
-    return new ListenerHandle(this, addListenerImpl(listener));
-  }
+	public ListenerHandle addListener(Listener listener) {
+		return new ListenerHandle(this, addListenerImpl(listener));
+	}
 
-  private native JavaScriptObject addListenerImpl(Listener listener) /*-{
-    var handle = function(port) {
-          @com.google.gwt.chrome.crx.client.events.ConnectEvent::onConnectImpl(Lcom/google/gwt/chrome/crx/client/events/ConnectEvent$Listener;Lcom/google/gwt/chrome/crx/client/Port;)
-                    (listener, port);
-    }
+	private native JavaScriptObject addListenerImpl(Listener listener) /*-{
+																		var handle = function(port) {
+																		@com.google.gwt.chrome.crx.client.events.ConnectEvent::onConnectImpl(Lcom/google/gwt/chrome/crx/client/events/ConnectEvent$Listener;Lcom/google/gwt/chrome/crx/client/Port;)
+																		(listener, port);
+																		}
 
-    this.addListener(handle);
-    return handle;
-  }-*/;
+																		this.addListener(handle);
+																		return handle;
+																		}-*/;
 }

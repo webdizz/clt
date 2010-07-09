@@ -22,32 +22,32 @@ import com.google.gwt.core.ext.linker.Artifact;
  * Artifact for {@link ToolStrip}s.
  */
 public class ToolStripArtifact extends Artifact<ToolStripArtifact> {
-  private static final long serialVersionUID = -486331903367200384L;
+	private static final long serialVersionUID = -486331903367200384L;
 
-  private final String path;
+	private final String path;
 
-  public ToolStripArtifact(String path) {
-    super(ExtensionLinker.class);
-    this.path = path;
-  }
+	public ToolStripArtifact(String path) {
+		super(ExtensionLinker.class);
+		this.path = path;
+	}
 
-  public String getPath() {
-    return path;
-  }
+	public String getPath() {
+		return path;
+	}
 
-  @Override
-  public int hashCode() {
-    return path.hashCode();
-  }
+	@Override
+	public int hashCode() {
+		return path.hashCode();
+	}
 
-  @Override
-  protected int compareToComparableArtifact(ToolStripArtifact o) {
-    assert o != null;
-    return path.compareTo(o.path);
-  }
+	@Override
+	protected int compareToComparableArtifact(ToolStripArtifact o) {
+		assert o != null;
+		return path.compareTo(o.path);
+	}
 
-  @Override
-  protected Class<ToolStripArtifact> getComparableArtifactType() {
-    return ToolStripArtifact.class;
-  }
+	@Override
+	protected Class<ToolStripArtifact> getComparableArtifactType() {
+		return ToolStripArtifact.class;
+	}
 }

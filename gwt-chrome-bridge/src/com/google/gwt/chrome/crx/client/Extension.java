@@ -27,39 +27,40 @@ import java.lang.annotation.Target;
  * The main EntryPoint for your extension.
  */
 public abstract class Extension implements EntryPoint {
-  /**
-   * Annotation for the Specification meta data for the entry point. This data
-   * is used for generating the extension manifest.
-   */
-  @Target(ElementType.TYPE)
-  @Retention(RetentionPolicy.RUNTIME)
-  @Documented
-  public @interface ManifestInfo {
-    String description();
+	/**
+	 * Annotation for the Specification meta data for the entry point. This data
+	 * is used for generating the extension manifest.
+	 */
+	@Target(ElementType.TYPE)
+	@Retention(RetentionPolicy.RUNTIME)
+	@Documented
+	public @interface ManifestInfo {
+		String description();
 
-    String[] icons() default {};
+		String[] icons() default {};
 
-    String name();
+		String name();
 
-    String[] permissions();
+		String[] permissions();
 
-    String updateUrl() default NO_UPDATE_URL;
+		String updateUrl() default NO_UPDATE_URL;
 
-    String version();
-  }
+		String version();
+	}
 
-  public static final String NO_UPDATE_URL = "";
+	public static final String NO_UPDATE_URL = "";
 
-  public abstract String getVersion();
+	public abstract String getVersion();
 
-  /**
-   * Implement this entry point in your extension subclass.
-   */
-  public abstract void onBackgroundPageLoad();
+	/**
+	 * Implement this entry point in your extension subclass.
+	 */
+	public abstract void onBackgroundPageLoad();
 
-  public void onModuleLoad() {
-    // TODO(jaimeyap): Figure out how to have this kick off potentially useful
-    // debugging UI in hosted mode.
-    onBackgroundPageLoad();
-  }
+	public void onModuleLoad() {
+		// TODO(jaimeyap): Figure out how to have this kick off potentially
+		// useful
+		// debugging UI in hosted mode.
+		onBackgroundPageLoad();
+	}
 }

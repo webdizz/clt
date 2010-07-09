@@ -23,27 +23,27 @@ import com.google.gwt.core.client.JavaScriptObject;
  */
 public class DevToolsTabCloseEvent extends Event {
 
-  /**
-   * Invoked when the monitored tab is closed.
-   */
-  public interface Listener {
-    void onTabClosed();
-  }
+	/**
+	 * Invoked when the monitored tab is closed.
+	 */
+	public interface Listener {
+		void onTabClosed();
+	}
 
-  protected DevToolsTabCloseEvent() {
-  }
+	protected DevToolsTabCloseEvent() {
+	}
 
-  public final ListenerHandle addListener(Listener listener) {
-    return new ListenerHandle(this, addListenerImpl(listener));
-  }
+	public final ListenerHandle addListener(Listener listener) {
+		return new ListenerHandle(this, addListenerImpl(listener));
+	}
 
-  private native JavaScriptObject addListenerImpl(Listener listener) /*-{
-    var handle = function() {
-      listener.
-          @com.google.gwt.chrome.crx.client.events.DevToolsTabCloseEvent$Listener::onTabClosed()
-          ();
-    }
-    this.addListener(handle);
-    return handle;
-  }-*/;
+	private native JavaScriptObject addListenerImpl(Listener listener) /*-{
+																		var handle = function() {
+																		listener.
+																		@com.google.gwt.chrome.crx.client.events.DevToolsTabCloseEvent$Listener::onTabClosed()
+																		();
+																		}
+																		this.addListener(handle);
+																		return handle;
+																		}-*/;
 }

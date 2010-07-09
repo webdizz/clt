@@ -22,38 +22,38 @@ import com.google.gwt.core.ext.linker.Artifact;
  * Artifact for {@link Plugin}s.
  */
 public class PluginArtifact extends Artifact<PluginArtifact> {
-  private static final long serialVersionUID = -2913839495155156112L;
+	private static final long serialVersionUID = -2913839495155156112L;
 
-  private final boolean isPublic;
-  private final String path;
+	private final boolean isPublic;
+	private final String path;
 
-  public PluginArtifact(String path, boolean isPublic) {
-    super(ExtensionLinker.class);
-    this.path = path;
-    this.isPublic = isPublic;
-  }
+	public PluginArtifact(String path, boolean isPublic) {
+		super(ExtensionLinker.class);
+		this.path = path;
+		this.isPublic = isPublic;
+	}
 
-  public String getPath() {
-    return path;
-  }
+	public String getPath() {
+		return path;
+	}
 
-  @Override
-  public int hashCode() {
-    return path.hashCode();
-  }
+	@Override
+	public int hashCode() {
+		return path.hashCode();
+	}
 
-  public boolean isPublic() {
-    return isPublic;
-  }
+	public boolean isPublic() {
+		return isPublic;
+	}
 
-  @Override
-  protected int compareToComparableArtifact(PluginArtifact o) {
-    assert o != null;
-    return path.compareTo(o.path);
-  }
+	@Override
+	protected int compareToComparableArtifact(PluginArtifact o) {
+		assert o != null;
+		return path.compareTo(o.path);
+	}
 
-  @Override
-  protected Class<PluginArtifact> getComparableArtifactType() {
-    return PluginArtifact.class;
-  }
+	@Override
+	protected Class<PluginArtifact> getComparableArtifactType() {
+		return PluginArtifact.class;
+	}
 }

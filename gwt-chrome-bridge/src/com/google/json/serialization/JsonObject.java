@@ -26,167 +26,165 @@ import java.util.Map;
  * JSON object.
  */
 public class JsonObject implements JsonValue, Iterable<Pair<String, JsonValue>> {
-  private static class Iter implements Iterator<Pair<String, JsonValue>> {
-    private final Iterator<Map.Entry<String, JsonValue>> iter;
+	private static class Iter implements Iterator<Pair<String, JsonValue>> {
+		private final Iterator<Map.Entry<String, JsonValue>> iter;
 
-    Iter(Iterator<Map.Entry<String, JsonValue>> iter) {
-      this.iter = iter;
-    }
+		Iter(Iterator<Map.Entry<String, JsonValue>> iter) {
+			this.iter = iter;
+		}
 
-    public boolean hasNext() {
-      return iter.hasNext();
-    }
+		public boolean hasNext() {
+			return iter.hasNext();
+		}
 
-    public Pair<String, JsonValue> next() {
-      final Map.Entry<String, JsonValue> entry = iter.next();
-      return new Pair<String, JsonValue>(entry.getKey(), entry.getValue());
-    }
+		public Pair<String, JsonValue> next() {
+			final Map.Entry<String, JsonValue> entry = iter.next();
+			return new Pair<String, JsonValue>(entry.getKey(), entry.getValue());
+		}
 
-    public void remove() {
-      iter.remove();
-    }
-  }
+		public void remove() {
+			iter.remove();
+		}
+	}
 
-  public static JsonObject create() {
-    return new JsonObject();
-  }
+	public static JsonObject create() {
+		return new JsonObject();
+	}
 
-  public static JsonObject parse(Reader reader) throws JsonException,
-      IOException {
-    return JsonObject.parse(new Tokenizer(reader));
-  }
+	public static JsonObject parse(Reader reader) throws JsonException, IOException {
+		return JsonObject.parse(new Tokenizer(reader));
+	}
 
-  static JsonObject parse(Tokenizer tokenizer) throws IOException,
-      JsonException {
-    final JsonObject object = new JsonObject();
-    int c = tokenizer.next();
-    if (c != '{') {
-      throw new JsonException("Payload does not begin with {");
-    }
+	static JsonObject parse(Tokenizer tokenizer) throws IOException, JsonException {
+		final JsonObject object = new JsonObject();
+		int c = tokenizer.next();
+		if (c != '{') {
+			throw new JsonException("Payload does not begin with {");
+		}
 
-    while (true) {
-      c = tokenizer.nextNonWhitespace();
-      switch (c) {
-        case '}':
-          // We're done.
-          return object;
-        case '"':
-          tokenizer.back(c);
-          // Ready to start a key.
-          final String key = tokenizer.nextString();
-          if (tokenizer.nextNonWhitespace() != ':') {
-            throw new JsonException("Invalid object: expecting \":\"");
-          }
-          // TODO(knorton): Make sure this key is not already set.
-          object.put(key, tokenizer.nextValue());
-          switch (tokenizer.nextNonWhitespace()) {
-            case ',':
-              break;
-            case '}':
-              return object;
-            default:
-              throw new JsonException("Invalid object: expecting } or ,");
-          }
-          break;
-        case ',':
-          break;
-        default:
-          throw new JsonException("Invalid object: ");
-      }
-    }
-  }
+		while (true) {
+			c = tokenizer.nextNonWhitespace();
+			switch (c) {
+			case '}':
+				// We're done.
+				return object;
+			case '"':
+				tokenizer.back(c);
+				// Ready to start a key.
+				final String key = tokenizer.nextString();
+				if (tokenizer.nextNonWhitespace() != ':') {
+					throw new JsonException("Invalid object: expecting \":\"");
+				}
+				// TODO(knorton): Make sure this key is not already set.
+				object.put(key, tokenizer.nextValue());
+				switch (tokenizer.nextNonWhitespace()) {
+				case ',':
+					break;
+				case '}':
+					return object;
+				default:
+					throw new JsonException("Invalid object: expecting } or ,");
+				}
+				break;
+			case ',':
+				break;
+			default:
+				throw new JsonException("Invalid object: ");
+			}
+		}
+	}
 
-  private final Map<String, JsonValue> properties = new HashMap<String, JsonValue>();
+	private final Map<String, JsonValue> properties = new HashMap<String, JsonValue>();
 
-  public JsonObject() {
-  }
+	public JsonObject() {
+	}
 
-  public JsonArray asArray() {
-    return null;
-  }
+	public JsonArray asArray() {
+		return null;
+	}
 
-  public JsonBoolean asBoolean() {
-    return null;
-  }
+	public JsonBoolean asBoolean() {
+		return null;
+	}
 
-  public JsonNumber asNumber() {
-    return null;
-  }
+	public JsonNumber asNumber() {
+		return null;
+	}
 
-  public JsonObject asObject() {
-    return this;
-  }
+	public JsonObject asObject() {
+		return this;
+	}
 
-  public JsonString asString() {
-    return null;
-  }
+	public JsonString asString() {
+		return null;
+	}
 
-  public JsonValue get(String key) {
-    final JsonValue value = properties.get(key);
-    return (value == null) ? JsonValue.NULL : value;
-  }
+	public JsonValue get(String key) {
+		final JsonValue value = properties.get(key);
+		return (value == null) ? JsonValue.NULL : value;
+	}
 
-  public boolean isArray() {
-    return false;
-  }
+	public boolean isArray() {
+		return false;
+	}
 
-  public boolean isBoolean() {
-    return false;
-  }
+	public boolean isBoolean() {
+		return false;
+	}
 
-  public boolean isEmpty() {
-    return properties.isEmpty();
-  }
+	public boolean isEmpty() {
+		return properties.isEmpty();
+	}
 
-  public boolean isNumber() {
-    return false;
-  }
+	public boolean isNumber() {
+		return false;
+	}
 
-  public boolean isObject() {
-    return true;
-  }
+	public boolean isObject() {
+		return true;
+	}
 
-  public boolean isString() {
-    return false;
-  }
+	public boolean isString() {
+		return false;
+	}
 
-  public Iterator<Pair<String, JsonValue>> iterator() {
-    return new Iter(properties.entrySet().iterator());
-  }
+	public Iterator<Pair<String, JsonValue>> iterator() {
+		return new Iter(properties.entrySet().iterator());
+	}
 
-  public void put(String key, boolean val) {
-    put(key, JsonBoolean.create(val));
-  }
+	public void put(String key, boolean val) {
+		put(key, JsonBoolean.create(val));
+	}
 
-  public void put(String key, double val) {
-    put(key, JsonNumber.create(val));
-  }
+	public void put(String key, double val) {
+		put(key, JsonNumber.create(val));
+	}
 
-  public void put(String key, JsonValue val) {
-    properties.put(key, val);
-  }
+	public void put(String key, JsonValue val) {
+		properties.put(key, val);
+	}
 
-  public void put(String key, long val) {
-    put(key, JsonNumber.create(val));
-  }
+	public void put(String key, long val) {
+		put(key, JsonNumber.create(val));
+	}
 
-  public void put(String key, String val) {
-    put(key, JsonString.create(val));
-  }
+	public void put(String key, String val) {
+		put(key, JsonString.create(val));
+	}
 
-  public void write(Writer writer) throws IOException {
-    boolean first = true;
-    writer.write('{');
-    for (Map.Entry<String, JsonValue> e : properties.entrySet()) {
-      if (!first) {
-        writer.append(',');
-      } else {
-        first = false;
-      }
-      JsonString.write(e.getKey(), writer);
-      writer.append(':');
-      e.getValue().write(writer);
-    }
-    writer.write('}');
-  }
+	public void write(Writer writer) throws IOException {
+		boolean first = true;
+		writer.write('{');
+		for (Map.Entry<String, JsonValue> e : properties.entrySet()) {
+			if (!first) {
+				writer.append(',');
+			} else {
+				first = false;
+			}
+			JsonString.write(e.getKey(), writer);
+			writer.append(':');
+			e.getValue().write(writer);
+		}
+		writer.write('}');
+	}
 }

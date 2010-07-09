@@ -22,14 +22,14 @@ import com.google.gwt.dom.client.Document;
  * Handle to the Window context for a Component in a chrome extension.
  */
 public class View extends JavaScriptObject {
-  protected View() {
-  }
+	protected View() {
+	}
 
-  public final native Console getConsole() /*-{
-    return this.console;
-  }-*/;
+	public final native Console getConsole() /*-{
+												return this.console;
+												}-*/;
 
-  public final native Document getDocument() /*-{
-    return this.document;
-  }-*/;
+	public final native Document getDocument() /*-{
+												return this.document;
+												}-*/;
 }

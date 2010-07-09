@@ -21,31 +21,32 @@ import com.google.gwt.core.client.JavaScriptObject;
 /**
  * Overlay for event object returned from chrome.browserAction.
  * 
- * See documentation at: <a href="http://dev.chromium.org/developers/design-documents/extensions/page-actions-api"
+ * See documentation at: <a href=
+ * "http://dev.chromium.org/developers/design-documents/extensions/page-actions-api"
  * >Page Actions API</a>
  */
 public final class BrowserActionEvent extends Event {
-  /**
-   * The listener interface for handling BrowserAction Events.
-   */
-  public interface Listener {
-    void onClicked(Tab tab);
-  }
+	/**
+	 * The listener interface for handling BrowserAction Events.
+	 */
+	public interface Listener {
+		void onClicked(Tab tab);
+	}
 
-  protected BrowserActionEvent() {
-  }
+	protected BrowserActionEvent() {
+	}
 
-  public ListenerHandle addListener(Listener listener) {
-    return new ListenerHandle(this, addListenerImpl(listener));
-  }
+	public ListenerHandle addListener(Listener listener) {
+		return new ListenerHandle(this, addListenerImpl(listener));
+	}
 
-  private native JavaScriptObject addListenerImpl(Listener listener) /*-{
-    var handle = function(tab) {
-        listener.
-          @com.google.gwt.chrome.crx.client.events.BrowserActionEvent.Listener::onClicked(Lcom/google/gwt/chrome/crx/client/Tabs$Tab;)
-          (tab);
-    }
-    this.addListener(handle);
-    return handle;
-  }-*/;
+	private native JavaScriptObject addListenerImpl(Listener listener) /*-{
+																		var handle = function(tab) {
+																		listener.
+																		@com.google.gwt.chrome.crx.client.events.BrowserActionEvent.Listener::onClicked(Lcom/google/gwt/chrome/crx/client/Tabs$Tab;)
+																		(tab);
+																		}
+																		this.addListener(handle);
+																		return handle;
+																		}-*/;
 }

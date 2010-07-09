@@ -48,8 +48,7 @@ import com.google.json.serialization.JsonValue;
 @LinkerOrder(Order.PRIMARY)
 public class ExtensionLinker extends AbstractLinker {
 
-	private static ArtifactSet addArtifacts(ArtifactSet artifacts,
-			Artifact<?>... newArtifacts) {
+	private static ArtifactSet addArtifacts(ArtifactSet artifacts, Artifact<?>... newArtifacts) {
 		final ArtifactSet newSet = new ArtifactSet(artifacts);
 		for (Artifact<?> artifact : newArtifacts) {
 			newSet.add(artifact);
@@ -57,8 +56,7 @@ public class ExtensionLinker extends AbstractLinker {
 		return newSet;
 	}
 
-	private static JsonValue createContentScriptsArray(
-			SortedSet<ContentScriptArtifact> contentScripts) {
+	private static JsonValue createContentScriptsArray(SortedSet<ContentScriptArtifact> contentScripts) {
 		final JsonArray array = JsonArray.create();
 		for (ContentScriptArtifact contentScript : contentScripts) {
 			JsonObject entry = JsonObject.create();
@@ -78,8 +76,7 @@ public class ExtensionLinker extends AbstractLinker {
 		return array;
 	}
 
-	private static JsonValue createPageActionsArray(
-			SortedSet<PageActionArtifact> pageActions) {
+	private static JsonValue createPageActionsArray(SortedSet<PageActionArtifact> pageActions) {
 		final JsonArray pageActionArray = JsonArray.create();
 		for (PageActionArtifact pageAction : pageActions) {
 			final JsonObject pageActionObject = JsonObject.create();
@@ -99,8 +96,7 @@ public class ExtensionLinker extends AbstractLinker {
 		return pageActionArray;
 	}
 
-	private static JsonValue createPluginsArray(
-			SortedSet<PluginArtifact> plugins) {
+	private static JsonValue createPluginsArray(SortedSet<PluginArtifact> plugins) {
 		JsonArray pluginsArray = JsonArray.create();
 		for (PluginArtifact plugin : plugins) {
 			JsonObject pluginObject = JsonObject.create();
@@ -111,8 +107,7 @@ public class ExtensionLinker extends AbstractLinker {
 		return pluginsArray;
 	}
 
-	private static JsonArray createToolStripsArray(
-			Set<ToolStripArtifact> toolstrips) {
+	private static JsonArray createToolStripsArray(Set<ToolStripArtifact> toolstrips) {
 		final JsonArray array = JsonArray.create();
 		for (ToolStripArtifact toolstrip : toolstrips) {
 			array.add(toolstrip.getPath());
@@ -120,24 +115,20 @@ public class ExtensionLinker extends AbstractLinker {
 		return array;
 	}
 
-	private static CompilationResult findCompilation(TreeLogger logger,
-			ArtifactSet artifacts) throws UnableToCompleteException {
-		final SortedSet<CompilationResult> compilations = artifacts
-				.find(CompilationResult.class);
+	private static CompilationResult findCompilation(TreeLogger logger, ArtifactSet artifacts)
+			throws UnableToCompleteException {
+		final SortedSet<CompilationResult> compilations = artifacts.find(CompilationResult.class);
 		if (compilations.size() > 1) {
-			logger
-					.log(
-							TreeLogger.ERROR,
-							"One permutation per module, please. Seriously, you changed something you weren't supposed to.");
+			logger.log(TreeLogger.ERROR,
+					"One permutation per module, please. Seriously, you changed something you weren't supposed to.");
 			throw new UnableToCompleteException();
 		}
 		return compilations.first();
 	}
 
-	private static ExtensionArtifact findExtensionArtifact(TreeLogger logger,
-			ArtifactSet artifacts) throws UnableToCompleteException {
-		final SortedSet<ExtensionArtifact> extensions = artifacts
-				.find(ExtensionArtifact.class);
+	private static ExtensionArtifact findExtensionArtifact(TreeLogger logger, ArtifactSet artifacts)
+			throws UnableToCompleteException {
+		final SortedSet<ExtensionArtifact> extensions = artifacts.find(ExtensionArtifact.class);
 		if (extensions.size() > 1) {
 			// TODO(knorton): Improve error message.
 			logger.log(TreeLogger.ERROR, "One extension per module, please.");
@@ -147,10 +138,8 @@ public class ExtensionLinker extends AbstractLinker {
 		return extensions.first();
 	}
 
-	private static String generateHtmlContents(TreeLogger logger,
-			CompilationResult js,
-			SortedSet<ExtensionScriptArtifact> extensionScripts)
-			throws UnableToCompleteException {
+	private static String generateHtmlContents(TreeLogger logger, CompilationResult js,
+			SortedSet<ExtensionScriptArtifact> extensionScripts) throws UnableToCompleteException {
 		// Thou shalt not reference $doc or $wnd !!!
 		String compiledJs = js.getJavaScript()[0];
 		final StringBuffer buffer = new StringBuffer();
@@ -159,23 +148,19 @@ public class ExtensionLinker extends AbstractLinker {
 		if (!extensionScripts.isEmpty()) {
 			for (ExtensionScriptArtifact extensionScriptArtifact : extensionScripts) {
 				if (!"".equals(extensionScriptArtifact.getPath())) {
-					buffer.append("<script type=\"text/javascript\" src=\""
-							+ extensionScriptArtifact.getPath()
+					buffer.append("<script type=\"text/javascript\" src=\"" + extensionScriptArtifact.getPath()
 							+ "\"></script>");
 				}
 				if (!"".equals(extensionScriptArtifact.getScript())) {
-					buffer
-							.append("<script type=\"text/javascript\">"
-									+ extensionScriptArtifact.getScript()
-									+ "</script>");
+					buffer.append("<script type=\"text/javascript\">" + extensionScriptArtifact.getScript()
+							+ "</script>");
 				}
 			}
 		}
 
 		buffer.append("</head>");
 		buffer.append("<body>");
-		buffer.append("<script>var $stats;\n"
-				+ "var $wnd = window;\nvar $doc = $wnd.document;" + compiledJs
+		buffer.append("<script>var $stats;\n" + "var $wnd = window;\nvar $doc = $wnd.document;" + compiledJs
 				+ "gwtOnLoad();\n</script>");
 		buffer.append("</body>");
 		buffer.append("</html>");
@@ -192,51 +177,43 @@ public class ExtensionLinker extends AbstractLinker {
 	}
 
 	@Override
-	public ArtifactSet link(TreeLogger logger, LinkerContext context,
-			ArtifactSet artifacts) throws UnableToCompleteException {
+	public ArtifactSet link(TreeLogger logger, LinkerContext context, ArtifactSet artifacts)
+			throws UnableToCompleteException {
 		// Retrieve the spec for the extension.
-		final ExtensionArtifact extension = findExtensionArtifact(logger,
-				artifacts);
+		final ExtensionArtifact extension = findExtensionArtifact(logger, artifacts);
 
 		// Retrieve the PageActions.
-		final SortedSet<PageActionArtifact> pageActions = artifacts
-				.find(PageActionArtifact.class);
+		final SortedSet<PageActionArtifact> pageActions = artifacts.find(PageActionArtifact.class);
 
 		// Retrieve the BrowserAction (should be a collection of size one).
-		final SortedSet<BrowserActionArtifact> browserActions = artifacts
-				.find(BrowserActionArtifact.class);
+		final SortedSet<BrowserActionArtifact> browserActions = artifacts.find(BrowserActionArtifact.class);
 
 		// Retrieve the ToolStrips.
-		final SortedSet<ToolStripArtifact> toolStrips = artifacts
-				.find(ToolStripArtifact.class);
+		final SortedSet<ToolStripArtifact> toolStrips = artifacts.find(ToolStripArtifact.class);
 
 		// Retrieve the ContentScripts
-		final SortedSet<ContentScriptArtifact> contentScripts = artifacts
-				.find(ContentScriptArtifact.class);
+		final SortedSet<ContentScriptArtifact> contentScripts = artifacts.find(ContentScriptArtifact.class);
 
 		// Retrieve the ExtensionScripts
-		final SortedSet<ExtensionScriptArtifact> extensionScripts = artifacts
-				.find(ExtensionScriptArtifact.class);
+		final SortedSet<ExtensionScriptArtifact> extensionScripts = artifacts.find(ExtensionScriptArtifact.class);
 
 		// Retrieve the plugins.
-		final SortedSet<PluginArtifact> plugins = artifacts
-				.find(PluginArtifact.class);
+		final SortedSet<PluginArtifact> plugins = artifacts.find(PluginArtifact.class);
 
 		// Retrieve the compilation.
 		final CompilationResult compilation = findCompilation(logger, artifacts);
 
 		String backgroundPageFileName = getHtmlFilename(context);
-		return addArtifacts(artifacts,
-				emitString(logger, generateHtmlContents(logger, compilation,
-						extensionScripts), backgroundPageFileName), emitString(
-						logger, generateManifestContents(logger,
-								backgroundPageFileName, extension, pageActions,
-								browserActions, toolStrips, contentScripts,
-								plugins), "manifest.json"));
+		return addArtifacts(
+				artifacts,
+				emitString(logger, generateHtmlContents(logger, compilation, extensionScripts), backgroundPageFileName),
+				emitString(
+						logger,
+						generateManifestContents(logger, backgroundPageFileName, extension, pageActions,
+								browserActions, toolStrips, contentScripts, plugins), "manifest.json"));
 	}
 
-	private JsonObject createBrowserAction(
-			SortedSet<BrowserActionArtifact> browserActions) {
+	private JsonObject createBrowserAction(SortedSet<BrowserActionArtifact> browserActions) {
 		int size = browserActions.size();
 		if (size == 0) {
 			return null;
@@ -259,13 +236,11 @@ public class ExtensionLinker extends AbstractLinker {
 		return browserActionObject;
 	}
 
-	private String generateManifestContents(TreeLogger logger,
-			String backgroundPageFileName, ExtensionArtifact extension,
-			SortedSet<PageActionArtifact> pageActions,
-			SortedSet<BrowserActionArtifact> browserActions,
-			SortedSet<ToolStripArtifact> toolStrips,
-			SortedSet<ContentScriptArtifact> contentScripts,
-			SortedSet<PluginArtifact> plugins) throws UnableToCompleteException {
+	private String generateManifestContents(TreeLogger logger, String backgroundPageFileName,
+			ExtensionArtifact extension, SortedSet<PageActionArtifact> pageActions,
+			SortedSet<BrowserActionArtifact> browserActions, SortedSet<ToolStripArtifact> toolStrips,
+			SortedSet<ContentScriptArtifact> contentScripts, SortedSet<PluginArtifact> plugins)
+			throws UnableToCompleteException {
 		final JsonObject config = JsonObject.create();
 		config.put("name", extension.getName());
 		config.put("version", extension.getVersion());
@@ -285,8 +260,7 @@ public class ExtensionLinker extends AbstractLinker {
 			config.put("toolstrips", createToolStripsArray(toolStrips));
 		}
 		if (contentScripts.size() > 0) {
-			config.put("content_scripts",
-					createContentScriptsArray(contentScripts));
+			config.put("content_scripts", createContentScriptsArray(contentScripts));
 		}
 		if (pageActions.size() > 0) {
 			config.put("page_actions", createPageActionsArray(pageActions));

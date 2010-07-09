@@ -21,29 +21,29 @@ package com.google.gwt.chrome.crx.client;
  * API.
  */
 public abstract class ViewComponent implements Component {
-  private View view;
+	private View view;
 
-  public View getView() {
-    return view;
-  }
+	public View getView() {
+		return view;
+	}
 
-  /**
-   * Implement this method to be called when the extension is ready to use.
-   */
-  public abstract void onLoad();
+	/**
+	 * Implement this method to be called when the extension is ready to use.
+	 */
+	public abstract void onLoad();
 
-  protected native void connect(String name) /*-{
-    var self = this;
-    window[name] = function(view) {
-      self.
-      @com.google.gwt.chrome.crx.client.ViewComponent::connectImpl(Lcom/google/gwt/chrome/crx/client/View;)
-      (view);
-    };
-  }-*/;
+	protected native void connect(String name) /*-{
+												var self = this;
+												window[name] = function(view) {
+												self.
+												@com.google.gwt.chrome.crx.client.ViewComponent::connectImpl(Lcom/google/gwt/chrome/crx/client/View;)
+												(view);
+												};
+												}-*/;
 
-  @SuppressWarnings("unused")
-  private void connectImpl(View view) {
-    this.view = view.cast();
-    onLoad();
-  }
+	@SuppressWarnings("unused")
+	private void connectImpl(View view) {
+		this.view = view.cast();
+		onLoad();
+	}
 }

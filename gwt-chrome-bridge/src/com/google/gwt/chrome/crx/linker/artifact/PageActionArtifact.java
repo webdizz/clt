@@ -34,8 +34,7 @@ public class PageActionArtifact extends Artifact<PageActionArtifact> {
 		this.popup = null;
 	}
 
-	public PageActionArtifact(String id, String name, String[] icons,
-			String popup) {
+	public PageActionArtifact(String id, String name, String[] icons, String popup) {
 		super(ExtensionLinker.class);
 		this.id = id;
 		this.name = name;

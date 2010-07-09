@@ -32,48 +32,50 @@ import com.google.gwt.core.client.JavaScriptObject;
  */
 public abstract class Event extends JavaScriptObject {
 
-  /**
-   * Opaque wrapper for the callback closure used to remove the listener if
-   * needed.
-   */
-  public static class ListenerHandle {
-    private final Event event;
+	/**
+	 * Opaque wrapper for the callback closure used to remove the listener if
+	 * needed.
+	 */
+	public static class ListenerHandle {
+		private final Event event;
 
-    private final JavaScriptObject functionHandle;
+		private final JavaScriptObject functionHandle;
 
-    public ListenerHandle(Event event, JavaScriptObject functionHandle) {
-      this.functionHandle = functionHandle;
-      this.event = event;
-    }
+		public ListenerHandle(Event event, JavaScriptObject functionHandle) {
+			this.functionHandle = functionHandle;
+			this.event = event;
+		}
 
-    public final boolean isAttached() {
-      return event.hasListener(functionHandle);
-    }
+		public final boolean isAttached() {
+			return event.hasListener(functionHandle);
+		}
 
-    public final void removeListener() {
-      event.removeListener(functionHandle);
-    }
-  }
+		public final void removeListener() {
+			event.removeListener(functionHandle);
+		}
+	}
 
-  protected Event() {
-  }
+	protected Event() {
+	}
 
-  /**
-   * Test if the given callback is registered for this event.
-   * 
-   * @param functionHandle handle returned from addListener.
-   * @return true if the callback is registered.
-   */
-  private native boolean hasListener(JavaScriptObject functionHandle) /*-{
-    return !!this.hasListener(functionHandle);
-  }-*/;
+	/**
+	 * Test if the given callback is registered for this event.
+	 * 
+	 * @param functionHandle
+	 *            handle returned from addListener.
+	 * @return true if the callback is registered.
+	 */
+	private native boolean hasListener(JavaScriptObject functionHandle) /*-{
+																		return !!this.hasListener(functionHandle);
+																		}-*/;
 
-  /**
-   * Unregisters a callback.
-   * 
-   * @param functionHandle handle returned from addListener.
-   */
-  private native void removeListener(JavaScriptObject functionHandle) /*-{
-    this.removeListener(functionHandle);
-  }-*/;
+	/**
+	 * Unregisters a callback.
+	 * 
+	 * @param functionHandle
+	 *            handle returned from addListener.
+	 */
+	private native void removeListener(JavaScriptObject functionHandle) /*-{
+																		this.removeListener(functionHandle);
+																		}-*/;
 }

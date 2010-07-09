@@ -25,30 +25,30 @@ import java.lang.annotation.Target;
  * Icon class for PageActions and BrowserActions.
  */
 public class Icon {
-  /**
-   * Annotation for defining the path to the associated icon image.
-   */
-  @Target(ElementType.METHOD)
-  @Retention(RetentionPolicy.RUNTIME)
-  @Documented
-  public @interface Source {
-    String value();
-  }
+	/**
+	 * Annotation for defining the path to the associated icon image.
+	 */
+	@Target(ElementType.METHOD)
+	@Retention(RetentionPolicy.RUNTIME)
+	@Documented
+	public @interface Source {
+		String value();
+	}
 
-  private final int id;
+	private final int id;
 
-  private final String path;
+	private final String path;
 
-  public Icon(int id, String path) {
-    this.id = id;
-    this.path = path;
-  }
+	public Icon(int id, String path) {
+		this.id = id;
+		this.path = path;
+	}
 
-  public int getId() {
-    return this.id;
-  }
+	public int getId() {
+		return this.id;
+	}
 
-  public String getPath() {
-    return this.path;
-  }
+	public String getPath() {
+		return this.path;
+	}
 }

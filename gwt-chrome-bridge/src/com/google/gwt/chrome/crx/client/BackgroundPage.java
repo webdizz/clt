@@ -19,6 +19,6 @@ public class BackgroundPage extends View {
 	 * @return current extension's local storage
 	 */
 	public final native LocalStorage getLocalStorage() /*-{
-		return this.localStorage;
-	}-*/;
+														return this.localStorage;
+														}-*/;
 }

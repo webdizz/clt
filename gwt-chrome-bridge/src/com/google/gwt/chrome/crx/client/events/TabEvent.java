@@ -26,28 +26,28 @@ import com.google.gwt.core.client.JavaScriptObject;
  * >Tabs API</a>
  */
 public final class TabEvent extends Event {
-  /**
-   * Callback for events that return a single tab in the first argument.
-   */
-  public interface Listener {
-    void onTab(Tab tab);
-  }
+	/**
+	 * Callback for events that return a single tab in the first argument.
+	 */
+	public interface Listener {
+		void onTab(Tab tab);
+	}
 
-  protected TabEvent() {
-  }
+	protected TabEvent() {
+	}
 
-  public ListenerHandle addListener(Listener listener) {
-    return new ListenerHandle(this, addListenerImpl(listener));
-  }
+	public ListenerHandle addListener(Listener listener) {
+		return new ListenerHandle(this, addListenerImpl(listener));
+	}
 
-  private native JavaScriptObject addListenerImpl(Listener listener) /*-{
-    var handle = function(tab) {
-      listener.
-          @com.google.gwt.chrome.crx.client.events.TabEvent.Listener::onTab(Lcom/google/gwt/chrome/crx/client/Tabs$Tab;)
-          (tab);
-    }
+	private native JavaScriptObject addListenerImpl(Listener listener) /*-{
+																		var handle = function(tab) {
+																		listener.
+																		@com.google.gwt.chrome.crx.client.events.TabEvent.Listener::onTab(Lcom/google/gwt/chrome/crx/client/Tabs$Tab;)
+																		(tab);
+																		}
 
-    this.addListener(handle);
-    return handle;
-  }-*/;
+																		this.addListener(handle);
+																		return handle;
+																		}-*/;
 }
