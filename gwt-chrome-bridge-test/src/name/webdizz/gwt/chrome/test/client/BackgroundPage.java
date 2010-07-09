@@ -23,6 +23,7 @@ public class BackgroundPage extends Extension {
 	@Override
 	public void onBackgroundPageLoad() {
 		GWT.create(TestableBrowserAction.class);
+		GWT.create(TestablePageAction.class);
 	}
 
 }
