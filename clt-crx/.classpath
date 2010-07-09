@@ -8,5 +8,6 @@
 	<classpathentry kind="lib" path="lib/commons-lang-2.4.jar"/>
 	<classpathentry kind="lib" path="lib/gwt-html5-database.jar"/>
 	<classpathentry kind="lib" path="lib/mvp4g-1.1.0.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/gwt-chrome-bridge"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

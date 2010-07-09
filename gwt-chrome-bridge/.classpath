@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/home/webdizz/.dev/.ides/gwtclipse/plugins/com.google.gwt.eclipse.sdkbundle.2.0.4_2.0.4.v201006301309/gwt-2.0.4/gwt-user.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/home/webdizz/.dev/.ides/gwtclipse/plugins/com.google.gwt.eclipse.sdkbundle.2.0.4_2.0.4.v201006301309/gwt-2.0.4/doc/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/home/webdizz/.dev/.ides/gwtclipse/plugins/com.google.gwt.eclipse.sdkbundle.2.0.4_2.0.4.v201006301309/gwt-2.0.4/gwt-dev.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/home/webdizz/.dev/.ides/gwtclipse/plugins/com.google.gwt.eclipse.sdkbundle.2.0.4_2.0.4.v201006301309/gwt-2.0.4/doc/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
