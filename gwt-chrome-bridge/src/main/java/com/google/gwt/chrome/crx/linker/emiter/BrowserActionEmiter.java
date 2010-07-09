@@ -11,7 +11,6 @@ import com.google.gwt.chrome.crx.client.BrowserAction;
 import com.google.gwt.chrome.crx.client.Icon;
 import com.google.gwt.chrome.crx.linker.UserType;
 import com.google.gwt.chrome.crx.linker.artifact.BrowserActionArtifact;
-import com.google.gwt.core.ext.Generator;
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
@@ -24,7 +23,7 @@ import com.google.gwt.user.rebind.SourceWriter;
  * @author webdizz
  * 
  */
-public class BrowserActionEmiter implements Emiter {
+public class BrowserActionEmiter extends AbstractEmiter {
 
 	@Override
 	public String emit(TreeLogger logger, GeneratorContext context, JClassType userType, String typeName)
@@ -75,7 +74,7 @@ public class BrowserActionEmiter implements Emiter {
 		}
 	}
 
-	private static String emitCode(TreeLogger logger, GeneratorContext context, JClassType userType, String name,
+	private String emitCode(TreeLogger logger, GeneratorContext context, JClassType userType, String name,
 			List<String> icons, List<String> iconPaths) {
 		final String subclassName = userType.getSimpleSourceName().replace('.', '_') + "_generated";
 		final String packageName = userType.getPackage().getName();
@@ -97,22 +96,6 @@ public class BrowserActionEmiter implements Emiter {
 			sw.commit(logger);
 		}
 		return sourceFileComposerFactory.getCreatedClassName();
-	}
-
-	private static void emitIcons(List<String> iconNames, List<String> iconPaths, SourceWriter sw) {
-		// Fill in the methods for kicking back the BrowserAction Icons.
-		for (int i = 0; i < iconNames.size(); i++) {
-			String iconName = Generator.escape(iconNames.get(i));
-			String iconField = Generator.escape(iconName) + "_field";
-			sw.println("private " + UserType.ICON_USER_TYPE + " " + iconField + " = null;");
-			sw.println("public " + UserType.ICON_USER_TYPE + " " + iconName + "() {");
-			sw.println("  if (" + iconField + " == null) {");
-			sw.println("    " + iconField + " = new " + UserType.ICON_USER_TYPE + "(" + i + ", \""
-					+ Generator.escape(iconPaths.get(i)) + "\");");
-			sw.println("  }");
-			sw.println("  return " + iconField + ";");
-			sw.println("}");
-		}
 	}
 
 }
