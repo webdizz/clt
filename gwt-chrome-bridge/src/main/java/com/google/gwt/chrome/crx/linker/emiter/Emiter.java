@@ -17,6 +17,8 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
 public interface Emiter {
 
 	static final String ICON_USER_TYPE = "com.google.gwt.chrome.crx.client.Icon";
+	
+	static final String PAGEACTION_USER_TYPE = "com.google.gwt.chrome.crx.client.PageAction";
 
 	/**
 	 * Abstract method to be implemented by {@link Emiter}s to support code <br/>
