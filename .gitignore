@@ -2,3 +2,6 @@ clt-crx/war/extension/
 clt-crx/war/WEB-INF/classes
 clt-crx/war/WEB-INF/lib/
 gwt-chrome-bridge/bin/
+gwt-chrome-bridge/reports/
+gwt-chrome-bridge/target/
+gwt-chrome-bridge-test/war
