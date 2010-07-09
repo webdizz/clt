@@ -30,4 +30,19 @@ public abstract class AbstractEmiter implements Emiter {
 		}
 	}
 
+	/**
+	 * Implementation for the getter for name
+	 * 
+	 * @param sw
+	 *            the {@link SourceWriter}
+	 * @param name
+	 *            the name to return
+	 */
+	protected void writeGetName(final SourceWriter sw, final String name) {
+		sw.println("public String getName() {");
+		// TODO(jaimeyap): Use proper string escaping from generator libs.
+		sw.println("  return \"" + name + "\";");
+		sw.println("}");
+	}
+
 }

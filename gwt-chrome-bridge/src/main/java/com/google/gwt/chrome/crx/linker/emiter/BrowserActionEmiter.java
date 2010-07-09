@@ -82,16 +82,10 @@ public class BrowserActionEmiter extends AbstractEmiter {
 		sourceFileComposerFactory.setSuperclass(userType.getQualifiedSourceName());
 		final PrintWriter pw = context.tryCreate(logger, packageName, subclassName);
 		if (pw != null) {
-			final SourceWriter sw = sourceFileComposerFactory.createSourceWriter(context, pw);
-
+			SourceWriter sw = sourceFileComposerFactory.createSourceWriter(context, pw);
 			// Impl for the getter for name.
-			sw.println("public String getName() {");
-			// TODO(jaimeyap): Use proper string escaping from generator libs.
-			sw.println("  return \"" + name + "\";");
-			sw.println("}");
-
+			writeGetName(sw, name);
 			emitIcons(icons, iconPaths, sw);
-
 			sw.commit(logger);
 		}
 		return sourceFileComposerFactory.getCreatedClassName();
