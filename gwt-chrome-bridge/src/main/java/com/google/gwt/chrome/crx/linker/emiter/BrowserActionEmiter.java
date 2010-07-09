@@ -28,7 +28,9 @@ public class BrowserActionEmiter extends AbstractEmiter {
 	public String emit(TreeLogger logger, GeneratorContext context, JClassType userType, String typeName)
 			throws UnableToCompleteException {
 		BrowserAction.ManifestInfo spec = userType.getAnnotation(BrowserAction.ManifestInfo.class);
-		ensureSpecPresent(logger, typeName, spec);
+		Validator<BrowserAction.ManifestInfo> validator;
+		validator = new Validator<BrowserAction.ManifestInfo>(logger, BrowserAction.class.getName(), typeName);
+		validator.ensureAnnotatedWithManifest(spec);
 		JMethod[] methods = userType.getMethods();
 		List<String> iconFiles = new ArrayList<String>();
 		List<String> iconMethods = new ArrayList<String>();
@@ -50,27 +52,11 @@ public class BrowserActionEmiter extends AbstractEmiter {
 				iconMethods.add(method.getName());
 			}
 		}
-		ensureActionHasIcon(logger, typeName, iconFiles);
+		validator.ensureActionHasIcon(iconFiles);
 		BrowserActionArtifact artifact = new BrowserActionArtifact(spec.name(), iconFiles.toArray(new String[0]),
 				spec.defaultIcon());
 		context.commitArtifact(logger, artifact);
 		return emitCode(logger, context, userType, spec.name(), iconMethods, iconFiles);
-	}
-
-	private void ensureActionHasIcon(TreeLogger logger, String typeName, List<String> iconFiles)
-			throws UnableToCompleteException {
-		if (iconFiles.isEmpty()) {
-			logger.log(TreeLogger.ERROR, "BrowserActions must have at least one Icon (" + typeName + ")");
-			throw new UnableToCompleteException();
-		}
-	}
-
-	private void ensureSpecPresent(TreeLogger logger, String typeName, BrowserAction.ManifestInfo spec)
-			throws UnableToCompleteException {
-		if (spec == null) {
-			logger.log(TreeLogger.ERROR, "BrowserAction (" + typeName + ") must be annotated with a Specificaiton.");
-			throw new UnableToCompleteException();
-		}
 	}
 
 	private String emitCode(TreeLogger logger, GeneratorContext context, JClassType userType, String name,
