@@ -69,23 +69,14 @@ public class BrowserActionEmiterTest {
 
 	@Test(expected = UnableToCompleteException.class)
 	public void shouldThrowUnableToCompleteExceptionIfNoMethodReturningIcon() throws UnableToCompleteException {
-		JMethod jmethod = mock(JMethod.class);
-		JType jtype = mock(JType.class);
-		when(jtype.getQualifiedSourceName()).thenReturn("SomeOtherType");
-
-		when(jmethod.getReturnType()).thenReturn(jtype);
-		when(userType.getMethods()).thenReturn(new JMethod[] { jmethod });
+		mockIconMethodsWithoutIcon("SomeOtherType");
 
 		invokeCodeEmition();
 	}
 
 	@Test
 	public void shouldResolveIconFromMethodNameIfIconMethodWithoutSourceAnnotation() throws UnableToCompleteException {
-		JMethod jmethod = mock(JMethod.class);
-		JType jtype = mock(JType.class);
-		when(jtype.getQualifiedSourceName()).thenReturn(UserType.ICON_USER_TYPE.type());
-		when(jmethod.getReturnType()).thenReturn(jtype);
-		when(userType.getMethods()).thenReturn(new JMethod[] { jmethod });
+		JMethod jmethod = mockIconMethodsWithoutIcon(UserType.ICON_USER_TYPE.type());
 
 		invokeCodeEmition();
 		verify(jmethod, times(2)).getName();
@@ -93,11 +84,7 @@ public class BrowserActionEmiterTest {
 
 	@Test
 	public void shouldResolveIconFromMethodSourceAnnotation() throws UnableToCompleteException {
-		JMethod jmethod = mock(JMethod.class);
-		JType jtype = mock(JType.class);
-		when(jtype.getQualifiedSourceName()).thenReturn(UserType.ICON_USER_TYPE.type());
-		when(jmethod.getReturnType()).thenReturn(jtype);
-		when(userType.getMethods()).thenReturn(new JMethod[] { jmethod });
+		JMethod jmethod = mockIconMethodsWithoutIcon(UserType.ICON_USER_TYPE.type());
 
 		Icon.Source iconSource = mock(Icon.Source.class);
 		when(jmethod.getAnnotation(Icon.Source.class)).thenReturn(iconSource);
@@ -109,31 +96,16 @@ public class BrowserActionEmiterTest {
 
 	@Test
 	public void shouldTryToCreateProperWriter() throws UnableToCompleteException {
-		mockIconMethods();
-
+		mockIconMethodsWithIcon();
 		mockJPackage();
 
 		invokeCodeEmition();
 		verify(context).tryCreate(logger, TYPE_NAME, SUBPACKEG_NAME);
 	}
 
-	private void mockIconMethods() {
-		JMethod jmethod = mock(JMethod.class);
-		JType jtype = mock(JType.class);
-		when(jtype.getQualifiedSourceName()).thenReturn(UserType.ICON_USER_TYPE.type());
-		when(jtype.getSimpleSourceName()).thenReturn(TYPE_NAME);
-		when(jmethod.getReturnType()).thenReturn(jtype);
-		when(jmethod.getName()).thenReturn("methodName");
-		Icon.Source iconSource = mock(Icon.Source.class);
-		when(iconSource.value()).thenReturn("filename");
-		when(jmethod.getAnnotation(Icon.Source.class)).thenReturn(iconSource);
-		when(userType.getMethods()).thenReturn(new JMethod[] { jmethod });
-	}
-
 	@Test
 	public void shouldCreateProperWriter() throws UnableToCompleteException {
-		mockIconMethods();
-
+		mockIconMethodsWithIcon();
 		mockJPackage();
 
 		final ClassSourceFileComposerFactory sourceFileComposerFactoryImpl = new ClassSourceFileComposerFactory(
@@ -149,9 +121,29 @@ public class BrowserActionEmiterTest {
 
 		when(context.tryCreate(logger, TYPE_NAME, SUBPACKEG_NAME)).thenReturn(pw);
 
-		String createdClass = invokeCodeEmition();
+		assertEquals(TYPE_NAME + '.' + SUBPACKEG_NAME, invokeCodeEmition());
+	}
 
-		assertEquals(TYPE_NAME + '.' + SUBPACKEG_NAME, createdClass);
+	private JMethod mockIconMethodsWithoutIcon(String qualifiedSourceName) {
+		JMethod jmethod = mock(JMethod.class);
+		JType jtype = mock(JType.class);
+		when(jtype.getQualifiedSourceName()).thenReturn(qualifiedSourceName);
+		when(jmethod.getReturnType()).thenReturn(jtype);
+		when(userType.getMethods()).thenReturn(new JMethod[] { jmethod });
+		return jmethod;
+	}
+
+	private void mockIconMethodsWithIcon() {
+		JMethod jmethod = mock(JMethod.class);
+		JType jtype = mock(JType.class);
+		when(jtype.getQualifiedSourceName()).thenReturn(UserType.ICON_USER_TYPE.type());
+		when(jtype.getSimpleSourceName()).thenReturn(TYPE_NAME);
+		when(jmethod.getReturnType()).thenReturn(jtype);
+		when(jmethod.getName()).thenReturn("methodName");
+		Icon.Source iconSource = mock(Icon.Source.class);
+		when(iconSource.value()).thenReturn("filename");
+		when(jmethod.getAnnotation(Icon.Source.class)).thenReturn(iconSource);
+		when(userType.getMethods()).thenReturn(new JMethod[] { jmethod });
 	}
 
 	private void mockJPackage() {
