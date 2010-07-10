@@ -19,6 +19,8 @@ public interface Emiter {
 	static final String ICON_USER_TYPE = "com.google.gwt.chrome.crx.client.Icon";
 	
 	static final String PAGEACTION_USER_TYPE = "com.google.gwt.chrome.crx.client.PageAction";
+	
+	static final String CONTENTSCRIPT_USER_TYPE = "com.google.gwt.chrome.crx.client.ContentScript";
 
 	/**
 	 * Abstract method to be implemented by {@link Emiter}s to support code <br/>
