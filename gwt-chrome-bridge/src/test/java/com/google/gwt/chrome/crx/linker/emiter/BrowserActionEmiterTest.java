@@ -44,7 +44,8 @@ public class BrowserActionEmiterTest {
 	@Mock
 	private JClassType userType;
 
-	private static final String TYPE_NAME = "com.google.gwt.chrome.BrowserAction";
+	private static final String TYPE_NAME = Emiter.BROWSERACTION_USER_TYPE;
+	
 	private static final String SUBPACKEG_NAME = TYPE_NAME.replace(".", "_") + "_generated";
 
 	@Before

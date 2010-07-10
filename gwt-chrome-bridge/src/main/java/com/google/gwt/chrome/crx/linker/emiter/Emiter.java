@@ -18,6 +18,8 @@ public interface Emiter {
 
 	static final String ICON_USER_TYPE = "com.google.gwt.chrome.crx.client.Icon";
 	
+	static final String BROWSERACTION_USER_TYPE = "com.google.gwt.chrome.crx.client.BrowserAction";
+	
 	static final String PAGEACTION_USER_TYPE = "com.google.gwt.chrome.crx.client.PageAction";
 	
 	static final String CONTENTSCRIPT_USER_TYPE = "com.google.gwt.chrome.crx.client.ContentScript";
