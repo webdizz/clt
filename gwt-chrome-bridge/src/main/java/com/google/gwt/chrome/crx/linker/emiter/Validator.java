@@ -29,7 +29,8 @@ public class Validator<M> {
 
 	public void ensureAnnotatedWithManifest(final M manifest) throws UnableToCompleteException {
 		if (manifest == null) {
-			logger.log(TreeLogger.ERROR, artifactName + " (" + typeName + ") must be annotated with a Specificaiton.");
+			logger.log(TreeLogger.ERROR, artifactName + " (" + typeName + ") must be annotated with a " + artifactName
+					+ ".Specificaiton.");
 			throw new UnableToCompleteException();
 		}
 	}
