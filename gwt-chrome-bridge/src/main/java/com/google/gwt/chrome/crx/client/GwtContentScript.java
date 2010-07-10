@@ -21,6 +21,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import com.google.gwt.core.client.EntryPoint;
+
 /**
  * 
  * {@link GwtContentScript} is a {@link ContentScript} the main difference is it
@@ -28,7 +30,7 @@ import java.lang.annotation.Target;
  * href="http://code.google.com/chrome/extensions/content_scripts.html" >Content
  * Scripts</a>
  */
-public abstract class GwtContentScript implements Component {
+public abstract class GwtContentScript implements EntryPoint {
 
 	/**
 	 * In the case of "document_start", the files are injected after any files
@@ -99,4 +101,16 @@ public abstract class GwtContentScript implements Component {
 		 */
 		boolean allFrames() default false;
 	}
+
+	/**
+	 * Should be implemented in you {@link GwtContentScript}s.<br />
+	 * This is a start point for {@link GwtContentScript} code.
+	 */
+	abstract void onScriptLoad();
+
+	public void onModuleLoad() {
+		onScriptLoad();
+	}
+
+	// TODO: add abilities to connect to other processes from script
 }
