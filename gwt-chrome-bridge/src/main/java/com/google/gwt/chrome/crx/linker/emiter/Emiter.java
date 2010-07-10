@@ -23,6 +23,8 @@ public interface Emiter {
 	static final String PAGEACTION_USER_TYPE = "com.google.gwt.chrome.crx.client.PageAction";
 	
 	static final String CONTENTSCRIPT_USER_TYPE = "com.google.gwt.chrome.crx.client.ContentScript";
+	
+	static final String GWT_CONTENTSCRIPT_USER_TYPE = "com.google.gwt.chrome.crx.client.GwtContentScript";
 
 	/**
 	 * Abstract method to be implemented by {@link Emiter}s to support code <br/>
