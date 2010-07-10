@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.google.gwt.chrome.crx.linker.emiter;
+package com.google.gwt.chrome.crx.linker;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -15,6 +15,7 @@ import org.mockito.MockitoAnnotations;
 import com.google.gwt.chrome.crx.client.GwtContentScript;
 import com.google.gwt.chrome.crx.linker.GwtContentScriptGenerator;
 import com.google.gwt.chrome.crx.linker.artifact.GwtContentScriptArtifact;
+import com.google.gwt.chrome.crx.linker.emiter.Emiter;
 import com.google.gwt.core.ext.Generator;
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
