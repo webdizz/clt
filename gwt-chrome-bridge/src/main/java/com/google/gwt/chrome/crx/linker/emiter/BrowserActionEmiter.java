@@ -65,7 +65,7 @@ public class BrowserActionEmiter extends AbstractEmiter {
 
 	private String emitCode(TreeLogger logger, GeneratorContext context, JClassType userType, String name,
 			List<String> icons, List<String> iconPaths) {
-		final String subclassName = userType.getSimpleSourceName().replace('.', '_') + "_generated";
+		final String subclassName = createSubclassName(userType);
 		final String packageName = userType.getPackage().getName();
 		final ClassSourceFileComposerFactory sourceFileComposerFactory = new ClassSourceFileComposerFactory(
 				packageName, subclassName);
@@ -73,7 +73,7 @@ public class BrowserActionEmiter extends AbstractEmiter {
 		final PrintWriter pw = context.tryCreate(logger, packageName, subclassName);
 		if (pw != null) {
 			SourceWriter sw = sourceFileComposerFactory.createSourceWriter(context, pw);
-			
+
 			emitNameGetter(sw, name);
 			emitIcons(sw, icons, iconPaths);
 			sw.commit(logger);
