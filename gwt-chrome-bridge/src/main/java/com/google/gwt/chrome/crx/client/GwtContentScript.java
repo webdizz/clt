@@ -77,7 +77,7 @@ public abstract class GwtContentScript implements Component {
 		 * 
 		 * @return array of strings
 		 */
-		String[] whiteList();
+		String[] matches();
 
 		/**
 		 * Controls when the files in js are injected. Can be
