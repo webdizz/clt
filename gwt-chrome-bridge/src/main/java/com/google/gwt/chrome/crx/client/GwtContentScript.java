@@ -106,7 +106,7 @@ public abstract class GwtContentScript implements EntryPoint {
 	 * Should be implemented in you {@link GwtContentScript}s.<br />
 	 * This is a start point for {@link GwtContentScript} code.
 	 */
-	abstract void onScriptLoad();
+	abstract public void onScriptLoad();
 
 	public void onModuleLoad() {
 		onScriptLoad();
