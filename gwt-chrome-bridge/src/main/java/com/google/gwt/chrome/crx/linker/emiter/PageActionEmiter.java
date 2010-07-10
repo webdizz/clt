@@ -64,7 +64,7 @@ public class PageActionEmiter extends BrowserActionEmiter {
 
 	private String emitPageActionCode(TreeLogger logger, GeneratorContext context, JClassType userType,
 			String pageActionId, String name, List<String> icons, List<String> iconPaths, String popup) {
-		final String subclassName = userType.getSimpleSourceName().replace('.', '_') + "_generated";
+		final String subclassName = createSubclassName(userType);
 		final String packageName = userType.getPackage().getName();
 		final ClassSourceFileComposerFactory f = new ClassSourceFileComposerFactory(packageName, subclassName);
 		f.setSuperclass(userType.getQualifiedSourceName());
