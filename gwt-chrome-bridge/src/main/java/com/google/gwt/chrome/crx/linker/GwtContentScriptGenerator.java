@@ -13,7 +13,6 @@ import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.NotFoundException;
-import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 
 /**
  * @author webdizz
@@ -45,19 +44,20 @@ public class GwtContentScriptGenerator extends Generator {
 			artifact = new GwtContentScriptArtifact(path, spec.matches(), spec.runAt(), spec.allFrames());
 			context.commitArtifact(logger, artifact);
 
-			// generate extension type
-			final String subclassName = userType.getSimpleSourceName().replace('.', '_') + "_generated";
-			final String packageName = userType.getPackage().getName();
-			final ClassSourceFileComposerFactory composerFactory = new ClassSourceFileComposerFactory(packageName,
-					subclassName);
-			composerFactory.setSuperclass(userType.getQualifiedSourceName());
-			context.tryCreate(logger, packageName, subclassName);
 			// TODO: implement class if needed
-			return composerFactory.getCreatedClassName();
+			// generate extension type
+			//final String subclassName = userType.getSimpleSourceName().replace('.', '_') + "_generated";
+			//final String packageName = userType.getPackage().getName();
+			//final ClassSourceFileComposerFactory composerFactory;
+			//composerFactory = new ClassSourceFileComposerFactory(packageName, subclassName);
+			//composerFactory.setSuperclass(userType.getQualifiedSourceName());
+			//context.tryCreate(logger, packageName, subclassName);
+			//return composerFactory.getCreatedClassName();
 		} catch (NotFoundException e) {
 			logger.log(TreeLogger.ERROR, "Unsupported Type: " + typeName);
 			throw new UnableToCompleteException();
 		}
+		return null;
 	}
 
 }
