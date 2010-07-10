@@ -65,7 +65,7 @@ public class BrowserActionEmiter extends AbstractEmiter {
 
 	private String emitCode(TreeLogger logger, GeneratorContext context, JClassType userType, String name,
 			List<String> icons, List<String> iconPaths) {
-		final String subclassName = createSubclassName(userType);
+		final String subclassName = createSubclassName(userType.getSimpleSourceName());
 		final String packageName = userType.getPackage().getName();
 		final ClassSourceFileComposerFactory sourceFileComposerFactory = new ClassSourceFileComposerFactory(
 				packageName, subclassName);

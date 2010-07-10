@@ -7,7 +7,6 @@ import java.util.List;
 
 import com.google.gwt.chrome.crx.client.BrowserAction;
 import com.google.gwt.core.ext.Generator;
-import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.user.rebind.SourceWriter;
 
 /**
@@ -64,12 +63,12 @@ public abstract class AbstractEmiter implements Emiter {
 	/**
 	 * Creates subclass name from full simpleSourceName.
 	 * 
-	 * @param userType
-	 *            {@link JClassType}
+	 * @param typeName
+	 *            {@link String}
 	 * @return generated name
 	 */
-	protected String createSubclassName(final JClassType userType) {
-		return userType.getSimpleSourceName().replace('.', '_') + "_generated";
+	protected String createSubclassName(final String typeName) {
+		return typeName.replace('.', '_') + "_generated";
 	}
 
 }
