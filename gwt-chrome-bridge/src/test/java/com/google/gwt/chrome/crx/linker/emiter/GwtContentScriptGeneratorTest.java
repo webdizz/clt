@@ -4,13 +4,11 @@
 package com.google.gwt.chrome.crx.linker.emiter;
 
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -100,41 +98,41 @@ public class GwtContentScriptGeneratorTest {
 		verify(context).commitArtifact(logger, artifact);
 	}
 
-	@Test
-	public void shouldGenerateNameForCreatingArtifactType() throws UnableToCompleteException {
+//	@Test
+//	public void shouldGenerateNameForCreatingArtifactType() throws UnableToCompleteException {
+//
+//		invokeCodeGeneration();
+//
+//		verify(userType, times(2)).getSimpleSourceName();
+//	}
+//
+//	@Test
+//	public void shouldResolvePackageName() throws UnableToCompleteException {
+//		invokeCodeGeneration();
+//
+//		verify(userType).getPackage();
+//	}
 
-		invokeCodeGeneration();
-
-		verify(userType, times(2)).getSimpleSourceName();
-	}
-
-	@Test
-	public void shouldResolvePackageName() throws UnableToCompleteException {
-		invokeCodeGeneration();
-
-		verify(userType).getPackage();
-	}
-
-	@Test
-	public void shouldObtainQualifiedSourceName() throws UnableToCompleteException {
-		invokeCodeGeneration();
-
-		verify(userType).getQualifiedSourceName();
-	}
-
-	@Test
-	public void shouldCalltryCreateOnContext() throws UnableToCompleteException {
-		invokeCodeGeneration();
-
-		verify(context).tryCreate(logger, PACKAGE_NAME, PATH + "_generated");
-	}
-
-	@Test
-	public void shouldReturnCreatedClassName() throws UnableToCompleteException {
-		String createdClass = invokeCodeGeneration();
-
-		assertEquals(PACKAGE_NAME + '.' + PATH + "_generated", createdClass);
-	}
+//	@Test
+//	public void shouldObtainQualifiedSourceName() throws UnableToCompleteException {
+//		invokeCodeGeneration();
+//
+//		verify(userType).getQualifiedSourceName();
+//	}
+//
+//	@Test
+//	public void shouldCalltryCreateOnContext() throws UnableToCompleteException {
+//		invokeCodeGeneration();
+//
+//		verify(context).tryCreate(logger, PACKAGE_NAME, PATH + "_generated");
+//	}
+//
+//	@Test
+//	public void shouldReturnCreatedClassName() throws UnableToCompleteException {
+//		String createdClass = invokeCodeGeneration();
+//
+//		assertEquals(PACKAGE_NAME + '.' + PATH + "_generated", createdClass);
+//	}
 
 	protected String invokeCodeGeneration() throws UnableToCompleteException {
 		Generator generator = new GwtContentScriptGenerator();
