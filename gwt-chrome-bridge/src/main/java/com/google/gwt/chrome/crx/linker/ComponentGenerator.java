@@ -20,15 +20,13 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 
 import com.google.gwt.chrome.crx.client.Component;
-import com.google.gwt.chrome.crx.client.ContentScript;
-import com.google.gwt.chrome.crx.client.ContentScript.ManifestInfo;
 import com.google.gwt.chrome.crx.client.ExtensionScript;
 import com.google.gwt.chrome.crx.client.Plugin;
-import com.google.gwt.chrome.crx.linker.artifact.ContentScriptArtifact;
 import com.google.gwt.chrome.crx.linker.artifact.ExtensionScriptArtifact;
 import com.google.gwt.chrome.crx.linker.artifact.PluginArtifact;
 import com.google.gwt.chrome.crx.linker.artifact.ToolStripArtifact;
 import com.google.gwt.chrome.crx.linker.emiter.BrowserActionEmiter;
+import com.google.gwt.chrome.crx.linker.emiter.ContentScriptEmiter;
 import com.google.gwt.chrome.crx.linker.emiter.Emiter;
 import com.google.gwt.chrome.crx.linker.emiter.PageActionEmiter;
 import com.google.gwt.core.ext.Generator;
@@ -46,7 +44,6 @@ import com.google.gwt.user.rebind.SourceWriter;
  */
 public class ComponentGenerator extends Generator {
 	private static final String BROWSERACTION_USER_TYPE = "com.google.gwt.chrome.crx.client.BrowserAction";
-	private static final String CONTENTSCRIPT_USER_TYPE = "com.google.gwt.chrome.crx.client.ContentScript";
 	private static final String EXTSCRIPT_USER_TYPE = "com.google.gwt.chrome.crx.client.ExtensionScript";
 	private static final String PAGE_USER_TYPE = "com.google.gwt.chrome.crx.client.Page";
 	private static final String PLUGIN_USER_TYPE = "com.google.gwt.chrome.crx.client.Plugin";
@@ -68,7 +65,7 @@ public class ComponentGenerator extends Generator {
 		final JClassType browserActionType = typeOracle.findType(BROWSERACTION_USER_TYPE);
 		assert browserActionType != null;
 
-		final JClassType contentScriptType = typeOracle.findType(CONTENTSCRIPT_USER_TYPE);
+		final JClassType contentScriptType = typeOracle.findType(Emiter.CONTENTSCRIPT_USER_TYPE);
 		assert contentScriptType != null;
 
 		final JClassType extensionScriptType = typeOracle.findType(EXTSCRIPT_USER_TYPE);
@@ -84,7 +81,7 @@ public class ComponentGenerator extends Generator {
 			} else if (classType.isAssignableTo(pageType)) {
 				return processPage(logger, context, classType);
 			} else if (classType.isAssignableTo(contentScriptType)) {
-				processContentScript(logger, context, classType, typeName);
+				new ContentScriptEmiter().emit(logger, context, classType, typeName);
 				return typeName;
 			} else if (classType.isAssignableTo(extensionScriptType)) {
 				processExtensionScript(logger, context, classType, typeName);
@@ -145,16 +142,6 @@ public class ComponentGenerator extends Generator {
 			sw.commit(logger);
 		}
 		return f.getCreatedClassName();
-	}
-
-	private static void processContentScript(TreeLogger logger, GeneratorContext context, JClassType userType,
-			String typeName) throws UnableToCompleteException {
-		ManifestInfo spec = userType.getAnnotation(ContentScript.ManifestInfo.class);
-		if (spec == null) {
-			logger.log(TreeLogger.ERROR, "ContentScript (" + typeName + ") must be annotated with a Specificaiton.");
-			throw new UnableToCompleteException();
-		}
-		context.commitArtifact(logger, new ContentScriptArtifact(spec.path(), spec.whiteList(), spec.runAt()));
 	}
 
 	private static void processExtensionScript(TreeLogger logger, GeneratorContext context, JClassType userType,
