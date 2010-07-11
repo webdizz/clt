@@ -15,21 +15,16 @@
  */
 package com.google.gwt.chrome.crx.linker;
 
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-
 import com.google.gwt.chrome.crx.client.Component;
-import com.google.gwt.chrome.crx.client.ExtensionScript;
 import com.google.gwt.chrome.crx.client.Plugin;
-import com.google.gwt.chrome.crx.linker.artifact.ExtensionScriptArtifact;
 import com.google.gwt.chrome.crx.linker.artifact.PluginArtifact;
-import com.google.gwt.chrome.crx.linker.artifact.ToolStripArtifact;
 import com.google.gwt.chrome.crx.linker.emiter.BrowserActionEmiter;
 import com.google.gwt.chrome.crx.linker.emiter.ContentScriptEmiter;
 import com.google.gwt.chrome.crx.linker.emiter.Emiter;
 import com.google.gwt.chrome.crx.linker.emiter.ExtentionsScriptEmiter;
 import com.google.gwt.chrome.crx.linker.emiter.PageActionEmiter;
+import com.google.gwt.chrome.crx.linker.emiter.PageEmiter;
+import com.google.gwt.chrome.crx.linker.emiter.ToolStripEmiter;
 import com.google.gwt.core.ext.Generator;
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
@@ -37,8 +32,6 @@ import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.NotFoundException;
 import com.google.gwt.core.ext.typeinfo.TypeOracle;
-import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
-import com.google.gwt.user.rebind.SourceWriter;
 
 /**
  * Generator for extension {@link Component}s.
@@ -78,9 +71,9 @@ public class ComponentGenerator extends Generator {
 		try {
 			final JClassType classType = typeOracle.getType(typeName);
 			if (classType.isAssignableTo(toolStripType)) {
-				return processToolStrip(logger, context, classType);
+				return new ToolStripEmiter().emit(logger, context, classType, null);
 			} else if (classType.isAssignableTo(pageType)) {
-				return processPage(logger, context, classType);
+				return new PageEmiter().emit(logger, context, classType, typeName);
 			} else if (classType.isAssignableTo(contentScriptType)) {
 				return new ContentScriptEmiter().emit(logger, context, classType, typeName);
 			} else if (classType.isAssignableTo(extensionScriptType)) {
@@ -102,60 +95,7 @@ public class ComponentGenerator extends Generator {
 			throw new UnableToCompleteException();
 		}
 	}
-
-	private static void emitComponentPage(TreeLogger logger, GeneratorContext context, String name, String path)
-			throws UnableToCompleteException {
-		final OutputStream stream = context.tryCreateResource(logger, path);
-		if (stream != null) {
-			final PrintWriter writer = new PrintWriter(new OutputStreamWriter(stream));
-			writer.println("<html>");
-			writer.println("<head></head>");
-			writer.println("<body>");
-			writer.println("  <script>");
-			writer.println("  window.onload = function() {");
-			writer.println("    var views = chrome.self.getViews();");
-			writer.println("    views[0][\"" + name + "\"](window);");
-			writer.println("  };");
-			writer.println("  </script>");
-			writer.println("</body>");
-			writer.println("</html>");
-			writer.close();
-			context.commitResource(logger, stream);
-		}
-	}
-
-	private static String emitComponentPageCode(TreeLogger logger, GeneratorContext context, JClassType userType) {
-		final String subclassName = userType.getSimpleSourceName().replace('.', '_') + "_generated";
-		final String packageName = userType.getPackage().getName();
-		final ClassSourceFileComposerFactory f = new ClassSourceFileComposerFactory(packageName, subclassName);
-		f.setSuperclass(userType.getQualifiedSourceName());
-		final PrintWriter pw = context.tryCreate(logger, packageName, subclassName);
-		if (pw != null) {
-			final SourceWriter sw = f.createSourceWriter(context, pw);
-
-			// Write a default constructor that simply calls connect.
-			sw.println("public " + subclassName + "() {");
-			sw.println("  connect(\"" + userType.getSimpleSourceName() + "\");");
-			sw.println("}");
-
-			sw.commit(logger);
-		}
-		return f.getCreatedClassName();
-	}
-	private static String processPage(TreeLogger logger, GeneratorContext context, JClassType userType)
-			throws UnableToCompleteException {
-		// TODO(knorton): The fact that we use the simple source name is a
-		// problem
-		// if you ever GWT.create multiple instances of the same component. So
-		// we
-		// really should generate an id for these.
-		String name = userType.getSimpleSourceName();
-		String path = name + ".html";
-		emitComponentPage(logger, context, name, path);
-		// No need to commit any artifact for the linker.
-		return emitComponentPageCode(logger, context, userType);
-	}
-
+	
 	private static void processPlugin(TreeLogger logger, GeneratorContext context, JClassType userType, String typeName)
 			throws UnableToCompleteException {
 		Plugin.ManifestInfo spec = userType.getAnnotation(Plugin.ManifestInfo.class);
@@ -165,16 +105,7 @@ public class ComponentGenerator extends Generator {
 		}
 		context.commitArtifact(logger, new PluginArtifact(spec.path(), spec.isPublic()));
 	}
-
-	private static String processToolStrip(TreeLogger logger, GeneratorContext context, JClassType userType)
-			throws UnableToCompleteException {
-		String name = userType.getSimpleSourceName();
-		String path = name + ".html";
-		emitComponentPage(logger, context, name, path);
-		context.commitArtifact(logger, new ToolStripArtifact(path));
-		return emitComponentPageCode(logger, context, userType);
-	}
-
+	
 	@Override
 	public String generate(TreeLogger logger, GeneratorContext context, String typeName)
 			throws UnableToCompleteException {
