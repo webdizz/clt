@@ -82,8 +82,7 @@ public class ComponentGenerator extends Generator {
 			} else if (classType.isAssignableTo(pageType)) {
 				return processPage(logger, context, classType);
 			} else if (classType.isAssignableTo(contentScriptType)) {
-				new ContentScriptEmiter().emit(logger, context, classType, typeName);
-				return typeName;
+				return new ContentScriptEmiter().emit(logger, context, classType, typeName);
 			} else if (classType.isAssignableTo(extensionScriptType)) {
 				return new ExtentionsScriptEmiter().emit(logger, context, classType, typeName);
 			} else if (classType.isAssignableTo(pluginType)) {
@@ -143,17 +142,6 @@ public class ComponentGenerator extends Generator {
 		}
 		return f.getCreatedClassName();
 	}
-
-	private static void processExtensionScript(TreeLogger logger, GeneratorContext context, JClassType userType,
-			String typeName) throws UnableToCompleteException {
-		ExtensionScript.ManifestInfo spec = userType.getAnnotation(ExtensionScript.ManifestInfo.class);
-		if (spec == null) {
-			logger.log(TreeLogger.ERROR, "ExtensionScript (" + typeName + ") must be annotated with a Specificaiton.");
-			throw new UnableToCompleteException();
-		}
-		context.commitArtifact(logger, new ExtensionScriptArtifact(spec.path(), spec.script()));
-	}
-
 	private static String processPage(TreeLogger logger, GeneratorContext context, JClassType userType)
 			throws UnableToCompleteException {
 		// TODO(knorton): The fact that we use the simple source name is a
