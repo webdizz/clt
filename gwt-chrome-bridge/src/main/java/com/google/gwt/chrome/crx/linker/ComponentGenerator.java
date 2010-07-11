@@ -28,6 +28,7 @@ import com.google.gwt.chrome.crx.linker.artifact.ToolStripArtifact;
 import com.google.gwt.chrome.crx.linker.emiter.BrowserActionEmiter;
 import com.google.gwt.chrome.crx.linker.emiter.ContentScriptEmiter;
 import com.google.gwt.chrome.crx.linker.emiter.Emiter;
+import com.google.gwt.chrome.crx.linker.emiter.ExtentionsScriptEmiter;
 import com.google.gwt.chrome.crx.linker.emiter.PageActionEmiter;
 import com.google.gwt.core.ext.Generator;
 import com.google.gwt.core.ext.GeneratorContext;
@@ -84,8 +85,7 @@ public class ComponentGenerator extends Generator {
 				new ContentScriptEmiter().emit(logger, context, classType, typeName);
 				return typeName;
 			} else if (classType.isAssignableTo(extensionScriptType)) {
-				processExtensionScript(logger, context, classType, typeName);
-				return typeName;
+				return new ExtentionsScriptEmiter().emit(logger, context, classType, typeName);
 			} else if (classType.isAssignableTo(pluginType)) {
 				processPlugin(logger, context, classType, typeName);
 				return typeName;
