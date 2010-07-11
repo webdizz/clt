@@ -21,4 +21,8 @@
 	<!-- Define linker -->
 	<define-linker name="crx"
 		class="com.google.gwt.chrome.crx.linker.ExtensionLinker" />
+		
+	<!-- Define linker for GwtContentScript -->
+	<define-linker name="crx_gwtscript"
+		class="com.google.gwt.chrome.crx.linker.GwtContentScriptLinker" />
 </module>
