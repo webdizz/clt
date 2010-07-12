@@ -3,8 +3,7 @@
  */
 package name.webdizz.gwt.chrome.test.client;
 
-import com.google.gwt.chrome.crx.client.GwtContentScript;
-import com.google.gwt.chrome.crx.client.GwtContentScript.ManifestInfo;
+import com.google.gwt.chrome.crx.client.GwtContentScriptEntryPoint;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 
@@ -12,8 +11,7 @@ import com.google.gwt.user.client.ui.RootPanel;
  * @author webdizz
  * 
  */
-@ManifestInfo(matches = { "http://www.google.com/*" }, runAt = GwtContentScript.DOCUMENT_END)
-public class TestableGwtContentScript extends GwtContentScript {
+public class TestableGwtContentScript extends GwtContentScriptEntryPoint {
 
 	/*
 	 * (non-Javadoc)
