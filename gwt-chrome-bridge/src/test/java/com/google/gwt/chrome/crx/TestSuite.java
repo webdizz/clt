@@ -20,12 +20,12 @@ import com.google.gwt.chrome.crx.linker.emiter.ValidatorTest;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
+  ValidatorTest.class,
   BrowserActionEmiterTest.class,
   PageActionEmiterTest.class,
-  ValidatorTest.class,
-  GwtContentScriptEmiterTest.class,
   ContentScriptEmiterTest.class,
   GwtContentScriptGeneratorTest.class,
+  GwtContentScriptEmiterTest.class,
   GwtContentScriptLinkerTest.class
 })
 public class TestSuite {
