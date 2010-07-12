@@ -25,6 +25,8 @@ public interface Emiter {
 	static final String CONTENTSCRIPT_USER_TYPE = "com.google.gwt.chrome.crx.client.ContentScript";
 	
 	static final String GWT_CONTENTSCRIPT_USER_TYPE = "com.google.gwt.chrome.crx.client.GwtContentScript";
+	
+	static final String GWT_CONTENTSCRIPT_ENTRYPOINT_USER_TYPE = "com.google.gwt.chrome.crx.client.GwtContentScriptEntryPoint";
 
 	/**
 	 * Abstract method to be implemented by {@link Emiter}s to support code <br/>
