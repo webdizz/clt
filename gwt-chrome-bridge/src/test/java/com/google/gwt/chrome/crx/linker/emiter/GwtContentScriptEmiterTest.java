@@ -38,6 +38,8 @@ public class GwtContentScriptEmiterTest {
 	@Mock
 	private GwtContentScript.ManifestInfo spec;
 
+	private static final String MODULE_NAME = "com.company.gwt.Module";
+
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
@@ -47,6 +49,7 @@ public class GwtContentScriptEmiterTest {
 		JPackage jpackage = mock(JPackage.class);
 		when(userType.getPackage()).thenReturn(jpackage);
 		when(userType.getAnnotation(GwtContentScript.ManifestInfo.class)).thenReturn(spec);
+		when(spec.module()).thenReturn(MODULE_NAME);
 	}
 
 	@Test(expected = UnableToCompleteException.class)
@@ -71,16 +74,21 @@ public class GwtContentScriptEmiterTest {
 		verify(spec).matches();
 		verify(spec).allFrames();
 		verify(spec).runAt();
+		verify(spec).module();
 	}
 
 	@Test
 	public void shouldCommitCreatedArtifact() throws UnableToCompleteException {
 		invokeCodeEmition();
-		String subclassName = userType.getQualifiedSourceName().replace(".", "_") + "_generated";
 		GwtContentScriptArtifact artifact;
-		artifact = new GwtContentScriptArtifact(subclassName, spec.matches(), spec.runAt(), spec.allFrames());
+		artifact = new GwtContentScriptArtifact(spec.module(), spec.matches(), spec.runAt(), spec.allFrames());
 
 		verify(context).commitArtifact(logger, artifact);
+	}
+
+	@Test
+	public void shouldLoadModuleDefByModuleName() throws UnableToCompleteException {
+		invokeCodeEmition();
 	}
 
 	protected void invokeCodeEmition() throws UnableToCompleteException {
