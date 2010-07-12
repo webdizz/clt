@@ -9,6 +9,8 @@ import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
+import com.google.gwt.dev.cfg.ModuleDef;
+import com.google.gwt.dev.cfg.ModuleDefLoader;
 
 /**
  * {@link GwtContentScriptEmiter} is responsible for creation of content script
@@ -37,9 +39,15 @@ public class GwtContentScriptEmiter extends AbstractEmiter {
 
 		validator.ensureAnnotatedWithManifest(spec);
 
-		String subclassName = createSubclassName(userType.getQualifiedSourceName());
+		String moduleName = spec.module();
+		ModuleDef moduleDef = ModuleDefLoader.loadFromClassPath(logger, moduleName);
+
+		if (null == moduleDef) {
+			logger.log(TreeLogger.ERROR, "Module was not loaded: " + moduleName);
+			throw new UnableToCompleteException();
+		}
 		GwtContentScriptArtifact artifact;
-		artifact = new GwtContentScriptArtifact(spec.module(), spec.matches(), spec.runAt(), spec.allFrames());
+		artifact = new GwtContentScriptArtifact(moduleDef.getName(), spec.matches(), spec.runAt(), spec.allFrames());
 		context.commitArtifact(logger, artifact);
 		return null;
 	}
