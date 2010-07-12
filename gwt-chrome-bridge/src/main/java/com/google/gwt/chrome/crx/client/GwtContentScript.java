@@ -56,6 +56,17 @@ public abstract class GwtContentScript implements Component {
 	public @interface ManifestInfo {
 
 		/**
+		 * Should refer to GWT module to be included as a ContentScript.<br/>
+		 * For example, if you have a module
+		 * <strong>com.company.gwt.Module</strong> you should specify
+		 * <strong>com.company.gwt.Module</strong> as a value for this
+		 * attribute.
+		 * 
+		 * @return module name
+		 */
+		String module();
+
+		/**
 		 * Controls the pages this content script will be injected into. See <a
 		 * href="http://code.google.com/chrome/extensions/match_patterns.html">
 		 * Match Patterns</a> for more details on the syntax of these strings.
