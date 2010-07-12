@@ -4,7 +4,6 @@
 package com.google.gwt.chrome.crx.linker.emiter;
 
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.junit.Before;
@@ -13,7 +12,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.google.gwt.chrome.crx.client.GwtContentScript;
-import com.google.gwt.chrome.crx.linker.artifact.GwtContentScriptArtifact;
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
@@ -38,7 +36,10 @@ public class GwtContentScriptEmiterTest {
 	@Mock
 	private GwtContentScript.ManifestInfo spec;
 
-	private static final String MODULE_NAME = "com.company.gwt.Module";
+	private static final String MODULE_NAME = "com.gwt.contentscript.GwtContentScriptModule";
+
+	// private static final String MODULE_NAME =
+	// "com.google.gwt.chrome.crx.Extension";
 
 	@Before
 	public void setUp() {
@@ -60,34 +61,17 @@ public class GwtContentScriptEmiterTest {
 		invokeCodeEmition();
 	}
 
-	@Test
-	public void shouldCallToCreateGeneratedClassname() throws UnableToCompleteException {
-		invokeCodeEmition();
+	@Test(expected = UnableToCompleteException.class)
+	public void shouldThrowUnableToCompleteExceptionIfModuleIsEmpty() throws UnableToCompleteException {
+		when(spec.module()).thenReturn("");
 
-		verify(userType).getQualifiedSourceName();
+		invokeCodeEmition();
 	}
 
-	@Test
-	public void shouldGatherArtifactAttributesFromSpec() throws UnableToCompleteException {
-		invokeCodeEmition();
+	@Test(expected = UnableToCompleteException.class)
+	public void shouldThrowUnableToCompleteExceptionIfModuleWasNotFound() throws UnableToCompleteException {
+		when(spec.module()).thenReturn(MODULE_NAME + "wrong_path");
 
-		verify(spec).matches();
-		verify(spec).allFrames();
-		verify(spec).runAt();
-		verify(spec).module();
-	}
-
-	@Test
-	public void shouldCommitCreatedArtifact() throws UnableToCompleteException {
-		invokeCodeEmition();
-		GwtContentScriptArtifact artifact;
-		artifact = new GwtContentScriptArtifact(spec.module(), spec.matches(), spec.runAt(), spec.allFrames());
-
-		verify(context).commitArtifact(logger, artifact);
-	}
-
-	@Test
-	public void shouldLoadModuleDefByModuleName() throws UnableToCompleteException {
 		invokeCodeEmition();
 	}
 
