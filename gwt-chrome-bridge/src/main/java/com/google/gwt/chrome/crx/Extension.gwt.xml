@@ -11,11 +11,11 @@
 		<when-type-assignable class="com.google.gwt.chrome.crx.client.Component" />
 	</generate-with>
 
-	<!-- Define generator for GwtContentScript -->
+	<!-- Define generator for GwtContentScript EntryPoint -->
 	<generate-with
 		class="com.google.gwt.chrome.crx.linker.GwtContentScriptGenerator">
 		<when-type-assignable
-			class="com.google.gwt.chrome.crx.client.GwtContentScript" />
+			class="com.google.gwt.chrome.crx.client.GwtContentScriptEntryPoint" />
 	</generate-with>
 
 	<!-- Define linker -->
