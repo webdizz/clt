@@ -47,9 +47,6 @@ public class GwtContentScriptLinker extends AbstractLinker {
 	public ArtifactSet link(TreeLogger logger, LinkerContext context, ArtifactSet artifacts)
 			throws UnableToCompleteException {
 		String scriptFileName = context.getModuleName() + ".js";
-		// find GwtContentScriptArtifacts
-		final SortedSet<GwtContentScriptArtifact> gwtContentScripts = artifacts.find(GwtContentScriptArtifact.class);
-		ensureModuleHasGwtContentScript(logger, gwtContentScripts);
 		final SortedSet<CompilationResult> compilations = artifacts.find(CompilationResult.class);
 		ensureOnlyOneCompilationResult(logger, compilations);
 		CompilationResult compilationResult = compilations.first();

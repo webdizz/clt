@@ -63,15 +63,6 @@ public class GwtContentScriptLinkerTest {
 	}
 
 	@Test(expected = UnableToCompleteException.class)
-	public void shouldThrowUnableToCompleteExceptionIfThereIsNoGwtContentScriptArtifact()
-			throws UnableToCompleteException {
-		artifacts.clear();
-		invokeLinker();
-
-		verify(context).getModuleName();
-	}
-
-	@Test(expected = UnableToCompleteException.class)
 	public void shouldThrowUnableToCompleteExceptionIfThereAreMoreThenOneCompilationUnit()
 			throws UnableToCompleteException {
 		StandardCompilationResult oneMorecompilationResult;
