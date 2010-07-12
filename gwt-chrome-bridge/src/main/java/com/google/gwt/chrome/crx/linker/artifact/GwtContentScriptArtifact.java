@@ -28,15 +28,15 @@ public class GwtContentScriptArtifact extends Artifact<GwtContentScriptArtifact>
 	private final boolean allFrames;
 	private final String runAt;
 	private final String[] matches;
-	private final String path;
+	private final String module;
 
-	public GwtContentScriptArtifact(final String path, final String[] matches, final String runAt,
+	public GwtContentScriptArtifact(final String module, final String[] matches, final String runAt,
 			final boolean allFrames) {
 		super(ExtensionLinker.class);
 		this.matches = matches;
 		this.runAt = runAt;
 		this.allFrames = allFrames;
-		this.path = path;
+		this.module = module;
 	}
 
 	public String getRunAt() {
@@ -52,18 +52,18 @@ public class GwtContentScriptArtifact extends Artifact<GwtContentScriptArtifact>
 	}
 
 	public String getPath() {
-		return path;
+		return module;
 	}
 
 	@Override
 	public int hashCode() {
-		return path.hashCode();
+		return module.hashCode();
 	}
 
 	@Override
 	protected int compareToComparableArtifact(GwtContentScriptArtifact o) {
 		assert o != null;
-		return path.compareTo(o.path);
+		return module.compareTo(o.module);
 	}
 
 	@Override
