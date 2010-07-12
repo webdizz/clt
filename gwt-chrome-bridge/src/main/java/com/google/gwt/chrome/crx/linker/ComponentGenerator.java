@@ -24,6 +24,7 @@ import com.google.gwt.chrome.crx.linker.emiter.Emiter;
 import com.google.gwt.chrome.crx.linker.emiter.ExtentionsScriptEmiter;
 import com.google.gwt.chrome.crx.linker.emiter.PageActionEmiter;
 import com.google.gwt.chrome.crx.linker.emiter.PageEmiter;
+import com.google.gwt.chrome.crx.linker.emiter.PluginEmiter;
 import com.google.gwt.chrome.crx.linker.emiter.ToolStripEmiter;
 import com.google.gwt.core.ext.Generator;
 import com.google.gwt.core.ext.GeneratorContext;
@@ -79,8 +80,7 @@ public class ComponentGenerator extends Generator {
 			} else if (classType.isAssignableTo(extensionScriptType)) {
 				return new ExtentionsScriptEmiter().emit(logger, context, classType, typeName);
 			} else if (classType.isAssignableTo(pluginType)) {
-				processPlugin(logger, context, classType, typeName);
-				return typeName;
+				return new PluginEmiter().emit(logger, context, classType, typeName);
 			} else if (classType.isAssignableTo(pageActionType)) {
 				return new PageActionEmiter().emit(logger, context, classType, typeName);
 			} else if (classType.isAssignableTo(browserActionType)) {
@@ -95,17 +95,7 @@ public class ComponentGenerator extends Generator {
 			throw new UnableToCompleteException();
 		}
 	}
-	
-	private static void processPlugin(TreeLogger logger, GeneratorContext context, JClassType userType, String typeName)
-			throws UnableToCompleteException {
-		Plugin.ManifestInfo spec = userType.getAnnotation(Plugin.ManifestInfo.class);
-		if (spec == null) {
-			logger.log(TreeLogger.ERROR, "Plugin (" + typeName + ") must be annotated with a Specificaiton.");
-			throw new UnableToCompleteException();
-		}
-		context.commitArtifact(logger, new PluginArtifact(spec.path(), spec.isPublic()));
-	}
-	
+		
 	@Override
 	public String generate(TreeLogger logger, GeneratorContext context, String typeName)
 			throws UnableToCompleteException {
