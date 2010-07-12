@@ -39,7 +39,7 @@ public class GwtContentScriptEmiter extends AbstractEmiter {
 
 		String subclassName = createSubclassName(userType.getQualifiedSourceName());
 		GwtContentScriptArtifact artifact;
-		artifact = new GwtContentScriptArtifact(subclassName, spec.matches(), spec.runAt(), spec.allFrames());
+		artifact = new GwtContentScriptArtifact(spec.module(), spec.matches(), spec.runAt(), spec.allFrames());
 		context.commitArtifact(logger, artifact);
 		return null;
 	}
