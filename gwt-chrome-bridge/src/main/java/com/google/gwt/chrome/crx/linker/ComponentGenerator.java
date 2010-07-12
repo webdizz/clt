@@ -28,6 +28,7 @@ import com.google.gwt.chrome.crx.linker.artifact.ToolStripArtifact;
 import com.google.gwt.chrome.crx.linker.emiter.BrowserActionEmiter;
 import com.google.gwt.chrome.crx.linker.emiter.ContentScriptEmiter;
 import com.google.gwt.chrome.crx.linker.emiter.Emiter;
+import com.google.gwt.chrome.crx.linker.emiter.GwtContentScriptEmiter;
 import com.google.gwt.chrome.crx.linker.emiter.PageActionEmiter;
 import com.google.gwt.core.ext.Generator;
 import com.google.gwt.core.ext.GeneratorContext;
@@ -68,6 +69,9 @@ public class ComponentGenerator extends Generator {
 		final JClassType contentScriptType = typeOracle.findType(Emiter.CONTENTSCRIPT_USER_TYPE);
 		assert contentScriptType != null;
 
+		final JClassType gwtContentScriptType = typeOracle.findType(Emiter.GWT_CONTENTSCRIPT_USER_TYPE);
+		assert gwtContentScriptType != null;
+
 		final JClassType extensionScriptType = typeOracle.findType(EXTSCRIPT_USER_TYPE);
 		assert extensionScriptType != null;
 
@@ -82,6 +86,9 @@ public class ComponentGenerator extends Generator {
 				return processPage(logger, context, classType);
 			} else if (classType.isAssignableTo(contentScriptType)) {
 				new ContentScriptEmiter().emit(logger, context, classType, typeName);
+				return typeName;
+			} else if (classType.isAssignableTo(gwtContentScriptType)) {
+				new GwtContentScriptEmiter().emit(logger, context, classType, typeName);
 				return typeName;
 			} else if (classType.isAssignableTo(extensionScriptType)) {
 				processExtensionScript(logger, context, classType, typeName);
