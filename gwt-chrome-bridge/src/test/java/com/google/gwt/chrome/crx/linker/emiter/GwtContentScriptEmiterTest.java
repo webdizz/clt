@@ -17,6 +17,7 @@ import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JPackage;
+import com.google.gwt.dev.cfg.ModuleDef;
 
 /**
  * @author webdizz
@@ -34,15 +35,18 @@ public class GwtContentScriptEmiterTest {
 	private JClassType userType;
 
 	@Mock
+	private GwtContentScriptEmiter.ModuleDefinitionLoader definitionLoader;
+
+	@Mock
 	private GwtContentScript.ManifestInfo spec;
+
+	@Mock
+	private ModuleDef moduleDef;
 
 	private static final String MODULE_NAME = "com.gwt.contentscript.GwtContentScriptModule";
 
-	// private static final String MODULE_NAME =
-	// "com.google.gwt.chrome.crx.Extension";
-
 	@Before
-	public void setUp() {
+	public void setUp() throws UnableToCompleteException {
 		MockitoAnnotations.initMocks(this);
 
 		when(userType.getSimpleSourceName()).thenReturn(Emiter.GWT_CONTENTSCRIPT_USER_TYPE);
@@ -51,6 +55,7 @@ public class GwtContentScriptEmiterTest {
 		when(userType.getPackage()).thenReturn(jpackage);
 		when(userType.getAnnotation(GwtContentScript.ManifestInfo.class)).thenReturn(spec);
 		when(spec.module()).thenReturn(MODULE_NAME);
+		when(definitionLoader.loadModule(logger, MODULE_NAME)).thenReturn(moduleDef);
 	}
 
 	@Test(expected = UnableToCompleteException.class)
@@ -75,8 +80,20 @@ public class GwtContentScriptEmiterTest {
 		invokeCodeEmition();
 	}
 
+	@Test(expected = UnableToCompleteException.class)
+	public void shouldThrowUnableToCompleteExceptionIfModuleWasNotLoaded() throws UnableToCompleteException {
+		when(definitionLoader.loadModule(logger, MODULE_NAME)).thenReturn(null);
+
+		invokeCodeEmition();
+	}
+
+	@Test(expected = UnableToCompleteException.class)
+	public void shouldThrowUnableToCompleteExceptionIfGeneratedFileCannotBeFined() throws UnableToCompleteException {
+		invokeCodeEmition();
+	}
+
 	protected void invokeCodeEmition() throws UnableToCompleteException {
-		Emiter emiter = new GwtContentScriptEmiter();
+		Emiter emiter = new GwtContentScriptEmiter(definitionLoader);
 		emiter.emit(logger, context, userType, Emiter.GWT_CONTENTSCRIPT_USER_TYPE);
 	}
 }
