@@ -24,6 +24,7 @@ public class BackgroundPage extends Extension {
 	public void onBackgroundPageLoad() {
 		GWT.create(TestableBrowserAction.class);
 		GWT.create(TestablePageAction.class);
+		GWT.create(SampleGwtContentScript.class);
 	}
 
 }

@@ -21,7 +21,8 @@ import com.google.gwt.chrome.crx.linker.artifact.PluginArtifact;
 import com.google.gwt.chrome.crx.linker.emiter.BrowserActionEmiter;
 import com.google.gwt.chrome.crx.linker.emiter.ContentScriptEmiter;
 import com.google.gwt.chrome.crx.linker.emiter.Emiter;
-import com.google.gwt.chrome.crx.linker.emiter.ExtentionsScriptEmiter;
+import com.google.gwt.chrome.crx.linker.emiter.GwtContentScriptEmiter;
+import com.google.gwt.chrome.crx.linker.emiter.ModuleDefinitionLoader;
 import com.google.gwt.chrome.crx.linker.emiter.PageActionEmiter;
 import com.google.gwt.chrome.crx.linker.emiter.PageEmiter;
 import com.google.gwt.chrome.crx.linker.emiter.PluginEmiter;
@@ -63,6 +64,9 @@ public class ComponentGenerator extends Generator {
 		final JClassType contentScriptType = typeOracle.findType(Emiter.CONTENTSCRIPT_USER_TYPE);
 		assert contentScriptType != null;
 
+		final JClassType gwtContentScriptType = typeOracle.findType(Emiter.GWT_CONTENTSCRIPT_USER_TYPE);
+		assert gwtContentScriptType != null;
+
 		final JClassType extensionScriptType = typeOracle.findType(EXTSCRIPT_USER_TYPE);
 		assert extensionScriptType != null;
 
@@ -77,6 +81,9 @@ public class ComponentGenerator extends Generator {
 				return new PageEmiter().emit(logger, context, classType, typeName);
 			} else if (classType.isAssignableTo(contentScriptType)) {
 				return new ContentScriptEmiter().emit(logger, context, classType, typeName);
+			} else if (classType.isAssignableTo(gwtContentScriptType)) {
+				return new GwtContentScriptEmiter(new ModuleDefinitionLoader()).emit(logger, context, classType,
+						typeName);
 			} else if (classType.isAssignableTo(extensionScriptType)) {
 				return new ExtentionsScriptEmiter().emit(logger, context, classType, typeName);
 			} else if (classType.isAssignableTo(pluginType)) {
