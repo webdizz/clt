@@ -18,7 +18,6 @@ import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.dev.cfg.ModuleDef;
-import com.google.gwt.dev.cfg.ModuleDefLoader;
 
 /**
  * {@link GwtContentScriptEmiter} is responsible for creation of content script
@@ -36,13 +35,6 @@ public class GwtContentScriptEmiter extends AbstractEmiter {
 
 	public GwtContentScriptEmiter(final ModuleDefinitionLoader loader) {
 		this.loader = loader;
-	}
-
-	public class ModuleDefinitionLoader {
-		public ModuleDef loadModule(TreeLogger logger, String moduleName) throws UnableToCompleteException {
-			ModuleDef moduleDef = ModuleDefLoader.loadFromClassPath(logger, moduleName);
-			return moduleDef;
-		}
 	}
 
 	/*
@@ -73,7 +65,7 @@ public class GwtContentScriptEmiter extends AbstractEmiter {
 		String moduleJavaScriptFile = moduleDef.getName() + ".js";
 		emitResource(logger, context, moduleDef, moduleJavaScriptFile);
 		emitScriptDef(logger, context, spec, moduleJavaScriptFile);
-		return null;
+		return typeName;
 	}
 
 	private void emitScriptDef(final TreeLogger logger, final GeneratorContext context,
