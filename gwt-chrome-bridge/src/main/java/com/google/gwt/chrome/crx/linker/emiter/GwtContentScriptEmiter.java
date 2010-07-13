@@ -4,6 +4,7 @@
 package com.google.gwt.chrome.crx.linker.emiter;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -81,6 +82,7 @@ public class GwtContentScriptEmiter extends AbstractEmiter {
 
 	private void emitModuleResources(final TreeLogger logger, final GeneratorContext context, final ModuleDef moduleDef)
 			throws UnableToCompleteException {
+		// TODO: (webdizz) Need to have more independent logic
 		URL path = Thread.currentThread().getContextClassLoader().getResource("./");
 		String moduleName = moduleDef.getName();
 		String pathToModule = null;
@@ -128,18 +130,26 @@ public class GwtContentScriptEmiter extends AbstractEmiter {
 		try {
 			BufferedReader reader;
 			reader = new BufferedReader(new FileReader(pathToFile));
-			StringBuffer contentBuffer = new StringBuffer();
-			String line = null;
+			ByteArrayOutputStream out = new ByteArrayOutputStream(4096);
 			try {
-				while ((line = reader.readLine()) != null) {
-					contentBuffer.append(line);
+				if (pathToFile.contains(".js")) {
+					out.write("$wnd=document.window;".getBytes());
+				}
+				boolean eof = false;
+				while (!eof) {
+					int input = reader.read();
+					if (input == -1) {
+						eof = true;
+						break;
+					}
+					out.write(input);
 				}
 			} finally {
 				reader.close();
 			}
-			if (contentBuffer.length() > 16) {
+			byte[] data = out.toByteArray();
+			if (data.length > 0) {
 				ContentScriptGeneratedResource resource;
-				byte[] data = contentBuffer.toString().getBytes();
 				resource = new ContentScriptGeneratedResource(GwtContentScriptGenerator.class, fileName, data);
 				resources.add(resource);
 			}
