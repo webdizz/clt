@@ -24,11 +24,12 @@ import com.google.gwt.chrome.crx.client.Extension;
 import com.google.gwt.chrome.crx.linker.artifact.BrowserActionArtifact;
 import com.google.gwt.chrome.crx.linker.artifact.ContentScriptArtifact;
 import com.google.gwt.chrome.crx.linker.artifact.ExtensionArtifact;
+import com.google.gwt.chrome.crx.linker.artifact.ExtensionArtifact.IconInfo;
 import com.google.gwt.chrome.crx.linker.artifact.ExtensionScriptArtifact;
+import com.google.gwt.chrome.crx.linker.artifact.GwtContentScriptArtifact;
 import com.google.gwt.chrome.crx.linker.artifact.PageActionArtifact;
 import com.google.gwt.chrome.crx.linker.artifact.PluginArtifact;
 import com.google.gwt.chrome.crx.linker.artifact.ToolStripArtifact;
-import com.google.gwt.chrome.crx.linker.artifact.ExtensionArtifact.IconInfo;
 import com.google.gwt.core.ext.LinkerContext;
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
@@ -56,7 +57,8 @@ public class ExtensionLinker extends AbstractLinker {
 		return newSet;
 	}
 
-	private static JsonValue createContentScriptsArray(SortedSet<ContentScriptArtifact> contentScripts) {
+	private static JsonValue createContentScriptsArray(SortedSet<ContentScriptArtifact> contentScripts,
+			SortedSet<GwtContentScriptArtifact> gwtContentScripts) {
 		final JsonArray array = JsonArray.create();
 		for (ContentScriptArtifact contentScript : contentScripts) {
 			JsonObject entry = JsonObject.create();
@@ -71,6 +73,21 @@ public class ExtensionLinker extends AbstractLinker {
 			entry.put("js", path);
 			entry.put("run_at", contentScript.getRunAt());
 			entry.put("all_frames", true);
+			array.add(entry);
+		}
+		for (GwtContentScriptArtifact contentScript : gwtContentScripts) {
+			JsonObject entry = JsonObject.create();
+			JsonArray whiteList = JsonArray.create();
+			String[] patterns = contentScript.getMatches();
+			for (String pattern : patterns) {
+				whiteList.add(pattern);
+			}
+			entry.put("matches", whiteList);
+			JsonArray path = JsonArray.create();
+			path.add(contentScript.getPath());
+			entry.put("js", path);
+			entry.put("run_at", contentScript.getRunAt());
+			entry.put("all_frames", contentScript.isAllFrames());
 			array.add(entry);
 		}
 		return array;
@@ -200,6 +217,8 @@ public class ExtensionLinker extends AbstractLinker {
 		// Retrieve the plugins.
 		final SortedSet<PluginArtifact> plugins = artifacts.find(PluginArtifact.class);
 
+		final SortedSet<GwtContentScriptArtifact> gwtContentScripts = artifacts.find(GwtContentScriptArtifact.class);
+
 		// Retrieve the compilation.
 		final CompilationResult compilation = findCompilation(logger, artifacts);
 
@@ -210,7 +229,8 @@ public class ExtensionLinker extends AbstractLinker {
 				emitString(
 						logger,
 						generateManifestContents(logger, backgroundPageFileName, extension, pageActions,
-								browserActions, toolStrips, contentScripts, plugins), "manifest.json"));
+								browserActions, toolStrips, contentScripts, plugins, gwtContentScripts),
+						"manifest.json"));
 	}
 
 	private JsonObject createBrowserAction(SortedSet<BrowserActionArtifact> browserActions) {
@@ -239,8 +259,8 @@ public class ExtensionLinker extends AbstractLinker {
 	private String generateManifestContents(TreeLogger logger, String backgroundPageFileName,
 			ExtensionArtifact extension, SortedSet<PageActionArtifact> pageActions,
 			SortedSet<BrowserActionArtifact> browserActions, SortedSet<ToolStripArtifact> toolStrips,
-			SortedSet<ContentScriptArtifact> contentScripts, SortedSet<PluginArtifact> plugins)
-			throws UnableToCompleteException {
+			SortedSet<ContentScriptArtifact> contentScripts, SortedSet<PluginArtifact> plugins,
+			SortedSet<GwtContentScriptArtifact> gwtContentScripts) throws UnableToCompleteException {
 		final JsonObject config = JsonObject.create();
 		config.put("name", extension.getName());
 		config.put("version", extension.getVersion());
@@ -259,8 +279,8 @@ public class ExtensionLinker extends AbstractLinker {
 		if (toolStrips.size() > 0) {
 			config.put("toolstrips", createToolStripsArray(toolStrips));
 		}
-		if (contentScripts.size() > 0) {
-			config.put("content_scripts", createContentScriptsArray(contentScripts));
+		if (!contentScripts.isEmpty() || !gwtContentScripts.isEmpty()) {
+			config.put("content_scripts", createContentScriptsArray(contentScripts, gwtContentScripts));
 		}
 		if (pageActions.size() > 0) {
 			config.put("page_actions", createPageActionsArray(pageActions));
