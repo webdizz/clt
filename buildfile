@@ -28,7 +28,7 @@ define "liner" do
 
   define "gwt-chrome-bridge" do
 	compile.with GWT
-	test.with 'org.mockito:mockito-all:jar:1.8.1', 'junit:junit:jar:4.8.1'
+	test.with 'org.mockito:mockito-all:jar:1.8.3', 'junit:junit:jar:4.8.1'
   end
 
   define "gwt-chrome-bridge-test" do
