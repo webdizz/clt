@@ -32,6 +32,19 @@ public class GwtContentScriptEmiter extends AbstractEmiter {
 
 	private static final String WEB_INF = "WEB-INF/";
 
+	private ModuleDefinitionLoader loader;
+
+	public GwtContentScriptEmiter(final ModuleDefinitionLoader loader) {
+		this.loader = loader;
+	}
+
+	public class ModuleDefinitionLoader {
+		public ModuleDef loadModule(TreeLogger logger, String moduleName) throws UnableToCompleteException {
+			ModuleDef moduleDef = ModuleDefLoader.loadFromClassPath(logger, moduleName);
+			return moduleDef;
+		}
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -41,8 +54,8 @@ public class GwtContentScriptEmiter extends AbstractEmiter {
 	 * com.google.gwt.core.ext.typeinfo.JClassType, java.lang.String)
 	 */
 	@Override
-	public String emit(TreeLogger logger, GeneratorContext context, JClassType userType, String typeName)
-			throws UnableToCompleteException {
+	public String emit(final TreeLogger logger, final GeneratorContext context, final JClassType userType,
+			final String typeName) throws UnableToCompleteException {
 		GwtContentScript.ManifestInfo spec = userType.getAnnotation(GwtContentScript.ManifestInfo.class);
 		Validator<GwtContentScript.ManifestInfo> validator;
 		validator = new Validator<GwtContentScript.ManifestInfo>(logger, GwtContentScript.class.getName(), typeName);
@@ -50,22 +63,27 @@ public class GwtContentScriptEmiter extends AbstractEmiter {
 		validator.ensureAnnotatedWithManifest(spec);
 
 		String moduleName = spec.module();
-		ModuleDef moduleDef = ModuleDefLoader.loadFromClassPath(logger, moduleName);
+		ModuleDef moduleDef = loader.loadModule(logger, moduleName);
 
 		if (null == moduleDef) {
 			logger.log(TreeLogger.ERROR, "Module was not loaded: " + moduleName);
 			throw new UnableToCompleteException();
 		}
-		GwtContentScriptArtifact artifact;
-		String moduleJavaScriptFile = moduleDef.getName() + ".js";
-		artifact = new GwtContentScriptArtifact(moduleJavaScriptFile, spec.matches(), spec.runAt(), spec.allFrames());
-		context.commitArtifact(logger, artifact);
-		emitResource(logger, context, moduleDef, moduleJavaScriptFile);
 
+		String moduleJavaScriptFile = moduleDef.getName() + ".js";
+		emitResource(logger, context, moduleDef, moduleJavaScriptFile);
+		emitScriptDef(logger, context, spec, moduleJavaScriptFile);
 		return null;
 	}
 
-	protected void emitResource(TreeLogger logger, GeneratorContext context, ModuleDef moduleDef,
+	private void emitScriptDef(final TreeLogger logger, final GeneratorContext context,
+			GwtContentScript.ManifestInfo spec, String moduleJavaScriptFile) throws UnableToCompleteException {
+		GwtContentScriptArtifact artifact;
+		artifact = new GwtContentScriptArtifact(moduleJavaScriptFile, spec.matches(), spec.runAt(), spec.allFrames());
+		context.commitArtifact(logger, artifact);
+	}
+
+	private void emitResource(final TreeLogger logger, final GeneratorContext context, final ModuleDef moduleDef,
 			String moduleJavaScriptFile) throws UnableToCompleteException {
 		URL path = Thread.currentThread().getContextClassLoader().getResource("./");
 		String pathToModule = null;
