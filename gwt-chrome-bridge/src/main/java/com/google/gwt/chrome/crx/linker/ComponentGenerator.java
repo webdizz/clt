@@ -16,11 +16,10 @@
 package com.google.gwt.chrome.crx.linker;
 
 import com.google.gwt.chrome.crx.client.Component;
-import com.google.gwt.chrome.crx.client.Plugin;
-import com.google.gwt.chrome.crx.linker.artifact.PluginArtifact;
 import com.google.gwt.chrome.crx.linker.emiter.BrowserActionEmiter;
 import com.google.gwt.chrome.crx.linker.emiter.ContentScriptEmiter;
 import com.google.gwt.chrome.crx.linker.emiter.Emiter;
+import com.google.gwt.chrome.crx.linker.emiter.ExtentionsScriptEmiter;
 import com.google.gwt.chrome.crx.linker.emiter.GwtContentScriptEmiter;
 import com.google.gwt.chrome.crx.linker.emiter.ModuleDefinitionLoader;
 import com.google.gwt.chrome.crx.linker.emiter.PageActionEmiter;
@@ -102,7 +101,7 @@ public class ComponentGenerator extends Generator {
 			throw new UnableToCompleteException();
 		}
 	}
-		
+
 	@Override
 	public String generate(TreeLogger logger, GeneratorContext context, String typeName)
 			throws UnableToCompleteException {
