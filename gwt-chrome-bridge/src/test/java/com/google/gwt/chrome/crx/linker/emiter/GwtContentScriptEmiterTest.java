@@ -35,7 +35,7 @@ public class GwtContentScriptEmiterTest {
 	private JClassType userType;
 
 	@Mock
-	private GwtContentScriptEmiter.ModuleDefinitionLoader definitionLoader;
+	private ModuleDefinitionLoader definitionLoader;
 
 	@Mock
 	private GwtContentScript.ManifestInfo spec;
