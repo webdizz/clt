@@ -40,6 +40,7 @@ public class BackgroundPage extends Extension {
 		GWT.create(JsonProvider.class);
 		GWT.create(LanguageApiProvider.class);
 		GWT.create(ExtensionInitializer.class);
+		GWT.create(ContentScriptInitialzer.class);
 
 		// init MVP
 		Mvp4gModule module = GWT.create(Mvp4gModule.class);
