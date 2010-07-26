@@ -41,7 +41,6 @@ public abstract class ViewComponent implements Component {
 												};
 												}-*/;
 
-	@SuppressWarnings("unused")
 	private void connectImpl(View view) {
 		this.view = view.cast();
 		onLoad();
