@@ -22,5 +22,15 @@ public abstract class GwtContentScriptEntryPoint implements EntryPoint {
 		onScriptLoad();
 	}
 
-	// TODO: add abilities to connect to other processes from script
+	/**
+	 * Attempts to connect to extension using specified connection name.
+	 * 
+	 * @param connectionName
+	 *            the connection name
+	 * @return {@link Port} through which messages can be sent and received with
+	 *         the extension
+	 */
+	protected Port connect(final String connectionName) {
+		return Chrome.getExtension().connect(connectionName);
+	}
 }
