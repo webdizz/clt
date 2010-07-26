@@ -132,9 +132,6 @@ public class GwtContentScriptEmiter extends AbstractEmiter {
 			reader = new BufferedReader(new FileReader(pathToFile));
 			ByteArrayOutputStream out = new ByteArrayOutputStream(4096);
 			try {
-				if (pathToFile.contains(".js")) {
-					out.write("$wnd=document.window;".getBytes());
-				}
 				boolean eof = false;
 				while (!eof) {
 					int input = reader.read();
