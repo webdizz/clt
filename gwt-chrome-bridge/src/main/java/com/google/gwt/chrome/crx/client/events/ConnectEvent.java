@@ -44,7 +44,6 @@ public final class ConnectEvent extends Event {
 	 * @param port
 	 *            argument from the callback.
 	 */
-	@SuppressWarnings("unused")
 	private static void onConnectImpl(Listener listener, Port port) {
 		UncaughtExceptionHandler ueh = GWT.getUncaughtExceptionHandler();
 		if (ueh != null) {
