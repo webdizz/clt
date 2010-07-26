@@ -3,10 +3,11 @@
  */
 package name.webdizz.clt.crx.client.contentscript.client;
 
+import name.webdizz.clt.crx.client.event.message.SelectTextMessage;
+
+import com.google.gwt.chrome.crx.client.Chrome;
 import com.google.gwt.chrome.crx.client.GwtContentScriptEntryPoint;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.chrome.crx.client.Port;
 
 /**
  * @author webdizz
@@ -23,7 +24,9 @@ public class ContentScriptEntryPoint extends GwtContentScriptEntryPoint {
 	 */
 	@Override
 	public void onScriptLoad() {
-		Window.alert("Hello from GwtContentScript");
+		Port port = Chrome.getExtension().connect("from_gwt_content_script");
+		SelectTextMessage msg = SelectTextMessage.create("sample word", new String[]{"Ctrl"}); 
+		port.postMessage(msg);
 	}
 
 }
