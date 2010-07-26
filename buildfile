@@ -7,9 +7,10 @@ COPYRIGHT = ""
 
 # Specify Maven 2.0 remote repositories here, like this:
 repositories.remote << "http://localhost:8081/nexus/content/groups/public/"
+Buildr.application.settings.build[:expire_time] = 0
 
 GWT_GROUP = 'com.google.gwt'
-GWT_VERSION = '2.0.3'
+GWT_VERSION = '2.0.4'
 GWT = [
 	"#{GWT_GROUP}:gwt-dev:jar:#{GWT_VERSION}",
 	"#{GWT_GROUP}:gwt-servlet:jar:#{GWT_VERSION}",
@@ -28,7 +29,7 @@ define "liner" do
 
   define "gwt-chrome-bridge" do
 	compile.with GWT
-	test.with 'org.mockito:mockito-all:jar:1.8.3', 'junit:junit:jar:4.8.1'
+	test.with 'org.mockito:mockito-all:jar:1.8.3', 'junit:junit:jar:4.8.2'
 	package :jar
   end
 
