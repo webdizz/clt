@@ -88,8 +88,8 @@ public class Chrome extends JavaScriptObject {
 	 * extension's background page). This is primarily useful for content
 	 * scripts connecting to their extension processes. Extensions may connect
 	 * to content scripts embedded in tabs via <a href=
-	 * "http://code.google.com/chrome/extensions/tabs.html#method-connect"
-	 * >chrome.tabs.connect()</a>.
+	 * "http://code.google.com/chrome/extensions/extension.html#method-connect"
+	 * >chrome.extension.connect()</a>.
 	 * 
 	 * @return {@link Port} through which messages can be sent and received with
 	 *         the extension.
@@ -97,5 +97,19 @@ public class Chrome extends JavaScriptObject {
 	public final native Port connect() /*-{
 										return this.connect();
 										}-*/;
+
+	/**
+	 * This method attempts to connect to other listeners within extension but
+	 * with proper connection name, that will be passed into onConnect for
+	 * extension processes that are listening for the connection event.
+	 * 
+	 * @param connectionName
+	 *            the connection name to be passed to connection listener
+	 * @return {@link Port} through which messages can be sent and received with
+	 *         the extension.
+	 */
+	public final native Port connect(String connectionName) /*-{
+															return this.connect({name:connectionName});
+															}-*/;
 
 }
