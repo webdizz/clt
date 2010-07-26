@@ -6,7 +6,6 @@ package com.google.gwt.chrome.crx.linker;
 import java.util.SortedSet;
 
 import com.google.gwt.chrome.crx.client.GwtContentScript;
-import com.google.gwt.chrome.crx.linker.artifact.GwtContentScriptArtifact;
 import com.google.gwt.core.ext.LinkerContext;
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
@@ -52,14 +51,24 @@ public class GwtContentScriptLinker extends AbstractLinker {
 		CompilationResult compilationResult = compilations.first();
 		String javascript = compilationResult.getJavaScript()[0];
 		ensureJavaScriptPresent(logger, javascript);
-		StringBuffer contentScript = new StringBuffer(javascript.length() + 16);
-		contentScript.append(javascript);
+		String contentScript = enhanceJavaScript(javascript);
 		ArtifactSet resultArtifactSet = new ArtifactSet(artifacts);
-		resultArtifactSet.add(emitString(logger, contentScript.toString(), scriptFileName));
+		resultArtifactSet.add(emitString(logger, contentScript, scriptFileName));
 		return resultArtifactSet;
 	}
 
-	protected void ensureJavaScriptPresent(TreeLogger logger, String javascript) throws UnableToCompleteException {
+	private String enhanceJavaScript(final String javascript) {
+		StringBuffer contentScript = new StringBuffer(javascript.length() + 16);
+		contentScript.append("(function() {\n");
+		contentScript.append("$wnd=window,");
+		contentScript.append("$doc=document,");
+		contentScript.append("$stats=$wnd.__gwtStatsEvent ? function(a) {return $wnd.__gwtStatsEvent(a);}:null;\n");
+		contentScript.append(javascript);
+		contentScript.append("gwtOnLoad();\n}());");
+		return contentScript.toString();
+	}
+
+	private void ensureJavaScriptPresent(TreeLogger logger, String javascript) throws UnableToCompleteException {
 		if (null == javascript || (null != javascript && javascript.length() < 1)) {
 			logger.log(TreeLogger.ERROR,
 					"JavaScript is empty, please provide some code or remove GwtContentScript definition.");
@@ -67,19 +76,11 @@ public class GwtContentScriptLinker extends AbstractLinker {
 		}
 	}
 
-	protected void ensureOnlyOneCompilationResult(TreeLogger logger, final SortedSet<CompilationResult> compilations)
+	private void ensureOnlyOneCompilationResult(TreeLogger logger, final SortedSet<CompilationResult> compilations)
 			throws UnableToCompleteException {
 		if (compilations.size() > 1) {
 			logger.log(TreeLogger.ERROR,
 					"One permutation per module, please. Seriously, you changed something you weren't supposed to.");
-			throw new UnableToCompleteException();
-		}
-	}
-
-	protected void ensureModuleHasGwtContentScript(TreeLogger logger,
-			final SortedSet<GwtContentScriptArtifact> gwtContentScripts) throws UnableToCompleteException {
-		if (gwtContentScripts.isEmpty()) {
-			logger.log(TreeLogger.ERROR, "There is no GwtContentScript, please provide atleast one.");
 			throw new UnableToCompleteException();
 		}
 	}
