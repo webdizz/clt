@@ -4,6 +4,7 @@
 package name.webdizz.clt.crx.client.contentscript.client;
 
 import com.google.gwt.chrome.crx.client.GwtContentScriptEntryPoint;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 
@@ -22,7 +23,7 @@ public class ContentScriptEntryPoint extends GwtContentScriptEntryPoint {
 	 */
 	@Override
 	public void onScriptLoad() {
-		RootPanel.get().add(new Label("Some label"));
+		Window.alert("Hello from GwtContentScript");
 	}
 
 }
