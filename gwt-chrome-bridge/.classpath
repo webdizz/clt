@@ -1,17 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-  <classpathentry kind="src" excluding="**/.svn/|**/CVS/" path="src/main/java"/>
-  <classpathentry kind="src" excluding="**/.svn/|**/CVS/" output="target/test/classes" path="src/test/java"/>
-  <classpathentry kind="output" path="target/classes"/>
-  <classpathentry kind="var" sourcepath="M2_REPO/org/mockito/mockito-all/1.8.3/mockito-all-1.8.3-sources.jar" path="M2_REPO/org/mockito/mockito-all/1.8.3/mockito-all-1.8.3.jar"/>
-  <classpathentry kind="var" sourcepath="M2_REPO/junit/junit/4.8.2/junit-4.8.2-sources.jar" path="M2_REPO/junit/junit/4.8.2/junit-4.8.2.jar"/>
-  <classpathentry kind="var" sourcepath="M2_REPO/com/google/gwt/gwt-dev/2.0.4/gwt-dev-2.0.4-sources.jar" path="M2_REPO/com/google/gwt/gwt-dev/2.0.4/gwt-dev-2.0.4.jar"/>
-  <classpathentry kind="var" sourcepath="M2_REPO/com/google/gwt/gwt-servlet/2.0.4/gwt-servlet-2.0.4-sources.jar" path="M2_REPO/com/google/gwt/gwt-servlet/2.0.4/gwt-servlet-2.0.4.jar"/>
-  <classpathentry kind="var" sourcepath="M2_REPO/com/google/gwt/gwt-user/2.0.4/gwt-user-2.0.4-sources.jar" path="M2_REPO/com/google/gwt/gwt-user/2.0.4/gwt-user-2.0.4.jar"/>
-  <classpathentry kind="var" sourcepath="M2_REPO/org/apache/activemq/activeio-core/3.2-SNAPSHOT/activeio-core-3.2-SNAPSHOT-sources.jar" path="M2_REPO/org/apache/activemq/activeio-core/3.2-SNAPSHOT/activeio-core-3.2-SNAPSHOT.jar"/>
-  <classpathentry kind="var" sourcepath="M2_REPO/junit/junit/4.7/junit-4.7-sources.jar" path="M2_REPO/junit/junit/4.7/junit-4.7.jar"/>
-  <classpathentry kind="var" sourcepath="M2_REPO/org/jmock/jmock/2.5.1/jmock-2.5.1-sources.jar" path="M2_REPO/org/jmock/jmock/2.5.1/jmock-2.5.1.jar"/>
-  <classpathentry kind="var" sourcepath="M2_REPO/org/jmock/jmock-junit4/2.5.1/jmock-junit4-2.5.1-sources.jar" path="M2_REPO/org/jmock/jmock-junit4/2.5.1/jmock-junit4-2.5.1.jar"/>
-  <classpathentry kind="var" sourcepath="M2_REPO/org/hamcrest/hamcrest-core/1.1/hamcrest-core-1.1-sources.jar" path="M2_REPO/org/hamcrest/hamcrest-core/1.1/hamcrest-core-1.1.jar"/>
-  <classpathentry kind="var" sourcepath="M2_REPO/org/hamcrest/hamcrest-library/1.1/hamcrest-library-1.1-sources.jar" path="M2_REPO/org/hamcrest/hamcrest-library/1.1/hamcrest-library-1.1.jar"/>
-  <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry excluding="**/.svn/|**/CVS/" kind="src" path="src/main/java"/>
+	<classpathentry excluding="**/.svn/|**/CVS/" kind="src" output="target/test/classes" path="src/test/java"/>
+	<classpathentry kind="var" path="M2_REPO/org/mockito/mockito-all/1.8.3/mockito-all-1.8.3.jar" sourcepath="M2_REPO/org/mockito/mockito-all/1.8.3/mockito-all-1.8.3-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/junit/junit/4.8.2/junit-4.8.2.jar" sourcepath="M2_REPO/junit/junit/4.8.2/junit-4.8.2-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/com/google/gwt/gwt-dev/2.0.4/gwt-dev-2.0.4.jar" sourcepath="M2_REPO/com/google/gwt/gwt-dev/2.0.4/gwt-dev-2.0.4-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/com/google/gwt/gwt-servlet/2.0.4/gwt-servlet-2.0.4.jar" sourcepath="M2_REPO/com/google/gwt/gwt-servlet/2.0.4/gwt-servlet-2.0.4-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/com/google/gwt/gwt-user/2.0.4/gwt-user-2.0.4.jar" sourcepath="M2_REPO/com/google/gwt/gwt-user/2.0.4/gwt-user-2.0.4-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/junit/junit/4.7/junit-4.7.jar" sourcepath="M2_REPO/junit/junit/4.7/junit-4.7-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/jmock/jmock/2.5.1/jmock-2.5.1.jar" sourcepath="M2_REPO/org/jmock/jmock/2.5.1/jmock-2.5.1-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/jmock/jmock-junit4/2.5.1/jmock-junit4-2.5.1.jar" sourcepath="M2_REPO/org/jmock/jmock-junit4/2.5.1/jmock-junit4-2.5.1-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/hamcrest/hamcrest-core/1.1/hamcrest-core-1.1.jar" sourcepath="M2_REPO/org/hamcrest/hamcrest-core/1.1/hamcrest-core-1.1-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/hamcrest/hamcrest-library/1.1/hamcrest-library-1.1.jar" sourcepath="M2_REPO/org/hamcrest/hamcrest-library/1.1/hamcrest-library-1.1-sources.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="target/classes"/>
 </classpath>
