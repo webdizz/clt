@@ -21,7 +21,7 @@
 </listAttribute>
 <booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="false"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="com.google.gwt.dev.Compiler"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-ea -logLevel INFO -style PRETTY -war /home/webdizz/.dev/projects/clt/clt/clt-crx/war name.webdizz.clt.crx.client.contentscript.ContentScript name.webdizz.clt.crx.ExtensionDebug"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-ea -logLevel INFO -style PRETTY -war ${workspace_loc:clt-crx}/war name.webdizz.clt.crx.client.contentscript.ContentScript name.webdizz.clt.crx.ExtensionDebug"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="clt-crx"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx512m"/>
 </launchConfiguration>
