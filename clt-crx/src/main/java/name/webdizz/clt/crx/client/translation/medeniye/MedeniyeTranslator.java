@@ -17,6 +17,12 @@ public class MedeniyeTranslator implements Translator {
 
 	private MedeniyeRequestBuilder requestBuilder;
 
+	/**
+	 * Creates translator for Medeniye.org dictionary.
+	 * 
+	 * @param builder
+	 *            the {@link MedeniyeRequestBuilder}
+	 */
 	public MedeniyeTranslator(final MedeniyeRequestBuilder builder) {
 		requestBuilder = builder;
 	}
