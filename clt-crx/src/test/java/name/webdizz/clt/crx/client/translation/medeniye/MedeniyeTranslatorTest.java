@@ -5,6 +5,7 @@ package name.webdizz.clt.crx.client.translation.medeniye;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import name.webdizz.clt.crx.client.translation.TranslationException;
@@ -16,6 +17,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
+import com.google.gwt.http.client.RequestException;
 
 /**
  * @author webdizz
@@ -63,6 +66,13 @@ public class MedeniyeTranslatorTest {
 		translator.translate("word", handler);
 
 		verify(builder).send("word=word", handler);
+	}
+
+	@Test(expected = TranslationException.class)
+	public void shouldHandleRequestException() throws Exception {
+		TranslationHandler handler = mock(TranslationHandler.class);
+		when(builder.send("word=word", handler)).thenThrow(new RequestException());
+		translator.translate("word", handler);
 	}
 
 }
