@@ -30,8 +30,7 @@ public class MedeniyeRequestBuilder {
 
 		public void onResponseReceived(final Request request, final Response response) {
 			String translationHtmlText = response.getText();
-			TranslationResult translationResult = new TranslationResult();
-			translationResult.setDest(translationHtmlText);
+			TranslationResult translationResult = new TranslationResultCreator().parse(translationHtmlText);
 			handler.onTranslate(translationResult);
 		}
 

@@ -26,6 +26,12 @@ import com.google.gwt.http.client.Response;
  */
 public class MedeniyeRequestBuilderTest {
 
+	private static final String RESPONSE_WITH_TRANS = "<dl>"
+			+ "<div>Crimean Tatar - Russian</div>"
+			+ "<dt><b>cik</b></dt>"
+			+ "<dd style=\"margin:0 0 0 .5em\"><div style=\"\">1) пробор</div><div style=\"margin-left:.5em;color:#666;\">doğru cik - прямой пробор (посередине)</div><div style=\"margin-left:.5em;color:#666;\">qıya cik - косой пробор (боковой)</div>"
+			+ "<div style=\"\">2) мн. стрелки на брюках</div></dd>" + "</dl>";
+
 	private MedeniyeRequestBuilder medeniyeRequestBuilder;
 
 	@Mock
@@ -58,11 +64,10 @@ public class MedeniyeRequestBuilderTest {
 		RequestBuilder requestBuilder = new JustCallOnResponseReceivedRequestBuilder("URL");
 		medeniyeRequestBuilder.setRequestBuilder(requestBuilder);
 
-		when(response.getText()).thenReturn("translated");
+		when(response.getText()).thenReturn(RESPONSE_WITH_TRANS);
 
 		medeniyeRequestBuilder.send("some data", handler);
-		TranslationResult result = new TranslationResult();
-		result.setDest("translated");
+		TranslationResult result = new TranslationResultCreator().parse(RESPONSE_WITH_TRANS);
 		verify(handler).onTranslate(result);
 	}
 
