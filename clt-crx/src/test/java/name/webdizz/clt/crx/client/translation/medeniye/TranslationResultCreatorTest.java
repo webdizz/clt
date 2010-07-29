@@ -7,8 +7,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
+
+import java.util.List;
+
 import name.webdizz.clt.crx.client.translation.Language;
 import name.webdizz.clt.crx.client.translation.TranslationResult;
+import name.webdizz.clt.crx.client.translation.TranslationResult.Translation;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -113,7 +118,14 @@ public class TranslationResultCreatorTest {
 	@Test
 	public void shouldHandleResponseWithTranslation() {
 		TranslationResult result = creator.parse(RESPONSE_RU2CT);
-		assertTrue("Unable to find translations", result.getTranslations().size() == 1);
+		assertTrue("Unable to find translation", result.getTranslations().size() == 1);
+	}
+
+	@Test
+	public void shouldResolveTranslationExplanationIfExists() {
+		TranslationResult result = creator.parse(RESPONSE_WITH_TRANS);
+		List<Translation> list = result.getTranslations();
+		assertFalse("Unable to find translation explanations", list.get(0).getExplanations().isEmpty());
 	}
 
 }
