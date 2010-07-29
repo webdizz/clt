@@ -5,6 +5,8 @@ package name.webdizz.clt.crx.client.translation.medeniye;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import name.webdizz.clt.crx.client.translation.Language;
 import name.webdizz.clt.crx.client.translation.TranslationResult;
 
@@ -27,6 +29,15 @@ public class TranslationResultCreatorTest {
 			+ "<div style=\"font-size:xx-small;\">Crimean Tatar - Russian</div>" + "<dt><b>ğaye</b></dt>"
 			+ "<dd style=\"margin:0 0 0 .5em\"><div style=\"\">идея</div><div style=\"\">ср. mefküre</div></dd>"
 			+ "</dl>";
+
+	private static final String RESPONSE_WITH_NO_TRANS = "<dl style=\"margin:0 0 1em 0\">"
+			+ "<div style=\"font-size:xx-small;\">Crimean Tatar - Russian</div>" + "<dt><b>ğaye</b></dt>" + "</dl>";
+
+	private static final String RESPONSE_WITH_TRANS = "<dl>"
+			+ "<div>Crimean Tatar - Russian</div>"
+			+ "<dt><b>cik</b></dt>"
+			+ "<dd style=\"margin:0 0 0 .5em\"><div style=\"\">1) пробор</div><div style=\"margin-left:.5em;color:#666;\">doğru cik - прямой пробор (посередине)</div><div style=\"margin-left:.5em;color:#666;\">qıya cik - косой пробор (боковой)</div>"
+			+ "<div style=\"\">2) мн. стрелки на брюках</div></dd>" + "</dl>";
 
 	@Before
 	public void setUp() {
@@ -68,4 +79,41 @@ public class TranslationResultCreatorTest {
 		TranslationResult result = creator.parse(RESPONSE_CT2R);
 		assertEquals("Unable to resolve source word", "ğaye", result.getSrc());
 	}
+
+	@Test
+	public void shouldResolveTranslations() {
+		TranslationResult result = creator.parse(RESPONSE_CT2R);
+		assertNotNull("Unable to resolve translations", result.getTranslations());
+	}
+
+	@Test
+	public void shouldHandleResponseAbsence() {
+		TranslationResult result = creator.parse("");
+		assertNull("We do not want to have ", result);
+	}
+
+	@Test
+	public void shouldHandleWordNotFound() {
+		TranslationResult result = creator.parse("Word not found");
+		assertTrue("We've found out something in the word not found", result.isEmpty());
+	}
+
+	@Test
+	public void shouldHandleResponseWithoutTranslations() {
+		TranslationResult result = creator.parse(RESPONSE_WITH_NO_TRANS);
+		assertTrue("We've found out something in the response without translations", result.isEmpty());
+	}
+
+	@Test
+	public void shouldHandleResponseWithSeveralTranslations() {
+		TranslationResult result = creator.parse(RESPONSE_WITH_TRANS);
+		assertTrue("Unable to find translations", result.getTranslations().size() > 1);
+	}
+
+	@Test
+	public void shouldHandleResponseWithTranslation() {
+		TranslationResult result = creator.parse(RESPONSE_RU2CT);
+		assertTrue("Unable to find translations", result.getTranslations().size() == 1);
+	}
+
 }

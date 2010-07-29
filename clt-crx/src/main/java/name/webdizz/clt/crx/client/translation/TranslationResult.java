@@ -3,16 +3,58 @@
  */
 package name.webdizz.clt.crx.client.translation;
 
+import java.util.List;
+
 /**
  * @author webdizz
  * 
  */
 public class TranslationResult {
 
+	/**
+	 * @author webdizz
+	 * 
+	 */
+	public class Translation {
+		private String translation;
+		private List<Explanation> explanations;
+
+		public String getTranslation() {
+			return translation;
+		}
+
+		public void setTranslation(String translation) {
+			this.translation = translation;
+		}
+
+		public List<Explanation> getExplanations() {
+			return explanations;
+		}
+
+		public void setExplanations(List<Explanation> explanations) {
+			this.explanations = explanations;
+		}
+
+	}
+
+	public class Explanation {
+		private String explanation;
+
+		public String getExplanation() {
+			return explanation;
+		}
+
+		public void setExplanation(String explanation) {
+			this.explanation = explanation;
+		}
+
+	}
+
 	private String src;
 	private String dest;
 	private String srcLang;
 	private String destLang;
+	private List<Translation> translations;
 
 	/**
 	 * @return the src
@@ -72,6 +114,30 @@ public class TranslationResult {
 	 */
 	public void setDestLang(String destLang) {
 		this.destLang = destLang;
+	}
+
+	/**
+	 * @return the translations
+	 */
+	public List<Translation> getTranslations() {
+		return translations;
+	}
+
+	/**
+	 * @param translations
+	 *            the translations to set
+	 */
+	public void setTranslations(List<Translation> translations) {
+		this.translations = translations;
+	}
+
+	/**
+	 * Checks whether result has translation or no.
+	 * 
+	 * @return true if result does not contain translations, false otherwise
+	 */
+	public boolean isEmpty() {
+		return null == dest || null == translations || translations.isEmpty();
 	}
 
 	/*
