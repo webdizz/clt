@@ -5,8 +5,12 @@ VERSION_NUMBER = "0.0.1-SNAPSHOT"
 GROUP = "name.webdizz.liner"
 COPYRIGHT = ""
 
-# Specify Maven 2.0 remote repositories here, like this:
-repositories.remote << "http://localhost:8081/nexus/content/groups/public/"
+#Define following in the ~/username/.buildr/settings.yaml
+#repositories:
+#  remote:
+#    - http://nexus:8081/nexus/content/groups/public/
+#
+# SNAPSHOT expiration time
 Buildr.application.settings.build[:expire_time] = 0
 
 GWT_GROUP = 'com.google.gwt'
