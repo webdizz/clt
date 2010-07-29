@@ -14,7 +14,15 @@ GWT_VERSION = '2.0.4'
 GWT = [
 	"#{GWT_GROUP}:gwt-dev:jar:#{GWT_VERSION}",
 	"#{GWT_GROUP}:gwt-servlet:jar:#{GWT_VERSION}",
-	"#{GWT_GROUP}:gwt-user:jar:#{GWT_VERSION}"
+	"#{GWT_GROUP}:gwt-user:jar:#{GWT_VERSION}",
+        'com.googlecode.mvp4g:mvp4g:jar:1.1.0',
+        'com.google.gwt.google-apis:gwt-language:jar:1.1.0',
+        'com.googlecode.gwt-mobile-webkit:htnl5-database:jar:1.5.1'
+]
+
+TEST = [
+	'org.mockito:mockito-all:jar:1.8.3',
+	'junit:junit:jar:4.8.2'
 ]
 
 desc "The Clt project"
@@ -25,11 +33,13 @@ define "liner" do
   manifest["Implementation-Vendor"] = COPYRIGHT
 
   define "clt-crx" do
+	compile.with GWT, project('gwt-chrome-bridge')
+    	test.with TEST
   end
 
   define "gwt-chrome-bridge" do
 	compile.with GWT
-	test.with 'org.mockito:mockito-all:jar:1.8.3', 'junit:junit:jar:4.8.2'
+	test.with TEST
 	package :jar
   end
 
