@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src/main/java"/>
-	<classpathentry kind="src" path="src/main/resources"/>
-	<classpathentry kind="src" path="src/test/java"/>
-	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
+	<classpathentry excluding="**/.svn/|**/CVS/" kind="src" path="src/main/java"/>
+	<classpathentry excluding="**/.svn/|**/CVS/" kind="src" output="target/resources" path="src/main/resources"/>
+	<classpathentry excluding="**/.svn/|**/CVS/" kind="src" output="target/test/classes" path="src/test/java"/>
+	<classpathentry kind="var" path="M2_REPO/org/mockito/mockito-all/1.8.3/mockito-all-1.8.3.jar" sourcepath="M2_REPO/org/mockito/mockito-all/1.8.3/mockito-all-1.8.3-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/junit/junit/4.8.2/junit-4.8.2.jar" sourcepath="M2_REPO/junit/junit/4.8.2/junit-4.8.2-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/com/google/gwt/gwt-dev/2.0.4/gwt-dev-2.0.4.jar" sourcepath="M2_REPO/com/google/gwt/gwt-dev/2.0.4/gwt-dev-2.0.4-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/com/google/gwt/gwt-servlet/2.0.4/gwt-servlet-2.0.4.jar" sourcepath="M2_REPO/com/google/gwt/gwt-servlet/2.0.4/gwt-servlet-2.0.4-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/com/google/gwt/gwt-user/2.0.4/gwt-user-2.0.4.jar" sourcepath="M2_REPO/com/google/gwt/gwt-user/2.0.4/gwt-user-2.0.4-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/com/googlecode/mvp4g/mvp4g/1.1.0/mvp4g-1.1.0.jar" sourcepath="M2_REPO/com/googlecode/mvp4g/mvp4g/1.1.0/mvp4g-1.1.0-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/com/google/gwt/google-apis/gwt-language/1.1.0/gwt-language-1.1.0.jar" sourcepath="M2_REPO/com/google/gwt/google-apis/gwt-language/1.1.0/gwt-language-1.1.0-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/com/googlecode/gwt-mobile-webkit/htnl5-database/1.5.1/htnl5-database-1.5.1.jar" sourcepath="M2_REPO/com/googlecode/gwt-mobile-webkit/htnl5-database/1.5.1/htnl5-database-1.5.1-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/junit/junit/4.7/junit-4.7.jar" sourcepath="M2_REPO/junit/junit/4.7/junit-4.7-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/jmock/jmock/2.5.1/jmock-2.5.1.jar" sourcepath="M2_REPO/org/jmock/jmock/2.5.1/jmock-2.5.1-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/jmock/jmock-junit4/2.5.1/jmock-junit4-2.5.1.jar" sourcepath="M2_REPO/org/jmock/jmock-junit4/2.5.1/jmock-junit4-2.5.1-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/hamcrest/hamcrest-core/1.1/hamcrest-core-1.1.jar" sourcepath="M2_REPO/org/hamcrest/hamcrest-core/1.1/hamcrest-core-1.1-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/hamcrest/hamcrest-library/1.1/hamcrest-library-1.1.jar" sourcepath="M2_REPO/org/hamcrest/hamcrest-library/1.1/hamcrest-library-1.1-sources.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/gwt-language.jar"/>
-	<classpathentry kind="lib" path="lib/commons-configuration-1.6.jar"/>
-	<classpathentry kind="lib" path="lib/commons-lang-2.4.jar"/>
-	<classpathentry kind="lib" path="lib/gwt-html5-database.jar"/>
-	<classpathentry kind="lib" path="lib/mvp4g-1.1.0.jar"/>
-        <classpathentry kind="var" path="M2_REPO/junit/junit/4.8.2/junit-4.8.2.jar" sourcepath="M2_REPO/junit/junit/4.8.2/junit-4.8.2-sources.jar"/>
-        <classpathentry kind="var" path="M2_REPO/org/mockito/mockito-all/1.8.3/mockito-all-1.8.3.jar" sourcepath="M2_REPO/org/mockito/mockito-all/1.8.3/mockito-all-1.8.3-sources.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/gwt-chrome-bridge"/>
+	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
