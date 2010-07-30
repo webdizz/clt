@@ -4,7 +4,7 @@
 	<inherits name="name.webdizz.clt.crx.Common" />
 
 	<entry-point
-		class="name.webdizz.clt.crx.client.contentscript.client.ContentScriptEntryPoint" />
+		class="name.webdizz.clt.crx.contentscript.client.ContentScriptEntryPoint" />
 
 	<add-linker name="crx_gwtscript" />
 
