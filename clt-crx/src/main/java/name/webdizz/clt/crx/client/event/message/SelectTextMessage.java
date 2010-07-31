@@ -3,6 +3,8 @@
  */
 package name.webdizz.clt.crx.client.event.message;
 
+import com.google.gwt.dom.client.NativeEvent;
+
 public class SelectTextMessage extends Message {
 
 	public static final String TYPE = "SelectTextMessage";
@@ -22,13 +24,8 @@ public class SelectTextMessage extends Message {
 		return this.offsetY;
 	}-*/;
 
-	public final native String[] getKeys() /*-{
-		return this.keys;
-	}-*/;
-
-	public static final native SelectTextMessage create(String text,
-			String[] keys)/*-{
-		return {text: text, type:'SelectTextMessage', keys: keys};
+	public static final native SelectTextMessage create(String text, NativeEvent event)/*-{
+		return {text: text, type:'SelectTextMessage', offsetX: event.screenX, offsetY: event.screenY};
 	}-*/;
 
 }
