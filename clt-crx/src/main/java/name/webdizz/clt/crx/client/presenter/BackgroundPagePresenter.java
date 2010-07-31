@@ -3,7 +3,6 @@
  */
 package name.webdizz.clt.crx.client.presenter;
 
-import name.webdizz.clt.crx.client.ActivationKeysHolder;
 import name.webdizz.clt.crx.client.ExtConfiguration;
 import name.webdizz.clt.crx.client.ExtEventBus;
 import name.webdizz.clt.crx.client.event.message.SelectTextMessage;
@@ -25,8 +24,7 @@ import com.mvp4g.client.presenter.BasePresenter;
  * 
  */
 @Presenter(view = BackgroundPageView.class)
-public class BackgroundPagePresenter extends
-		BasePresenter<BackgroundPagePresenter.IBackgroundPageView, ExtEventBus> {
+public class BackgroundPagePresenter extends BasePresenter<BackgroundPagePresenter.IBackgroundPageView, ExtEventBus> {
 
 	/**
 	 * Holds reference to the last received {@link SelectTextMessage} to be able
@@ -59,9 +57,7 @@ public class BackgroundPagePresenter extends
 		if ("".equals(configuration.getDestLanguage())) {
 			Tabs.detectLanguage(new OnDetectLanguageCallback() {
 				public void onDetect(String languageCode) {
-					eventBus
-							.trace("BackgroundPagePresenter.detectLanguage(): Detected lang - "
-									+ languageCode);
+					eventBus.trace("BackgroundPagePresenter.detectLanguage(): Detected lang - " + languageCode);
 					configuration.setDestLanguage(languageCode);
 				}
 			});
@@ -75,14 +71,11 @@ public class BackgroundPagePresenter extends
 	 *            the {@link SelectTextMessage} contains text to translate
 	 */
 	public void onSelectText(final SelectTextMessage message) {
-		if (isTranslatable(message.getKeys())) {
-			eventBus.trace("BackgroundPagePresenter.onSelectText() :"
-					+ message.getText() + " should be translated");
-			TranslateTextMessage transTextMessage;
-			transTextMessage = TranslateTextMessage.create(message.getText());
-			eventBus.translateText(transTextMessage);
-			selectTextMessage = message;
-		}
+		eventBus.trace("BackgroundPagePresenter.onSelectText() :" + message.getText() + " should be translated");
+		TranslateTextMessage transTextMessage;
+		transTextMessage = TranslateTextMessage.create(message.getText());
+		eventBus.translateText(transTextMessage);
+		selectTextMessage = message;
 	}
 
 	/**
@@ -97,28 +90,9 @@ public class BackgroundPagePresenter extends
 			public void onTab(Tab tab) {
 				ShowTranslatedTextMessage message;
 				String asString = JsonUtils.escapeValue(widget.toString());
-				message = ShowTranslatedTextMessage.create(selectTextMessage,
-						asString);
+				message = ShowTranslatedTextMessage.create(selectTextMessage, asString);
 				Tabs.sendRequest(tab.getId(), message);
 			}
 		});
-	}
-
-	/**
-	 * Perform validation whether message is able to be translated.
-	 * 
-	 * @param keys
-	 *            the array of pressed keyboard keys
-	 * @return true if right keyboard key was pressed
-	 */
-	private boolean isTranslatable(final String[] keys) {
-		boolean result = false;
-		for (String key : keys) {
-			if (ActivationKeysHolder.CTRL.equals(key)) {
-				result = true;
-				break;
-			}
-		}
-		return result;
 	}
 }
