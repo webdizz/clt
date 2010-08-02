@@ -20,16 +20,25 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 
 /**
- * API with all the native methods for Chrome extensions.
+ * API with all the native methods for Chrome for chrome.extension module.<br/>
  * 
- * See documentation at: <a
- * href="http://dev.chromium.org/developers/design-documents/extensions/">Chrome
- * Extensions</a>
+ * Detail information can be found on <a
+ * href="http://code.google.com/chrome/extensions/extension.html"
+ * >chrome.extension</a><br/>
  * 
- * The API is described in JSON form in the Chrome source:
- * src/chrome/common/extensions/api/extension_api.json
+ * The chrome.extension module has utilities that can be used by any extension
+ * page. It includes support for exchanging messages between an extension and
+ * its content scripts or between extensions, as described in detail in <a
+ * href="http://code.google.com/chrome/extensions/messaging.html"> Message
+ * Passing</a>.
  */
 public class Chrome extends JavaScriptObject {
+
+	/**
+	 * @return {@link Chrome} - the <a
+	 *         href="http://code.google.com/chrome/extensions/extension.html"
+	 *         >chrome.extension</a> module.
+	 */
 	public static final native Chrome getExtension() /*-{
 														return chrome.extension;
 														}-*/;
@@ -52,10 +61,23 @@ public class Chrome extends JavaScriptObject {
 		return -1;
 	}
 
+	/**
+	 * Returns the JavaScript 'window' object for the background page running
+	 * inside the current extension. Returns null if the extension has no
+	 * backround page.
+	 * 
+	 * @return the extension's {@link BackgroundPage}
+	 */
 	public final native BackgroundPage getBackgroundPage() /*-{
 															return this.getBackgroundPage();
 															}-*/;
 
+	/**
+	 * Fired when a connection is made from either an extension process or a
+	 * content script.
+	 * 
+	 * @return
+	 */
 	public final native ConnectEvent getOnConnectEvent() /*-{
 															return this.onConnect;
 															}-*/;
