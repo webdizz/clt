@@ -21,7 +21,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
 
 /**
- * Wraps event from chrome.onConnect.
+ * Wraps event from chrome.extension.onConnect.
  * 
  * See documentation at: <a href=
  * "http://code.google.com/chrome/extensions/extension.html#event-onConnect"
