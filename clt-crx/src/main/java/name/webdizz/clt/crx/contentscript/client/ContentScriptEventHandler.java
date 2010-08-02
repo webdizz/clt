@@ -12,17 +12,14 @@ final class ContentScriptEventHandler implements NativePreviewHandler {
 
 	private ChromePort port;
 
-	private SelectionProvider provider;
-
-	public ContentScriptEventHandler(final ChromePort port, final SelectionProvider provider) {
+	public ContentScriptEventHandler(final ChromePort port) {
 		super();
 		this.port = port;
-		this.provider = provider;
 	}
 
 	public void onPreviewNativeEvent(final NativePreviewEvent preview) {
 		NativeEvent event = preview.getNativeEvent();
-		String selection = provider.getSelection();
+		String selection = SelectionProvider.getSelection();
 		if (isConsumed(event, selection)) {
 			// Send event to background page
 			port.postMessage(SelectTextMessage.create(selection, event));

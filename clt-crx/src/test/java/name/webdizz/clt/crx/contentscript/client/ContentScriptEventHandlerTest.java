@@ -30,22 +30,21 @@ import com.google.gwt.user.client.Event.NativePreviewEvent;
  * 
  */
 @RunWith(PowerMockRunner.class)
-@PrepareOnlyThisForTest({ NativeEvent.class, SelectTextMessage.class })
+@PrepareOnlyThisForTest({ NativeEvent.class, SelectTextMessage.class, SelectionProvider.class })
 @SuppressStaticInitializationFor({ "com.google.gwt.dom.client.NativeEvent" })
 public class ContentScriptEventHandlerTest {
 
 	@Mock
 	private ChromePort port;
 
-	@Mock
-	private SelectionProvider provider;
-
 	private NativeEvent event = PowerMockito.mock(NativeEvent.class);
 
 	@Before
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
-		when(provider.getSelection()).thenReturn("word");
+
+		PowerMockito.mockStatic(SelectionProvider.class);
+		PowerMockito.when(SelectionProvider.getSelection()).thenReturn("word");
 		PowerMockito.suppress(event.getClass().getMethod("equals", Object.class));
 		PowerMockito.doReturn("mouseup").when(event).getType();
 		PowerMockito.doReturn(true).when(event).getCtrlKey();
@@ -54,7 +53,7 @@ public class ContentScriptEventHandlerTest {
 
 	@Test
 	public void shouldNotConsumeNotMouseupEvent() throws Exception {
-		ContentScriptEventHandler eventHandler = new ContentScriptEventHandler(port, provider);
+		ContentScriptEventHandler eventHandler = new ContentScriptEventHandler(port);
 		NativePreviewEvent previewEvent = mock(NativePreviewEvent.class);
 		PowerMockito.doReturn("notamouseevent").when(event).getType();
 		when(previewEvent.getNativeEvent()).thenReturn(event);
@@ -65,8 +64,8 @@ public class ContentScriptEventHandlerTest {
 
 	@Test
 	public void shouldNotConsumeEmptySelection() throws Exception {
-		when(provider.getSelection()).thenReturn("");
-		ContentScriptEventHandler eventHandler = new ContentScriptEventHandler(port, provider);
+		PowerMockito.when(SelectionProvider.getSelection()).thenReturn("");
+		ContentScriptEventHandler eventHandler = new ContentScriptEventHandler(port);
 		NativePreviewEvent previewEvent = mock(NativePreviewEvent.class);
 		when(previewEvent.getNativeEvent()).thenReturn(event);
 
@@ -76,7 +75,7 @@ public class ContentScriptEventHandlerTest {
 
 	@Test
 	public void shouldConsumeSelection() throws Exception {
-		ContentScriptEventHandler eventHandler = new ContentScriptEventHandler(port, provider);
+		ContentScriptEventHandler eventHandler = new ContentScriptEventHandler(port);
 		NativePreviewEvent previewEvent = mock(NativePreviewEvent.class);
 		when(previewEvent.getNativeEvent()).thenReturn(event);
 		PowerMockito.mockStatic(SelectTextMessage.class);

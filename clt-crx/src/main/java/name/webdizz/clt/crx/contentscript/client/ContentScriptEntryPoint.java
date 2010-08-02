@@ -24,7 +24,7 @@ public class ContentScriptEntryPoint extends GwtContentScriptEntryPoint {
 	@Override
 	public void onScriptLoad() {
 		ChromePort port = new ChromePort(connect("liner"));
-		Event.addNativePreviewHandler(new ContentScriptEventHandler(port, new SelectionProvider()));
+		Event.addNativePreviewHandler(new ContentScriptEventHandler(port));
 	}
 
 }
