@@ -37,32 +37,6 @@ var CltTimer = function() {
 	var port = chrome.extension.connect( {
 		name : "clt"
 	});
-	/**
-	 * Register mouse up event handler
-	 */
-	document.body.addEventListener('mouseup', function(evt) {
-		var keys = [ 'Ctrl', 'Alt', 'Shift', 'Meta' ], hotkeys = [];
-		for ( var k in keys) {
-			if (evt[keys[k].toLowerCase() + 'Key']) {
-				hotkeys.push(keys[k]);
-			}
-		}
-
-		var text = window.getSelection().toString();
-		if (text.length < 1) {
-			return;
-		}
-
-		port.postMessage( {
-			type : 'SelectTextMessage',
-			text : text,
-			keys : hotkeys,
-			offsetX : evt.pageX,
-			offsetY : evt.pageY
-		});
-
-	}, false);
-
 	document.body.addEventListener('mousedown', function(evt) {
 		var wrapper = document
 				.getElementById('-chrome-clt-ext-dialog-wrapper-container');
