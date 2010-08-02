@@ -15,13 +15,13 @@
  */
 package com.google.gwt.chrome.crx.client;
 
+import com.google.gwt.chrome.crx.client.events.Message;
 import com.google.gwt.chrome.crx.client.events.TabAttachedEvent;
 import com.google.gwt.chrome.crx.client.events.TabDetachedEvent;
 import com.google.gwt.chrome.crx.client.events.TabEvent;
 import com.google.gwt.chrome.crx.client.events.TabRemovedEvent;
 import com.google.gwt.chrome.crx.client.events.TabSelectionChangedEvent;
 import com.google.gwt.chrome.crx.client.events.TabUpdatedEvent;
-import com.google.gwt.chrome.crx.client.events.MessageEvent.Message;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 

@@ -32,7 +32,7 @@ class MessageEventHandler implements Listener {
 	 * (com.google.gwt.chrome.crx.client.events.MessageEvent.Message)
 	 */
 	public void onMessage(
-			final com.google.gwt.chrome.crx.client.events.MessageEvent.Message message) {
+			final com.google.gwt.chrome.crx.client.events.Message message) {
 		CONSOLE.log("Message event handler");
 		if (null != message) {
 			processMessage(message);
@@ -40,7 +40,7 @@ class MessageEventHandler implements Listener {
 	}
 
 	private void processMessage(
-			final com.google.gwt.chrome.crx.client.events.MessageEvent.Message message) {
+			final com.google.gwt.chrome.crx.client.events.Message message) {
 		Message castedMessage = message.cast();
 		if (SelectTextMessage.TYPE.equals(castedMessage.getType())) {
 			eventBus.selectText((SelectTextMessage) castedMessage);

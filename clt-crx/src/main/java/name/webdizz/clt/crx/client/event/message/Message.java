@@ -9,8 +9,7 @@ package name.webdizz.clt.crx.client.event.message;
  * @author Izzet_Mustafayev
  * 
  */
-public class Message extends
-		com.google.gwt.chrome.crx.client.events.MessageEvent.Message {
+public class Message extends com.google.gwt.chrome.crx.client.events.Message {
 
 	protected Message() {
 	}
