@@ -26,15 +26,6 @@ import com.google.gwt.core.client.JavaScriptObject;
  */
 public class MessageEvent extends Event {
 	/**
-	 * Subclass Message when you want to define a message type to send on a
-	 * Port.
-	 */
-	public static class Message extends Event {
-		protected Message() {
-		}
-	}
-
-	/**
 	 * Messaging handler that gets called each time you send a message on a
 	 * Port.
 	 */
@@ -52,7 +43,7 @@ public class MessageEvent extends Event {
 	private native JavaScriptObject addListenerImpl(Listener listener) /*-{
 																		var handle = function(data) {
 																		listener.
-																		@com.google.gwt.chrome.crx.client.events.MessageEvent.Listener::onMessage(Lcom/google/gwt/chrome/crx/client/events/MessageEvent$Message;)
+																		@com.google.gwt.chrome.crx.client.events.MessageEvent.Listener::onMessage(Lcom/google/gwt/chrome/crx/client/events/Message;)
 																		(data);
 																		};
 
