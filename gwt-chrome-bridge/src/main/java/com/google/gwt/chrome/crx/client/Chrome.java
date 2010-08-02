@@ -16,6 +16,7 @@
 package com.google.gwt.chrome.crx.client;
 
 import com.google.gwt.chrome.crx.client.events.ConnectEvent;
+import com.google.gwt.chrome.crx.client.events.RequestEvent;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 
@@ -76,11 +77,22 @@ public class Chrome extends JavaScriptObject {
 	 * Fired when a connection is made from either an extension process or a
 	 * content script.
 	 * 
-	 * @return
+	 * @return the {@link ConnectEvent} to assign listener
 	 */
 	public final native ConnectEvent getOnConnectEvent() /*-{
 															return this.onConnect;
 															}-*/;
+
+	/**
+	 * Fired when a request is sent from either an extension process or a
+	 * content script.
+	 * 
+	 * @return the {@link RequestEvent} to assign listener
+	 * 
+	 */
+	public final native RequestEvent getOnRequestEvent()/*-{
+														return this.onRequest;
+														}-*/;
 
 	/**
 	 * Convert a relative path within an extension install directory to a
