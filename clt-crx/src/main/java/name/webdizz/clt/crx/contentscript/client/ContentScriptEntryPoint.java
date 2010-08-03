@@ -5,7 +5,6 @@ package name.webdizz.clt.crx.contentscript.client;
 
 import name.webdizz.clt.crx.client.chrome.ChromePort;
 
-import com.google.gwt.chrome.crx.client.Chrome;
 import com.google.gwt.chrome.crx.client.GwtContentScriptEntryPoint;
 import com.google.gwt.chrome.crx.client.events.Message;
 import com.google.gwt.chrome.crx.client.events.RequestEvent.Listener;
@@ -18,8 +17,8 @@ import com.google.gwt.user.client.Window;
  */
 public class ContentScriptEntryPoint extends GwtContentScriptEntryPoint {
 
-        private static final String CONNECTION_NAME = "liner";
-        
+	private static final String CONNECTION_NAME = "liner";
+
 	private final class ContentScriptRequestListener implements Listener {
 		public void onRequest(Message message) {
 			if (null == message) {
@@ -42,7 +41,7 @@ public class ContentScriptEntryPoint extends GwtContentScriptEntryPoint {
 		// assign native event handler
 		Event.addNativePreviewHandler(new ContentScriptEventHandler(port));
 		// assign connection request listener
-		Chrome.getExtension().getOnRequestEvent().addListener(new ContentScriptRequestListener());
-		
+		onRequestEvent(new ContentScriptRequestListener());
+
 	}
 }
