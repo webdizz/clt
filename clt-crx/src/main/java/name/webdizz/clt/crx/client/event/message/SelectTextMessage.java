@@ -16,11 +16,11 @@ public class SelectTextMessage extends Message {
 		return this.text;
 	}-*/;
 
-	public final native String getOffsetX() /*-{
+	public final native int getOffsetX() /*-{
 		return this.offsetX;
 	}-*/;
 
-	public final native String getOffsetY() /*-{
+	public final native int getOffsetY() /*-{
 		return this.offsetY;
 	}-*/;
 
