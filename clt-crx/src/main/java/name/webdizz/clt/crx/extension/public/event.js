@@ -37,16 +37,7 @@ var CltTimer = function() {
 	var port = chrome.extension.connect( {
 		name : "clt"
 	});
-	document.body.addEventListener('mousedown', function(evt) {
-		var wrapper = document
-				.getElementById('-chrome-clt-ext-dialog-wrapper-container');
-		if (wrapper.style.display != 'none') {
-			// TODO: need to be closed by close button
-			// wrapper.style.display = 'none';
-			// wrapper.innerHTML = '';
-		}
-	}, false);
-
+	
 	var connectionHandler = function(m) {
 		var wrapper = document
 				.getElementById('-chrome-clt-ext-dialog-wrapper-container');
@@ -103,28 +94,5 @@ var CltTimer = function() {
 			type : 'LoadWordsMessage'
 		});
 	};
-	cltTimer.start();
-	// add messaging listener handler
-	chrome.extension.onRequest.addListener(connectionHandler);
+	//cltTimer.start();
 }());
-
-/**
- * 
- */
-if (!document.getElementById('-chrome-clt-ext-dialog-wrapper-container')) {
-	// create dialog
-	(function() {
-		var d = document.createElement('DIV');
-		d.id = '-chrome-clt-ext-dialog-wrapper-container';
-		d.style.display = 'none';
-		d.setAttribute('style', 'display: none;' + 'opacity: 1 !important;'
-				+ 'border-color: none !important;'
-				+ 'background: transparent !important;'
-				+ 'padding: 0 !important;' + 'margin: 0 !important;'
-				+ 'position: absolute !important;' + 'top: 0;' + 'left: 0;'
-				+ 'overflow: visible !important;'
-				+ 'z-index: 999999 !important;'
-				+ 'text-align: left !important;');
-		document.body.appendChild(d);
-	})();
-}
