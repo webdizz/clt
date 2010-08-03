@@ -1,10 +1,11 @@
 package name.webdizz.clt.crx.contentscript.client.connection;
 
 import name.webdizz.clt.crx.client.event.message.ShowTranslatedTextMessage;
+import name.webdizz.clt.crx.contentscript.client.translation.view.ITranslationView;
+import name.webdizz.clt.crx.contentscript.client.translation.view.TranslationView;
 
 import com.google.gwt.chrome.crx.client.events.Message;
 import com.google.gwt.chrome.crx.client.events.RequestEvent.Listener;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.PopupPanel;
 
 /**
@@ -19,11 +20,12 @@ public final class ContentScriptRequestListener implements Listener {
 		public TranslationResultPanel(ShowTranslatedTextMessage message) {
 			// enable autohide
 			super(true);
-			setTitle("Title");
 			setAnimationEnabled(true);
 			setGlassEnabled(true);
-			HTML widget = new HTML(message.getWidget());
-			setWidget(widget);
+			ITranslationView view = new TranslationView();
+			view.setTranslateableText(message.getTranslation().getTextFrom());
+			view.setTranslatedText(message.getTranslation().getTranslation());
+			setWidget((TranslationView) view);
 		}
 	}
 
