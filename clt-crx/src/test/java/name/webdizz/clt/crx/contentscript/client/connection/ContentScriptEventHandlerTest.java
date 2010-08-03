@@ -1,7 +1,7 @@
 /**
  * 
  */
-package name.webdizz.clt.crx.contentscript.client;
+package name.webdizz.clt.crx.contentscript.client.connection;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doNothing;
@@ -11,6 +11,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import name.webdizz.clt.crx.client.chrome.ChromePort;
 import name.webdizz.clt.crx.client.event.message.SelectTextMessage;
+import name.webdizz.clt.crx.contentscript.client.SelectionProvider;
+import name.webdizz.clt.crx.contentscript.client.connection.ContentScriptEventHandler;
 
 import org.junit.Before;
 import org.junit.Test;
