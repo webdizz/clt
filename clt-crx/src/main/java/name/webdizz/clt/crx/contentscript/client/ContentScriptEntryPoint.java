@@ -18,7 +18,16 @@ import com.google.gwt.user.client.Window;
  */
 public class ContentScriptEntryPoint extends GwtContentScriptEntryPoint {
 
-	private static final String CONNECTION_NAME = "liner";
+        private static final String CONNECTION_NAME = "liner";
+        
+	private final class ContentScriptRequestListener implements Listener {
+		public void onRequest(Message message) {
+			if (null == message) {
+				Window.alert("message is null");
+			}
+			Window.alert("Wow");
+		}
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -32,15 +41,8 @@ public class ContentScriptEntryPoint extends GwtContentScriptEntryPoint {
 		ChromePort port = new ChromePort(connect(CONNECTION_NAME));
 		// assign native event handler
 		Event.addNativePreviewHandler(new ContentScriptEventHandler(port));
-
-		Chrome.getExtension().getOnRequestEvent().addListener(new Listener() {
-			public void onRequest(Message message) {
-				if (null == message) {
-					Window.alert("message is null");
-				}
-				Window.alert("Wow");
-			}
-		});
-
+		// assign connection request listener
+		Chrome.getExtension().getOnRequestEvent().addListener(new ContentScriptRequestListener());
+		
 	}
 }
