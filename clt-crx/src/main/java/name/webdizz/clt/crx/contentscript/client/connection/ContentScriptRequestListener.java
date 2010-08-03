@@ -4,7 +4,6 @@ import name.webdizz.clt.crx.client.event.message.ShowTranslatedTextMessage;
 
 import com.google.gwt.chrome.crx.client.events.Message;
 import com.google.gwt.chrome.crx.client.events.RequestEvent.Listener;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.PopupPanel;
 
@@ -43,9 +42,9 @@ public final class ContentScriptRequestListener implements Listener {
 				final TranslationResultPanel resultPanel = new TranslationResultPanel(translation);
 				resultPanel.setPopupPositionAndShow(new PopupPanel.PositionCallback() {
 					public void setPosition(int offsetWidth, int offsetHeight) {
-						int left = (Window.getClientWidth() - offsetWidth) / 3;
-						int top = (Window.getClientHeight() - offsetHeight) / 3;
-						resultPanel.setPopupPosition(left, top);
+						int selectionOffsetX = translation.getMessage().getOffsetX();
+						int selectionOffsetY = translation.getMessage().getOffsetY();
+						resultPanel.setPopupPosition(selectionOffsetX + 30, selectionOffsetY - 60);
 					}
 				});
 			}
