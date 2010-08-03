@@ -7,7 +7,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import name.webdizz.clt.crx.client.translation.TranslationHandler;
+import name.webdizz.clt.crx.client.translation.ITranslationHandler;
 import name.webdizz.clt.crx.client.translation.TranslationResult;
 
 import org.junit.Before;
@@ -50,7 +50,7 @@ public class MedeniyeRequestBuilderTest {
 
 	@Test
 	public void shouldUseAssignedRequestBuilder() throws Exception {
-		TranslationHandler handler = mock(TranslationHandler.class);
+		ITranslationHandler handler = mock(ITranslationHandler.class);
 		RequestBuilder requestBuilder = mock(RequestBuilder.class);
 		medeniyeRequestBuilder.setRequestBuilder(requestBuilder);
 		medeniyeRequestBuilder.send("some data", handler);
@@ -60,7 +60,7 @@ public class MedeniyeRequestBuilderTest {
 
 	@Test
 	public void shouldCallTranslationHandle() throws Exception {
-		TranslationHandler handler = mock(TranslationHandler.class);
+		ITranslationHandler handler = mock(ITranslationHandler.class);
 		RequestBuilder requestBuilder = new JustCallOnResponseReceivedRequestBuilder("URL");
 		medeniyeRequestBuilder.setRequestBuilder(requestBuilder);
 
@@ -73,7 +73,7 @@ public class MedeniyeRequestBuilderTest {
 
 	@Test
 	public void shouldHandleTranslationRequestError() throws Exception {
-		TranslationHandler handler = mock(TranslationHandler.class);
+		ITranslationHandler handler = mock(ITranslationHandler.class);
 		RequestBuilder requestBuilder = new JustCallOnErrorRequestBuilder("URL");
 		medeniyeRequestBuilder.setRequestBuilder(requestBuilder);
 

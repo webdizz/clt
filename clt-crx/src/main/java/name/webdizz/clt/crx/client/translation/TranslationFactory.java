@@ -15,7 +15,7 @@ public final class TranslationFactory {
 	protected TranslationFactory() {
 	}
 
-	public static Translator instance() {
+	public static ITranslator instance() {
 		return new MedeniyeTranslator(new MedeniyeRequestBuilder());
 	}
 }

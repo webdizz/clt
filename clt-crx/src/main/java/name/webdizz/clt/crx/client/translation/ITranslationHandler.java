@@ -7,7 +7,7 @@ package name.webdizz.clt.crx.client.translation;
  * @author webdizz
  * 
  */
-public interface TranslationHandler {
+public interface ITranslationHandler {
 
 	void onTranslate(TranslationResult result);
 }

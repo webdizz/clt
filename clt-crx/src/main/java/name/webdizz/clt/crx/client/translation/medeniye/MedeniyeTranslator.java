@@ -4,8 +4,8 @@
 package name.webdizz.clt.crx.client.translation.medeniye;
 
 import name.webdizz.clt.crx.client.translation.TranslationException;
-import name.webdizz.clt.crx.client.translation.TranslationHandler;
-import name.webdizz.clt.crx.client.translation.Translator;
+import name.webdizz.clt.crx.client.translation.ITranslationHandler;
+import name.webdizz.clt.crx.client.translation.ITranslator;
 
 import com.google.gwt.http.client.RequestException;
 
@@ -13,7 +13,7 @@ import com.google.gwt.http.client.RequestException;
  * @author webdizz
  * 
  */
-public class MedeniyeTranslator implements Translator {
+public class MedeniyeTranslator implements ITranslator {
 
 	private MedeniyeRequestBuilder requestBuilder;
 
@@ -31,10 +31,10 @@ public class MedeniyeTranslator implements Translator {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * name.webdizz.clt.crx.client.translation.Translator#translate(java.lang
-	 * .String, name.webdizz.clt.crx.client.translation.TranslationHandler)
+	 * name.webdizz.clt.crx.client.translation.ITranslator#translate(java.lang
+	 * .String, name.webdizz.clt.crx.client.translation.ITranslationHandler)
 	 */
-	public void translate(final String word, final TranslationHandler handler) throws TranslationException {
+	public void translate(final String word, final ITranslationHandler handler) throws TranslationException {
 		if (null == requestBuilder) {
 			throw new TranslationException("RequestBuilder is null.");
 		}

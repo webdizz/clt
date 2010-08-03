@@ -24,14 +24,14 @@ public class MonitorPresenter extends
 	}
 
 	public void onError(String message) {
-		Alert.info("Error: " + message);
+		//Alert.info("Error: " + message);
 	}
 
 	public void onInfo(String message) {
-		Alert.info("Info: " + message);
+		//Alert.info("Info: " + message);
 	}
 	
 	public void onTrace(String message) {
-		Alert.info("Trace: " + message);
+		//Alert.info("Trace: " + message);
 	}
 }
