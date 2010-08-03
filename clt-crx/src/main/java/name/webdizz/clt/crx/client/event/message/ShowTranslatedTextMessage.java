@@ -19,7 +19,7 @@ public class ShowTranslatedTextMessage extends Message {
 	}-*/;
 
 	public final native SelectTextMessage getMessage() /*-{
-		return this.widget;
+		return this.message;
 	}-*/;
 
 	public static final native ShowTranslatedTextMessage create(
