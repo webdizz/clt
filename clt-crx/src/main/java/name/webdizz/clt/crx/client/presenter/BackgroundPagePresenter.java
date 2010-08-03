@@ -5,6 +5,7 @@ package name.webdizz.clt.crx.client.presenter;
 
 import name.webdizz.clt.crx.client.ExtConfiguration;
 import name.webdizz.clt.crx.client.ExtEventBus;
+import name.webdizz.clt.crx.client.event.message.PrepareTranslatedTextDisplayMessage;
 import name.webdizz.clt.crx.client.event.message.SelectTextMessage;
 import name.webdizz.clt.crx.client.event.message.ShowTranslatedTextMessage;
 import name.webdizz.clt.crx.client.event.message.TranslateTextMessage;
@@ -14,7 +15,6 @@ import com.google.gwt.chrome.crx.client.Tabs;
 import com.google.gwt.chrome.crx.client.Tabs.OnDetectLanguageCallback;
 import com.google.gwt.chrome.crx.client.Tabs.OnTabCallback;
 import com.google.gwt.chrome.crx.client.Tabs.Tab;
-import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
@@ -85,12 +85,11 @@ public class BackgroundPagePresenter extends BasePresenter<BackgroundPagePresent
 	 * @param widget
 	 *            a {@link Widget} to show as a translation
 	 */
-	public void onShowTranslatedText(final Widget widget) {
+	public void onShowTranslatedText(final PrepareTranslatedTextDisplayMessage translation) {
 		Tabs.getSelected(new OnTabCallback() {
 			public void onTab(Tab tab) {
 				ShowTranslatedTextMessage message;
-				String asString = JsonUtils.escapeValue(widget.toString());
-				message = ShowTranslatedTextMessage.create(selectTextMessage, asString);
+				message = ShowTranslatedTextMessage.create(selectTextMessage, translation);
 				Tabs.sendRequest(tab.getId(), message);
 			}
 		});

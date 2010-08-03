@@ -8,9 +8,7 @@ import name.webdizz.clt.crx.client.event.message.PrepareTranslatedTextDisplayMes
 import name.webdizz.clt.crx.client.event.message.ShowTranslatedTextMessage;
 import name.webdizz.clt.crx.client.event.message.TranslateTextMessage;
 import name.webdizz.clt.crx.client.translation.google.GoogleTranslator;
-import name.webdizz.clt.crx.client.view.TranslationView;
 
-import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
@@ -22,14 +20,6 @@ import com.mvp4g.client.presenter.BasePresenter;
 public class TranslationPresenter extends BasePresenter<TranslationPresenter.ITranslationView, ExtEventBus> {
 
 	public interface ITranslationView {
-
-		void setTranslatedText(String text);
-
-		void setTranslateableText(final String text);
-
-		String widgetAsString();
-
-		Widget asWidget();
 
 	}
 
@@ -54,9 +44,7 @@ public class TranslationPresenter extends BasePresenter<TranslationPresenter.ITr
 	 *            the translated message to display
 	 */
 	public void onTranslatedText(final PrepareTranslatedTextDisplayMessage message) {
-		view.setTranslatedText(message.getTranslation());
-		view.setTranslateableText(message.getTextFrom());
-		eventBus.showTranslatedText(view.asWidget());
+		eventBus.showTranslatedText(message);
 	}
 
 }

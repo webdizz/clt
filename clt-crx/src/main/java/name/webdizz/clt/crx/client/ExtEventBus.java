@@ -14,7 +14,6 @@ import name.webdizz.clt.crx.client.presenter.StorePresenter;
 import name.webdizz.clt.crx.client.presenter.TranslationPresenter;
 import name.webdizz.clt.crx.client.view.BackgroundPageView;
 
-import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.Start;
@@ -41,7 +40,7 @@ public interface ExtEventBus extends EventBus {
 	void handleTranslatedText(PrepareTranslatedTextDisplayMessage message);
 
 	@Event(handlers = BackgroundPagePresenter.class)
-	void showTranslatedText(Widget widget);
+	void showTranslatedText(PrepareTranslatedTextDisplayMessage message);
 
 	@Event(handlers = StorePresenter.class)
 	void storeTranslation(StoreTranslationMessage message);
