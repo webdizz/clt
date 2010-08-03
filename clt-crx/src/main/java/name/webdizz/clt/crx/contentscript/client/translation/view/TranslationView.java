@@ -1,9 +1,7 @@
 /**
  * 
  */
-package name.webdizz.clt.crx.client.view;
-
-import name.webdizz.clt.crx.client.presenter.TranslationPresenter.ITranslationView;
+package name.webdizz.clt.crx.contentscript.client.translation.view;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsonUtils;
@@ -36,11 +34,19 @@ public class TranslationView extends Composite implements ITranslationView {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 
+	/* (non-Javadoc)
+	 * @see name.webdizz.clt.crx.contentscript.client.translation.view.ITranslationView#setTranslatedText(java.lang.String)
+	 */
+	@Override
 	public void setTranslatedText(final String text) {
 		translatedText.setInnerText(text);
 		translation.setAttribute("translation", text);
 	}
 	
+	/* (non-Javadoc)
+	 * @see name.webdizz.clt.crx.contentscript.client.translation.view.ITranslationView#setTranslateableText(java.lang.String)
+	 */
+	@Override
 	public void setTranslateableText(final String text) {
 		translation.setAttribute("translateable", text);
 	}
