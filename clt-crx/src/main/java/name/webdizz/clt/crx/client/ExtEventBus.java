@@ -11,7 +11,6 @@ import name.webdizz.clt.crx.client.event.message.TranslateTextMessage;
 import name.webdizz.clt.crx.client.presenter.BackgroundPagePresenter;
 import name.webdizz.clt.crx.client.presenter.MonitorPresenter;
 import name.webdizz.clt.crx.client.presenter.StorePresenter;
-import name.webdizz.clt.crx.client.presenter.TranslationPresenter;
 import name.webdizz.clt.crx.client.view.BackgroundPageView;
 
 import com.mvp4g.client.annotation.Event;
@@ -32,11 +31,11 @@ public interface ExtEventBus extends EventBus {
 
 	@Event(handlers = BackgroundPagePresenter.class)
 	void selectText(SelectTextMessage message);
-	
-	@Event(handlers = TranslationPresenter.class)
+
+	@Event(handlers = BackgroundPagePresenter.class)
 	void translateText(TranslateTextMessage message);
 
-	@Event(handlers = TranslationPresenter.class, calledMethod = "onTranslatedText")
+	@Event(handlers = BackgroundPagePresenter.class, calledMethod = "onTranslatedText")
 	void handleTranslatedText(PrepareTranslatedTextDisplayMessage message);
 
 	@Event(handlers = BackgroundPagePresenter.class)

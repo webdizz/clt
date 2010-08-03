@@ -9,6 +9,7 @@ import name.webdizz.clt.crx.client.event.message.PrepareTranslatedTextDisplayMes
 import name.webdizz.clt.crx.client.event.message.SelectTextMessage;
 import name.webdizz.clt.crx.client.event.message.ShowTranslatedTextMessage;
 import name.webdizz.clt.crx.client.event.message.TranslateTextMessage;
+import name.webdizz.clt.crx.client.translation.google.GoogleTranslator;
 import name.webdizz.clt.crx.client.view.BackgroundPageView;
 
 import com.google.gwt.chrome.crx.client.Tabs;
@@ -76,6 +77,27 @@ public class BackgroundPagePresenter extends BasePresenter<BackgroundPagePresent
 		transTextMessage = TranslateTextMessage.create(message.getText());
 		eventBus.translateText(transTextMessage);
 		selectTextMessage = message;
+	}
+
+	/**
+	 * Performs translation of the given {@link TranslateTextMessage}.
+	 * 
+	 * @param message
+	 *            the message to translate
+	 */
+	public void onTranslateText(final TranslateTextMessage message) {
+		new GoogleTranslator(eventBus).translate(message);
+	}
+
+	/**
+	 * Performs visualization of the given translated
+	 * {@link ShowTranslatedTextMessage}.
+	 * 
+	 * @param message
+	 *            the translated message to display
+	 */
+	public void onTranslatedText(final PrepareTranslatedTextDisplayMessage message) {
+		eventBus.showTranslatedText(message);
 	}
 
 	/**
