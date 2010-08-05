@@ -5,17 +5,21 @@ package name.webdizz.clt.crx.client.presenter;
 
 import name.webdizz.clt.crx.client.ExtConfiguration;
 import name.webdizz.clt.crx.client.ExtEventBus;
-import name.webdizz.clt.crx.client.event.message.PrepareTranslatedTextDisplayMessage;
 import name.webdizz.clt.crx.client.event.message.SelectTextMessage;
 import name.webdizz.clt.crx.client.event.message.ShowTranslatedTextMessage;
 import name.webdizz.clt.crx.client.event.message.TranslateTextMessage;
-import name.webdizz.clt.crx.client.translation.google.GoogleTranslator;
+import name.webdizz.clt.crx.client.event.message.TranslationResultMessage;
+import name.webdizz.clt.crx.client.translation.ITranslationHandler;
+import name.webdizz.clt.crx.client.translation.TranslationException;
+import name.webdizz.clt.crx.client.translation.TranslationFactory;
+import name.webdizz.clt.crx.client.translation.TranslationResult;
 import name.webdizz.clt.crx.client.view.BackgroundPageView;
 
 import com.google.gwt.chrome.crx.client.Tabs;
 import com.google.gwt.chrome.crx.client.Tabs.OnDetectLanguageCallback;
 import com.google.gwt.chrome.crx.client.Tabs.OnTabCallback;
 import com.google.gwt.chrome.crx.client.Tabs.Tab;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
@@ -86,18 +90,20 @@ public class BackgroundPagePresenter extends BasePresenter<BackgroundPagePresent
 	 *            the message to translate
 	 */
 	public void onTranslateText(final TranslateTextMessage message) {
-		new GoogleTranslator(eventBus).translate(message);
-	}
-
-	/**
-	 * Performs visualization of the given translated
-	 * {@link ShowTranslatedTextMessage}.
-	 * 
-	 * @param message
-	 *            the translated message to display
-	 */
-	public void onTranslatedText(final PrepareTranslatedTextDisplayMessage message) {
-		eventBus.showTranslatedText(message);
+		try {
+			TranslationFactory.instance().translate(message.getText(), new ITranslationHandler() {
+				public void onTranslate(final TranslationResult result) {
+					if (null == result) {
+						Window.alert("Word not found");
+					}
+					TranslationResultMessage message;
+					message = TranslationResultMessage.create(result);
+					eventBus.showTranslatedText(message);
+				}
+			});
+		} catch (TranslationException exc) {
+			eventBus.error(exc.getMessage());
+		}
 	}
 
 	/**
@@ -107,11 +113,11 @@ public class BackgroundPagePresenter extends BasePresenter<BackgroundPagePresent
 	 * @param widget
 	 *            a {@link Widget} to show as a translation
 	 */
-	public void onShowTranslatedText(final PrepareTranslatedTextDisplayMessage translation) {
+	public void onShowTranslatedText(final TranslationResultMessage translation) {
 		Tabs.getSelected(new OnTabCallback() {
 			public void onTab(Tab tab) {
 				ShowTranslatedTextMessage message;
-				message = ShowTranslatedTextMessage.create(selectTextMessage, translation);
+				message = ShowTranslatedTextMessage.create(selectTextMessage, translation.getTranslation());
 				Tabs.sendRequest(tab.getId(), message);
 			}
 		});
