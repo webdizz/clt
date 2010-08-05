@@ -3,13 +3,19 @@
  */
 package name.webdizz.clt.crx.client.translation;
 
-import java.util.List;
+import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * @author webdizz
  * 
  */
-public class TranslationResult {
+public final class TranslationResult implements Serializable {
+
+	/**
+	 * serialVersionUID.
+	 */
+	private static final long serialVersionUID = -6348445269086282159L;
 
 	/**
 	 * @author webdizz
@@ -17,7 +23,7 @@ public class TranslationResult {
 	 */
 	public class Translation {
 		private String translation;
-		private List<Explanation> explanations;
+		private ArrayList<Explanation> explanations;
 
 		public String getTranslation() {
 			return translation;
@@ -27,11 +33,11 @@ public class TranslationResult {
 			this.translation = translation;
 		}
 
-		public List<Explanation> getExplanations() {
+		public ArrayList<Explanation> getExplanations() {
 			return explanations;
 		}
 
-		public void setExplanations(List<Explanation> explanations) {
+		public void setExplanations(ArrayList<Explanation> explanations) {
 			this.explanations = explanations;
 		}
 
@@ -54,7 +60,7 @@ public class TranslationResult {
 	private String dest;
 	private String srcLang;
 	private String destLang;
-	private List<Translation> translations;
+	private ArrayList<Translation> translations;
 
 	/**
 	 * @return the src
@@ -119,7 +125,7 @@ public class TranslationResult {
 	/**
 	 * @return the translations
 	 */
-	public List<Translation> getTranslations() {
+	public ArrayList<Translation> getTranslations() {
 		return translations;
 	}
 
@@ -127,7 +133,7 @@ public class TranslationResult {
 	 * @param translations
 	 *            the translations to set
 	 */
-	public void setTranslations(List<Translation> translations) {
+	public void setTranslations(ArrayList<Translation> translations) {
 		this.translations = translations;
 	}
 
