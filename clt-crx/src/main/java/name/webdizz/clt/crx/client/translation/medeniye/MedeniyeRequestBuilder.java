@@ -40,15 +40,18 @@ public class MedeniyeRequestBuilder {
 
 	}
 
-	private static final String URL = "http://qlugat.appspot.com/lugat/get";
+	private static final String URL = "http://qlugat.appspot.com/lugat/get?";
 
 	private RequestBuilder requestBuilder;
 
 	/**
 	 * Creates default {@link RequestBuilder}.
+	 * 
+	 * @param requestData
+	 *            parameters as a string to pass to remote service
 	 */
-	protected void createDefaultRequestBuilder() {
-		requestBuilder = new RequestBuilder(RequestBuilder.GET, URL);
+	private void createDefaultRequestBuilder(String requestData) {
+		requestBuilder = new RequestBuilder(RequestBuilder.GET, URL + requestData);
 	}
 
 	/**
@@ -58,7 +61,7 @@ public class MedeniyeRequestBuilder {
 	 */
 	public Request send(final String requestData, final ITranslationHandler handler) throws RequestException {
 		if (null == requestBuilder) {
-			createDefaultRequestBuilder();
+			createDefaultRequestBuilder(requestData);
 		}
 		TranslationRequestCallback callback = new TranslationRequestCallback(handler);
 		requestBuilder.setCallback(callback);
