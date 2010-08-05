@@ -61,7 +61,7 @@ public class TranslationResultCreator {
 		int transEnd = text.indexOf(TRANSLATIONS_END_SMB);
 		boolean isParsable = transStart > NOTHING_FOUND;
 		String transTxt = isParsable ? text.substring(transStart + TRANSLATIONS_START_SMB.length(), transEnd) : "";
-		List<Translation> translations = new ArrayList<Translation>();
+		ArrayList<Translation> translations = new ArrayList<Translation>();
 		if (!transTxt.isEmpty()) {
 			processTranslations(translationResult, transTxt, translations);
 		}
@@ -99,7 +99,7 @@ public class TranslationResultCreator {
 		int end = endPosition;
 		int explStart = transTxt.indexOf(EXPLAINATION_START_SMB);
 		int explSmbLength = EXPLAINATION_START_SMB.length();
-		List<Explanation> explanations = new ArrayList<TranslationResult.Explanation>();
+		ArrayList<Explanation> explanations = new ArrayList<TranslationResult.Explanation>();
 		if (explStart > NOTHING_FOUND) {
 			boolean workWithExplanations = true;
 			while (workWithExplanations) {
