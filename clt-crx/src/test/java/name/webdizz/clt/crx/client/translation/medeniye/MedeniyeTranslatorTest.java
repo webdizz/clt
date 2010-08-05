@@ -4,26 +4,36 @@
 package name.webdizz.clt.crx.client.translation.medeniye;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import name.webdizz.clt.crx.client.translation.TranslationException;
+import static org.mockito.Mockito.when;
 import name.webdizz.clt.crx.client.translation.ITranslationHandler;
-import name.webdizz.clt.crx.client.translation.TranslationResult;
 import name.webdizz.clt.crx.client.translation.ITranslator;
+import name.webdizz.clt.crx.client.translation.TranslationException;
+import name.webdizz.clt.crx.client.translation.TranslationResult;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
+import org.powermock.core.classloader.annotations.SuppressStaticInitializationFor;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.google.gwt.http.client.RequestException;
+import com.google.gwt.http.client.URL;
 
 /**
  * @author webdizz
  * 
  */
+@RunWith(PowerMockRunner.class)
+@PrepareOnlyThisForTest({ URL.class })
+@SuppressStaticInitializationFor({ "com.google.gwt.dom.client.NativeEvent" })
 public class MedeniyeTranslatorTest {
 
 	private ITranslator translator;
@@ -35,6 +45,8 @@ public class MedeniyeTranslatorTest {
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
 		translator = new MedeniyeTranslator(builder);
+		PowerMockito.mockStatic(URL.class);
+		PowerMockito.when(URL.encode(anyString())).thenReturn("word");
 	}
 
 	@Test
