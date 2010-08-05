@@ -2,7 +2,7 @@ package name.webdizz.clt.crx.client.translation.google;
 
 import name.webdizz.clt.crx.client.ExtConfiguration;
 import name.webdizz.clt.crx.client.ExtEventBus;
-import name.webdizz.clt.crx.client.event.message.PrepareTranslatedTextDisplayMessage;
+import name.webdizz.clt.crx.client.event.message.TranslationResultMessage;
 import name.webdizz.clt.crx.client.event.message.TranslateTextMessage;
 
 import com.google.gwt.language.client.translation.LangDetCallback;
@@ -63,8 +63,9 @@ public final class GoogleTranslator {
 	private void handleTranslationResult(final String src, final String dest, final String from,
 			TranslationResult result) {
 		String translation = result.getTranslatedText();
-		PrepareTranslatedTextDisplayMessage transTextMsg;
-		transTextMsg = PrepareTranslatedTextDisplayMessage.create(from, translation, src, dest);
-		eventBus.handleTranslatedText(transTextMsg);
+		// TODO: create TranslationResult here
+		TranslationResultMessage transTextMsg;
+		transTextMsg = TranslationResultMessage.create(null);
+		eventBus.showTranslatedText(transTextMsg);
 	}
 }
