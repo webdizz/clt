@@ -2,7 +2,6 @@ package name.webdizz.clt.crx.contentscript.client.connection;
 
 import name.webdizz.clt.crx.client.event.message.ShowTranslatedTextMessage;
 import name.webdizz.clt.crx.client.translation.TranslationResultJs;
-import name.webdizz.clt.crx.contentscript.client.translation.view.ITranslationView;
 import name.webdizz.clt.crx.contentscript.client.translation.view.TranslationView;
 
 import com.google.gwt.chrome.crx.client.events.Message;
@@ -25,13 +24,7 @@ public final class ContentScriptRequestListener implements Listener {
 			if (null != translationResult) {
 				setAnimationEnabled(true);
 				setGlassEnabled(true);
-				ITranslationView view = new TranslationView();
-				view.setTranslateableText(translationResult.getSrc());
-				TranslationResultJs.Translation[] translations = translationResult.getTranslations();
-				for (int i = 0; i < translations.length; i++) {
-					view.setTranslatedText(translations[i].getTranslation());
-				}
-				setWidget(view.asWidget());
+				setWidget(new TranslationView(translationResult).asWidget());
 			}
 		}
 	}
@@ -46,17 +39,21 @@ public final class ContentScriptRequestListener implements Listener {
 	public void onRequest(final Message message) {
 		if (null != message) {
 			final name.webdizz.clt.crx.client.event.message.Message castedMessage = message.cast();
-			if (ShowTranslatedTextMessage.TYPE.equals(castedMessage.getType())) {
-				final ShowTranslatedTextMessage translation = castedMessage.cast();
-				final TranslationResultPanel resultPanel = new TranslationResultPanel(translation);
-				resultPanel.setPopupPositionAndShow(new PopupPanel.PositionCallback() {
-					public void setPosition(int offsetWidth, int offsetHeight) {
-						int selectionOffsetX = translation.getMessage().getOffsetX();
-						int selectionOffsetY = translation.getMessage().getOffsetY();
-						resultPanel.setPopupPosition(selectionOffsetX + 30, selectionOffsetY - 60);
-					}
-				});
-			}
+			handleShowTranslatedTextMessage(castedMessage);
+		}
+	}
+
+	private void handleShowTranslatedTextMessage(final name.webdizz.clt.crx.client.event.message.Message castedMessage) {
+		if (ShowTranslatedTextMessage.TYPE.equals(castedMessage.getType())) {
+			final ShowTranslatedTextMessage translation = castedMessage.cast();
+			final TranslationResultPanel resultPanel = new TranslationResultPanel(translation);
+			resultPanel.setPopupPositionAndShow(new PopupPanel.PositionCallback() {
+				public void setPosition(int offsetWidth, int offsetHeight) {
+					int selectionOffsetX = translation.getMessage().getOffsetX();
+					int selectionOffsetY = translation.getMessage().getOffsetY();
+					resultPanel.setPopupPosition(selectionOffsetX + 30, selectionOffsetY - 60);
+				}
+			});
 		}
 	}
 }
