@@ -3,6 +3,9 @@
  */
 package name.webdizz.clt.crx.client.event.message;
 
+import name.webdizz.clt.crx.client.translation.TranslationResult;
+import name.webdizz.clt.crx.client.translation.TranslationResultJs;
+
 /**
  * @author Izzet_Mustafayev
  * 
@@ -14,7 +17,7 @@ public class ShowTranslatedTextMessage extends Message {
 	protected ShowTranslatedTextMessage() {
 	}
 
-	public final native PrepareTranslatedTextDisplayMessage getTranslation() /*-{
+	public final native TranslationResultJs getTranslation() /*-{
 		return this.translation;
 	}-*/;
 
@@ -23,7 +26,8 @@ public class ShowTranslatedTextMessage extends Message {
 	}-*/;
 
 	public static final native ShowTranslatedTextMessage create(SelectTextMessage message,
-			PrepareTranslatedTextDisplayMessage translation)/*-{
+			TranslationResult translationResult)/*-{
+		var translation = @name.webdizz.clt.crx.client.translation.TranslationResultJs::create(Lname/webdizz/clt/crx/client/translation/TranslationResult;)(translationResult);
 		return {translation: translation, message: message, type:'ShowTranslatedTextMessage'};
 	}-*/;
 }
