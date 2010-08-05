@@ -4,10 +4,10 @@
 package name.webdizz.clt.crx.client;
 
 import name.webdizz.clt.crx.client.event.message.LoadWordsMessage;
-import name.webdizz.clt.crx.client.event.message.PrepareTranslatedTextDisplayMessage;
 import name.webdizz.clt.crx.client.event.message.SelectTextMessage;
 import name.webdizz.clt.crx.client.event.message.StoreTranslationMessage;
 import name.webdizz.clt.crx.client.event.message.TranslateTextMessage;
+import name.webdizz.clt.crx.client.event.message.TranslationResultMessage;
 import name.webdizz.clt.crx.client.presenter.BackgroundPagePresenter;
 import name.webdizz.clt.crx.client.presenter.MonitorPresenter;
 import name.webdizz.clt.crx.client.presenter.StorePresenter;
@@ -35,11 +35,8 @@ public interface ExtEventBus extends EventBus {
 	@Event(handlers = BackgroundPagePresenter.class)
 	void translateText(TranslateTextMessage message);
 
-	@Event(handlers = BackgroundPagePresenter.class, calledMethod = "onTranslatedText")
-	void handleTranslatedText(PrepareTranslatedTextDisplayMessage message);
-
 	@Event(handlers = BackgroundPagePresenter.class)
-	void showTranslatedText(PrepareTranslatedTextDisplayMessage message);
+	void showTranslatedText(TranslationResultMessage message);
 
 	@Event(handlers = StorePresenter.class)
 	void storeTranslation(StoreTranslationMessage message);
