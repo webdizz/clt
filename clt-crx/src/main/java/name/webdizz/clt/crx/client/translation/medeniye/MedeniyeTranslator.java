@@ -8,6 +8,7 @@ import name.webdizz.clt.crx.client.translation.ITranslationHandler;
 import name.webdizz.clt.crx.client.translation.ITranslator;
 
 import com.google.gwt.http.client.RequestException;
+import com.google.gwt.http.client.URL;
 
 /**
  * @author webdizz
@@ -40,7 +41,7 @@ public class MedeniyeTranslator implements ITranslator {
 		}
 		if (null != word && word.trim().length() > 0) {
 			try {
-				String requestData = "word=" + word;
+				String requestData = URL.encode("word") + "=" + URL.encode(word);
 				requestBuilder.send(requestData, handler);
 			} catch (RequestException exc) {
 				throw new TranslationException(exc.getMessage(), exc);
