@@ -3,11 +3,16 @@
  */
 package name.webdizz.clt.crx.contentscript.client.translation.view;
 
+import name.webdizz.clt.crx.client.translation.TranslationResultJs;
+import name.webdizz.clt.crx.client.translation.TranslationResultJs.Explanation;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.SpanElement;
+import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -21,37 +26,51 @@ public class TranslationView extends Composite implements ITranslationView {
 	interface TranslationUiBinder extends UiBinder<Widget, TranslationView> {
 	}
 
-	@UiField
-	SpanElement translatedText;
+	interface ViewStyle extends CssResource {
+		String explanation();
+	}
 
 	@UiField
-	public SpanElement translation;
+	ViewStyle style;
 
-	public TranslationView() {
+	@UiField
+	SpanElement sourceWord;
+
+	@UiField
+	DdElement translationsElement;
+
+	public TranslationView(TranslationResultJs translationResult) {
 		initWidget(uiBinder.createAndBindUi(this));
+		initWidgetData(translationResult);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * name.webdizz.clt.crx.contentscript.client.translation.view.ITranslationView
-	 * #setTranslatedText(java.lang.String)
-	 */
-	public void setTranslatedText(final String text) {
-		translatedText.setInnerText(text);
-		translation.setAttribute("translation", text);
+	protected class ExplanationHtml extends HTML {
+		public ExplanationHtml(String html) {
+			super(html);
+			setStyleName(style.explanation());
+		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * name.webdizz.clt.crx.contentscript.client.translation.view.ITranslationView
-	 * #setTranslateableText(java.lang.String)
-	 */
-	public void setTranslateableText(final String text) {
-		translation.setAttribute("translateable", text);
+	private void initWidgetData(TranslationResultJs translationResult) {
+		if (null != translationResult) {
+			sourceWord.setInnerText(translationResult.getSrc());
+			TranslationResultJs.Translation[] translations = translationResult.getTranslations();
+			for (int i = 0; i < translations.length; i++) {
+				StringBuffer explanationsHtml = new StringBuffer();
+				if (null != translations[i].getExplanations()) {
+					Explanation[] explanations = translations[i].getExplanations();
+					for (int j = 0; j < explanations.length; j++) {
+						if (null != explanations[i] && null != explanations[j].getExplanation()) {
+							explanationsHtml.append("<div class=\"" + style.explanation() + "\">"
+									+ explanations[j].getExplanation() + "</div>");
+						}
+					}
+				}
+				String translationHtml = "<div>" + translations[i].getTranslation() + "</div>";
+				translationsElement.setInnerHTML(translationsElement.getInnerHTML() + translationHtml
+						+ explanationsHtml.toString());
+			}
+		}
 	}
 
 	/*
