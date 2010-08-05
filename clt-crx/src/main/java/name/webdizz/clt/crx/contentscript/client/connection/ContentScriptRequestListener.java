@@ -1,6 +1,7 @@
 package name.webdizz.clt.crx.contentscript.client.connection;
 
 import name.webdizz.clt.crx.client.event.message.ShowTranslatedTextMessage;
+import name.webdizz.clt.crx.client.translation.TranslationResultJs;
 import name.webdizz.clt.crx.contentscript.client.translation.view.ITranslationView;
 import name.webdizz.clt.crx.contentscript.client.translation.view.TranslationView;
 
@@ -20,12 +21,18 @@ public final class ContentScriptRequestListener implements Listener {
 		public TranslationResultPanel(ShowTranslatedTextMessage message) {
 			// enable autohide
 			super(true);
-			setAnimationEnabled(true);
-			setGlassEnabled(true);
-			ITranslationView view = new TranslationView();
-			view.setTranslateableText(message.getTranslation().getTextFrom());
-			view.setTranslatedText(message.getTranslation().getTranslation());
-			setWidget((TranslationView) view);
+			TranslationResultJs translationResult = message.getTranslation();
+			if (null != translationResult) {
+				setAnimationEnabled(true);
+				setGlassEnabled(true);
+				ITranslationView view = new TranslationView();
+				view.setTranslateableText(translationResult.getSrc());
+				TranslationResultJs.Translation[] translations = translationResult.getTranslations();
+				for (int i = 0; i < translations.length; i++) {
+					view.setTranslatedText(translations[i].getTranslation());
+				}
+				setWidget(view.asWidget());
+			}
 		}
 	}
 
