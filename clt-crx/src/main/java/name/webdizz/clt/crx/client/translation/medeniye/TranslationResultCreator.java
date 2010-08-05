@@ -27,6 +27,8 @@ public class TranslationResultCreator {
 
 	private static final String CRIMEAN_TATAR_WORD = "Crimean Tatar";
 
+	private static final String WORD_NOT_FOUND = "Word not found";
+
 	private static final String SOURCE_WORD_START_SMB = "<dt><b>";
 	private static final String SOURCE_WORD_END_SMB = "</b></dt>";
 
@@ -47,7 +49,7 @@ public class TranslationResultCreator {
 	 */
 	public TranslationResult parse(final String responseText) {
 		TranslationResult translationResult = null;
-		if (null != responseText && !responseText.isEmpty()) {
+		if (null != responseText && !responseText.isEmpty() && !WORD_NOT_FOUND.equals(responseText)) {
 			translationResult = new TranslationResult();
 			resolveLanguage(responseText, translationResult);
 			resolveSourceWord(responseText, translationResult);

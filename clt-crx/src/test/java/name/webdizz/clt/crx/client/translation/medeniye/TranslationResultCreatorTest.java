@@ -44,6 +44,8 @@ public class TranslationResultCreatorTest {
 			+ "<dd style=\"margin:0 0 0 .5em\"><div style=\"\">1) пробор</div><div style=\"margin-left:.5em;color:#666;\">doğru cik - прямой пробор (посередине)</div><div style=\"margin-left:.5em;color:#666;\">qıya cik - косой пробор (боковой)</div>"
 			+ "<div style=\"\">2) мн. стрелки на брюках</div></dd>" + "</dl>";
 
+	private static final String RESPONSE_WORD_NOT_FOUND = "Word not found";
+
 	@Before
 	public void setUp() {
 		creator = new TranslationResultCreator();
@@ -98,12 +100,6 @@ public class TranslationResultCreatorTest {
 	}
 
 	@Test
-	public void shouldHandleWordNotFound() {
-		TranslationResult result = creator.parse("Word not found");
-		assertTrue("We've found out something in the word not found", result.isEmpty());
-	}
-
-	@Test
 	public void shouldHandleResponseWithoutTranslations() {
 		TranslationResult result = creator.parse(RESPONSE_WITH_NO_TRANS);
 		assertTrue("We've found out something in the response without translations", result.isEmpty());
@@ -126,6 +122,12 @@ public class TranslationResultCreatorTest {
 		TranslationResult result = creator.parse(RESPONSE_WITH_TRANS);
 		List<Translation> list = result.getTranslations();
 		assertFalse("Unable to find translation explanations", list.get(0).getExplanations().isEmpty());
+	}
+
+	@Test
+	public void shouldReturnNullResultForWordNotFound() {
+		TranslationResult result = creator.parse(RESPONSE_WORD_NOT_FOUND);
+		assertNull("Result is not null.", result);
 	}
 
 }
