@@ -1,5 +1,7 @@
 package com.google.gwt.chrome.crx.client;
 
+import com.google.gwt.chrome.crx.client.events.ConnectEvent;
+import com.google.gwt.chrome.crx.client.events.RequestEvent;
 import com.google.gwt.core.client.EntryPoint;
 
 /**
@@ -32,5 +34,27 @@ public abstract class GwtContentScriptEntryPoint implements EntryPoint {
 	 */
 	protected Port connect(final String connectionName) {
 		return Chrome.getExtension().connect(connectionName);
+	}
+
+	/**
+	 * Assigns the {@link ConnectEvent.Listener} for connections from
+	 * {@link BackgroundPage} to {@link GwtContentScript}.
+	 * 
+	 * @param listener
+	 *            The {@link ConnectEvent.Listener}
+	 */
+	protected void onConnect(ConnectEvent.Listener listener) {
+		Chrome.getExtension().getOnConnectEvent().addListener(listener);
+	}
+
+	/**
+	 * Assigns the {@link RequestEvent.Listener} for connections from
+	 * {@link BackgroundPage} to {@link GwtContentScript}.
+	 * 
+	 * @param listener
+	 *            listener The {@link RequestEvent.Listener}
+	 */
+	protected void onRequestEvent(RequestEvent.Listener listener) {
+		Chrome.getExtension().getOnRequestEvent().addListener(listener);
 	}
 }

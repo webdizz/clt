@@ -1,0 +1,47 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style
+		type="name.webdizz.clt.crx.contentscript.client.translation.view.TranslationView.ViewStyle">
+			.main {
+				background-color: #363636;
+				white-space: nowrap;
+				background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0%, #000),
+					color-stop(50%, #363636), color-stop(100%, #000) );
+				overflow: visible !important;
+				-webkit-border-radius: 10px !important;
+				border-color: #000000 !important;
+				opacity: 0.95 !important;
+				color: #fafafa !important;
+				padding: 8px !important;
+				min-height: 30px;
+				min-width: 100px;
+				text-align: left;
+				font-size: 0.9em !important;
+			}
+			
+			.explanation {
+				margin-left: .5em;
+				color: #F0F4FC;
+				font-size: small;
+			}
+		</ui:style>
+	<g:HTMLPanel>
+		<div class="{style.main}">
+			<dl style="margin:0 0 1em 0">
+				<dt>
+					<b>
+						<span ui:field="sourceWord" />
+					</b>
+				</dt>
+				<dd style="margin:0 0 0 .5em" ui:field="translationsElement" />
+			</dl>
+			<!-- 
+			<span id="cltStoreWord" style="cursor:pointer;">Store this word</span>
+			<br />
+			<span id="cltLoadWords" style="cursor:pointer;">Load words</span>
+			 -->
+		</div>
+
+	</g:HTMLPanel>
+</ui:UiBinder> 

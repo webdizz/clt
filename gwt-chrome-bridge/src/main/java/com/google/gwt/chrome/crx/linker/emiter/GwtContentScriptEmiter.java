@@ -91,7 +91,8 @@ public class GwtContentScriptEmiter extends AbstractEmiter {
 			pathToModule = modulePath.substring(0, modulePath.indexOf(WEB_INF)) + moduleName + "/";
 		}
 		if (null == pathToModule) {
-			notifyFailure(logger, "Unable to resolve path to module : " + moduleName);
+			logger.log(TreeLogger.ERROR, "Unable to resolve path to module : " + moduleName);
+			notifyFailure(logger, "You can add WEB-INF directory as first in the Classpath->User Entries list of the Eclipse launcher.");
 		}
 		File moduleDir = new File(pathToModule);
 		if (!moduleDir.exists()) {

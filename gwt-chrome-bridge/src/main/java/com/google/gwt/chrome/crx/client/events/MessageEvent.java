@@ -33,7 +33,6 @@ public class MessageEvent extends Event {
 		protected Message() {
 		}
 	}
-
 	/**
 	 * Messaging handler that gets called each time you send a message on a
 	 * Port.

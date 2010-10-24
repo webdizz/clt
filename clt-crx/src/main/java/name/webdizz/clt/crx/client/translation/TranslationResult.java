@@ -3,16 +3,64 @@
  */
 package name.webdizz.clt.crx.client.translation;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+
 /**
  * @author webdizz
  * 
  */
-public class TranslationResult {
+public final class TranslationResult implements Serializable {
+
+	/**
+	 * serialVersionUID.
+	 */
+	private static final long serialVersionUID = -6348445269086282159L;
+
+	/**
+	 * @author webdizz
+	 * 
+	 */
+	public class Translation {
+		private String translation;
+		private ArrayList<Explanation> explanations;
+
+		public String getTranslation() {
+			return translation;
+		}
+
+		public void setTranslation(String translation) {
+			this.translation = translation;
+		}
+
+		public ArrayList<Explanation> getExplanations() {
+			return explanations;
+		}
+
+		public void setExplanations(ArrayList<Explanation> explanations) {
+			this.explanations = explanations;
+		}
+
+	}
+
+	public class Explanation {
+		private String explanation;
+
+		public String getExplanation() {
+			return explanation;
+		}
+
+		public void setExplanation(String explanation) {
+			this.explanation = explanation;
+		}
+
+	}
 
 	private String src;
 	private String dest;
 	private String srcLang;
 	private String destLang;
+	private ArrayList<Translation> translations;
 
 	/**
 	 * @return the src
@@ -72,6 +120,30 @@ public class TranslationResult {
 	 */
 	public void setDestLang(String destLang) {
 		this.destLang = destLang;
+	}
+
+	/**
+	 * @return the translations
+	 */
+	public ArrayList<Translation> getTranslations() {
+		return translations;
+	}
+
+	/**
+	 * @param translations
+	 *            the translations to set
+	 */
+	public void setTranslations(ArrayList<Translation> translations) {
+		this.translations = translations;
+	}
+
+	/**
+	 * Checks whether result has translation or no.
+	 * 
+	 * @return true if result does not contain translations, false otherwise
+	 */
+	public boolean isEmpty() {
+		return null == dest || null == translations || translations.isEmpty();
 	}
 
 	/*

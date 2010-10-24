@@ -21,14 +21,15 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
 
 /**
- * Wraps event from chrome.onConnect.
+ * Wraps event from chrome.extension.onConnect.
  * 
  * See documentation at: <a href=
- * "http://dev.chromium.org/developers/design-documents/extensions/content-scripts"
+ * "http://code.google.com/chrome/extensions/extension.html#event-onConnect"
  * >Content Script Messaging</a>
  * 
  */
 public final class ConnectEvent extends Event {
+
 	/**
 	 * Called when a ContentScript opens a port.
 	 */

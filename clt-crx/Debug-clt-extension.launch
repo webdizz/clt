@@ -21,7 +21,7 @@
 </listAttribute>
 <booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="false"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="com.google.gwt.dev.DevMode"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-noserver -remoteUI &quot;${gwt_remote_ui_server_port}:${unique_id}&quot; -startupUrl http://localhost/ -logLevel INFO -war ${workspace_loc:clt-crx}/war name.webdizz.clt.crx.client.contentscript.ContentScript name.webdizz.clt.crx.ExtensionDebug"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-noserver -remoteUI &quot;${gwt_remote_ui_server_port}:${unique_id}&quot; -startupUrl http://localhost/ -logLevel INFO -war ${workspace_loc:clt-crx}/war name.webdizz.clt.crx.contentscript.ContentScript name.webdizz.clt.crx.ExtensionDebug"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="clt-crx"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx512m"/>
 </launchConfiguration>

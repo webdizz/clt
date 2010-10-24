@@ -3,7 +3,7 @@
  */
 package name.webdizz.clt.crx.client.translation.medeniye;
 
-import name.webdizz.clt.crx.client.translation.TranslationHandler;
+import name.webdizz.clt.crx.client.translation.ITranslationHandler;
 import name.webdizz.clt.crx.client.translation.TranslationResult;
 
 import com.google.gwt.http.client.Request;
@@ -14,7 +14,7 @@ import com.google.gwt.http.client.Response;
 
 /**
  * Requests translations from medeniye.org dictionary and call
- * {@link TranslationHandler} with translation result.
+ * {@link ITranslationHandler} with translation result.
  * 
  * @author webdizz
  * 
@@ -22,16 +22,15 @@ import com.google.gwt.http.client.Response;
 public class MedeniyeRequestBuilder {
 
 	private class TranslationRequestCallback implements RequestCallback {
-		private TranslationHandler handler;
+		private ITranslationHandler handler;
 
-		private TranslationRequestCallback(TranslationHandler handler) {
+		private TranslationRequestCallback(ITranslationHandler handler) {
 			this.handler = handler;
 		}
 
 		public void onResponseReceived(final Request request, final Response response) {
 			String translationHtmlText = response.getText();
-			TranslationResult translationResult = new TranslationResult();
-			translationResult.setDest(translationHtmlText);
+			TranslationResult translationResult = new TranslationResultCreator().parse(translationHtmlText);
 			handler.onTranslate(translationResult);
 		}
 
@@ -41,15 +40,18 @@ public class MedeniyeRequestBuilder {
 
 	}
 
-	private static final String URL = "http://qlugat.appspot.com/lugat/get";
+	private static final String URL = "http://qlugat.appspot.com/lugat/get?";
 
 	private RequestBuilder requestBuilder;
 
 	/**
 	 * Creates default {@link RequestBuilder}.
+	 * 
+	 * @param requestData
+	 *            parameters as a string to pass to remote service
 	 */
-	protected void createDefaultRequestBuilder() {
-		requestBuilder = new RequestBuilder(RequestBuilder.GET, URL);
+	private void createDefaultRequestBuilder(String requestData) {
+		requestBuilder = new RequestBuilder(RequestBuilder.GET, URL + requestData);
 	}
 
 	/**
@@ -57,9 +59,9 @@ public class MedeniyeRequestBuilder {
 	 * @param handler
 	 * @return ` * @throws RequestException
 	 */
-	public Request send(final String requestData, final TranslationHandler handler) throws RequestException {
+	public Request send(final String requestData, final ITranslationHandler handler) throws RequestException {
 		if (null == requestBuilder) {
-			createDefaultRequestBuilder();
+			createDefaultRequestBuilder(requestData);
 		}
 		TranslationRequestCallback callback = new TranslationRequestCallback(handler);
 		requestBuilder.setCallback(callback);

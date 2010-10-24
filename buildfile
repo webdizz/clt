@@ -23,10 +23,12 @@ GWT = [
         'com.google.gwt.google-apis:gwt-language:jar:1.1.0',
         'com.googlecode.gwt-mobile-webkit:htnl5-database:jar:1.5.1'
 ]
-
+POWERMOCK_VERSION = '1.4'
 TEST = [
-	'org.mockito:mockito-all:jar:1.8.3',
-	'junit:junit:jar:4.8.2'
+	'org.mockito:mockito-all:jar:1.8.5',
+	'junit:junit:jar:4.8.2',
+	"org.powermock:powermock-mockito-release-full:jar:full:#{POWERMOCK_VERSION}",
+	'javassist:javassist:jar:3.13.0.GA'
 ]
 
 desc "The Clt project"

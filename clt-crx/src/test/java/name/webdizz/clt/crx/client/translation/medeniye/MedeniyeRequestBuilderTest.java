@@ -7,7 +7,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import name.webdizz.clt.crx.client.translation.TranslationHandler;
+import name.webdizz.clt.crx.client.translation.ITranslationHandler;
 import name.webdizz.clt.crx.client.translation.TranslationResult;
 
 import org.junit.Before;
@@ -25,6 +25,12 @@ import com.google.gwt.http.client.Response;
  * 
  */
 public class MedeniyeRequestBuilderTest {
+
+	private static final String RESPONSE_WITH_TRANS = "<dl>"
+			+ "<div>Crimean Tatar - Russian</div>"
+			+ "<dt><b>cik</b></dt>"
+			+ "<dd style=\"margin:0 0 0 .5em\"><div style=\"\">1) пробор</div><div style=\"margin-left:.5em;color:#666;\">doğru cik - прямой пробор (посередине)</div><div style=\"margin-left:.5em;color:#666;\">qıya cik - косой пробор (боковой)</div>"
+			+ "<div style=\"\">2) мн. стрелки на брюках</div></dd>" + "</dl>";
 
 	private MedeniyeRequestBuilder medeniyeRequestBuilder;
 
@@ -44,7 +50,7 @@ public class MedeniyeRequestBuilderTest {
 
 	@Test
 	public void shouldUseAssignedRequestBuilder() throws Exception {
-		TranslationHandler handler = mock(TranslationHandler.class);
+		ITranslationHandler handler = mock(ITranslationHandler.class);
 		RequestBuilder requestBuilder = mock(RequestBuilder.class);
 		medeniyeRequestBuilder.setRequestBuilder(requestBuilder);
 		medeniyeRequestBuilder.send("some data", handler);
@@ -54,21 +60,20 @@ public class MedeniyeRequestBuilderTest {
 
 	@Test
 	public void shouldCallTranslationHandle() throws Exception {
-		TranslationHandler handler = mock(TranslationHandler.class);
+		ITranslationHandler handler = mock(ITranslationHandler.class);
 		RequestBuilder requestBuilder = new JustCallOnResponseReceivedRequestBuilder("URL");
 		medeniyeRequestBuilder.setRequestBuilder(requestBuilder);
 
-		when(response.getText()).thenReturn("translated");
+		when(response.getText()).thenReturn(RESPONSE_WITH_TRANS);
 
 		medeniyeRequestBuilder.send("some data", handler);
-		TranslationResult result = new TranslationResult();
-		result.setDest("translated");
+		TranslationResult result = new TranslationResultCreator().parse(RESPONSE_WITH_TRANS);
 		verify(handler).onTranslate(result);
 	}
 
 	@Test
 	public void shouldHandleTranslationRequestError() throws Exception {
-		TranslationHandler handler = mock(TranslationHandler.class);
+		ITranslationHandler handler = mock(ITranslationHandler.class);
 		RequestBuilder requestBuilder = new JustCallOnErrorRequestBuilder("URL");
 		medeniyeRequestBuilder.setRequestBuilder(requestBuilder);
 
